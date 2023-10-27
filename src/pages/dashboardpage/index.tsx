@@ -1,23 +1,17 @@
+"use client";
+import React from "react";
+import { useAuth } from "../../utils/auth";
 import StudentDashboard from "@/components/StudentDashboard/StudentDashboard";
 import TeacherDashboard from "@/components/TeacherDashboard/TeacherDashboard";
-import React from "react";
-import { useRouter } from "next/router";
 
 const Dashboard = () => {
-  const router = useRouter();
-  const email = router.query.email;
-  const password = router.query.password;
-
+  const { user } = useAuth();
+  console.log(user);
   return (
     <div>
       <h1>Welcome to the Dashboard</h1>
-      {email == "teacher@gmail.com" && password == "teacher" ? (
-        <TeacherDashboard />
-      ) : email == "student@gmail.com" && password == "student" ? (
-        <StudentDashboard />
-      ) : (
-        ""
-      )}
+      {user && user.role === "teacher" && <TeacherDashboard />}
+      {user && user.role === "student" && <StudentDashboard />}
     </div>
   );
 };
