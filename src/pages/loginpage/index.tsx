@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../utils/auth";
 import { Router } from "next/router";
 import { useRouter } from "next/navigation";
 
 function LoginPage() {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,9 +13,12 @@ function LoginPage() {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     login(email, password);
-    router.push("/dashboardpage");
   };
-
+  useEffect(() => {
+    if (user.email !== "") {
+      router.push("/dashboardpage");
+    }
+  }, [user]);
   return (
     <div>
       <form onSubmit={handleSubmit}>

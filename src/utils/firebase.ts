@@ -1,17 +1,15 @@
-
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
+// import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAf6pfcMPtmEI5mzGETmzsBgmYSRzJ-J1M",
-  authDomain: "e-learning-dd274.firebaseapp.com",
-  projectId: "e-learning-dd274",
-  storageBucket: "e-learning-dd274.appspot.com",
-  messagingSenderId: "686365982599",
-  appId: "1:686365982599:web:dbded1d89dd38d52cf9d22",
-  measurementId: "G-2EEN69R957"
+  apiKey: "AIzaSyAaHDIEMdHxoDdkMAL_uswhYCMNQ3ayD10",
+  authDomain: "e-learning-wil.firebaseapp.com",
+  projectId: "e-learning-wil",
+  storageBucket: "e-learning-wil.appspot.com",
+  messagingSenderId: "171751901800",
+  appId: "1:171751901800:web:9ab062b84a9b5c188049dd",
+  measurementId: "G-HCXTH2V4Q5",
 };
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+export const app = initializeApp(firebaseConfig);
+// export const analytics = getAnalytics(app);

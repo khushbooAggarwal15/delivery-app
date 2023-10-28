@@ -1,9 +1,12 @@
 // AuthContext.js
+import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
 import { createContext, useContext, useState } from "react";
+import { app } from "@/utils/firebase";
 
 interface authContextType {
   user: { email: any; role: any };
   login: (email: any, password: any) => any;
+  logout: () => void;
 }
 const authContextDefaultValues: authContextType = {
   user: {
@@ -11,6 +14,7 @@ const authContextDefaultValues: authContextType = {
     role: "",
   },
   login: () => {},
+  logout: () => {},
 };
 const AuthContext = createContext<authContextType>(authContextDefaultValues);
 
@@ -26,20 +30,36 @@ export function AuthProvider({ children }: Props) {
     email: "",
     role: "",
   });
+  const logout = () => {
+    setUser({ email: "", role: "" });
+  };
+  const login = async (email: any, password: any) => {
+    const auth = getAuth(app);
 
-  const login = (email: any, password: any) => {
-    if (email === "teacher@gmail.com" && password === "teacher") {
-      setUser({ email: "teacher@gmail.com", role: "teacher" });
-    } else if (email === "student@gmail.com" && password === "student") {
-      setUser({ email: "student@gmail.com", role: "student" });
-    } else {
-      console.log("authentication failed");
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const userInfo = userCredential.user;
+      console.log("userInfo==auth", userInfo);
+      if (userInfo.email === "teacher@gmail.com" && password === "teacher") {
+        setUser({ email: "teacher@gmail.com", role: "teacher" });
+      } else if (
+        userInfo.email === "student@gmail.com" &&
+        password === "student"
+      ) {
+        setUser({ email: "student@gmail.com", role: "student" });
+      }
+    } catch (error) {
+      console.error("Authentication failed:", error);
     }
   };
   console.log(user);
   return (
     <>
-      <AuthContext.Provider value={{ user, login }}>
+      <AuthContext.Provider value={{ user, login, logout }}>
         {children}
       </AuthContext.Provider>
     </>
