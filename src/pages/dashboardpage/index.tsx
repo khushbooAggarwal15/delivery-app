@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
 import { useAuth } from "../../utils/auth";
-import StudentDashboard from "@/components/AdminDashboard/AdminDashboard";
-import TeacherDashboard from "@/components/UserDashboard/UserDashboard";
+
 import Router, { useRouter } from "next/router";
 import UserDashboard from "@/components/UserDashboard/UserDashboard";
 import AdminDashboard from "@/components/AdminDashboard/AdminDashboard";
