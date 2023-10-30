@@ -18,7 +18,7 @@ const Dashboard = () => {
   };
   return (
     <div>
-      <h1>Welcome to the Dashboard</h1>
+      {/* <h1>Welcome to the Dashboard</h1> */}
       {user && user.role === "user" && <UserDashboard />}
       {user && user.role === "admin" && <AdminDashboard />}
       <button onClick={logoutSubmit}>logout</button>
