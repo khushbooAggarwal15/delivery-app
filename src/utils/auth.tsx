@@ -44,9 +44,12 @@ export function AuthProvider({ children }: Props) {
       );
       const userInfo = userCredential.user;
       console.log("userInfo==auth", userInfo);
-      if (userInfo.email === "user@gmail.com" && password === "user") {
+      if (userInfo.email === "user@gmail.com" && password === "user1234") {
         setUser({ email: "user@gmail.com", role: "user" });
-      } else if (userInfo.email === "admin@gmail.com" && password === "admin") {
+      } else if (
+        userInfo.email === "admin@gmail.com" &&
+        password === "admin1234"
+      ) {
         setUser({ email: "admin@gmail.com", role: "admin" });
       }
     } catch (error) {
