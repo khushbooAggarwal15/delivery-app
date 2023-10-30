@@ -14,6 +14,9 @@ function LoginPage() {
     e.preventDefault();
     login(email, password);
   };
+  const handleClick = () => {
+    router.push("/");
+  };
   useEffect(() => {
     if (user.email !== "") {
       router.push("/dashboardpage");
@@ -41,6 +44,10 @@ function LoginPage() {
         </label>
         <br />
         <button type="submit">Submit</button>
+        <p>Don't have account register here</p>
+        <button type="submit" onClick={handleClick}>
+          Register
+        </button>
       </form>
     </div>
   );

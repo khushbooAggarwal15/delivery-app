@@ -1,9 +1,11 @@
 "use client";
 import React from "react";
 import { useAuth } from "../../utils/auth";
-import StudentDashboard from "@/components/StudentDashboard/StudentDashboard";
-import TeacherDashboard from "@/components/TeacherDashboard/TeacherDashboard";
+import StudentDashboard from "@/components/AdminDashboard/AdminDashboard";
+import TeacherDashboard from "@/components/UserDashboard/UserDashboard";
 import Router, { useRouter } from "next/router";
+import UserDashboard from "@/components/UserDashboard/UserDashboard";
+import AdminDashboard from "@/components/AdminDashboard/AdminDashboard";
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
@@ -17,8 +19,8 @@ const Dashboard = () => {
   return (
     <div>
       <h1>Welcome to the Dashboard</h1>
-      {user && user.role === "teacher" && <TeacherDashboard />}
-      {user && user.role === "student" && <StudentDashboard />}
+      {user && user.role === "user" && <UserDashboard />}
+      {user && user.role === "admin" && <AdminDashboard />}
       <button onClick={logoutSubmit}>logout</button>
     </div>
   );
