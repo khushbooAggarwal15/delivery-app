@@ -1,7 +1,7 @@
 import React from "react";
 
-function StudentDashboard() {
-  return <div>StudentDashboard</div>;
+function AdminDashboard() {
+  return <div>AdminDashboard</div>;
 }
 
-export default StudentDashboard;
+export default AdminDashboard;
