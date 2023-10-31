@@ -28,7 +28,7 @@ const Dashboard = () => {
   console.log(localEmail === JSON.stringify("user@gmail.com"));
   return (
     <div>
-      <h1>Welcome to the Dashboard</h1>
+      {/* <h1>Welcome to the Dashboard</h1> */}
 
       {localEmail == JSON.stringify("user@gmail.com") ? (
         <UserDashboard />
