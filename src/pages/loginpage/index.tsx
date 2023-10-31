@@ -31,9 +31,10 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const onSubmit = (e: any) => {
-    e.preventDefault();
-    login(email, password);
+  const onSubmit = (data: any) => {
+    console.log(data.email);
+    // e.preventDefault();
+    login(data.email, data.password);
     console.log(window.localStorage.getItem("access_token"));
 
     if (window.localStorage.getItem("access_token")) {
