@@ -73,19 +73,17 @@ interface Props {
 }
 
 export function AuthProvider({ children }: Props) {
-  const initialDataString = window.localStorage.getItem("data");
-  const initialData: IData[] = initialDataString
-    ? JSON.parse(initialDataString)
-    : [];
+  // const initialDataString = window.localStorage.getItem("data");
+  // const initialData: IData[] = initialDataString
+  //   ? JSON.parse(initialDataString)
+  //   : [];
 
-  const [data, setData] = useState<IData[]>(initialData);
+  const [data, setData] = useState<IData[]>([]);
 
   const [user, setUser] = useState<IUser>({ email: "", role: "" });
 
   const logout = () => {
-    window.localStorage.setItem("access_token", String(null));
     window.localStorage.removeItem("access_token");
-    // window.localStorage.setItem("data", String(null));
   };
   // const login = async (email: any, password: any) => {
   //   const auth = getAuth(app);
@@ -130,19 +128,17 @@ export function AuthProvider({ children }: Props) {
     }
   };
 
-  const formData = (value: any) => {
-    // setData([...data, value]);
-    // window.localStorage.setItem("data", JSON.stringify([...data, value]));
+  const formData = (value: IData) => {
+    console.log("value", JSON.stringify(value));
 
-    const previousDataString = window.localStorage.getItem("data");
-    const previousData: IData[] = previousDataString
-      ? JSON.parse(previousDataString)
-      : [];
-
-    const newData = [...previousData, value];
-
-    setData(newData);
-    window.localStorage.setItem("data", JSON.stringify(newData));
+    try {
+      const newData = [...data, value];
+      console.log("newData", newData);
+      setData(newData);
+      window.localStorage.setItem("data", JSON.stringify(newData));
+    } catch (error) {
+      console.error("Error parsing data from localStorage:", error);
+    }
   };
 
   // console.log(user);
