@@ -32,18 +32,18 @@ function LoginPage() {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (data: any) => {
-    console.log("data", data);
-    console.log(data.email);
-    // e.preventDefault();
-    login(data.email, data.password);
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    console.log(email, password);
+    login(email, password);
     console.log(window.localStorage.getItem("access_token"));
 
     if (window.localStorage.getItem("access_token")) {
       router.push("/dashboardpage");
-    } else {
-      router.push("/loginpage");
     }
+    // } else {
+    //   router.push("/loginpage");
+    // }
   };
   const handleClick = () => {
     router.push("/registerpage");

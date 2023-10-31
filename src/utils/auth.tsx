@@ -105,7 +105,7 @@ export function AuthProvider({ children }: Props) {
       console.log("userInfo.email", userInfo.email);
       window.localStorage.setItem("email", userInfo.email);
     } catch (error) {
-      alert("invalid");
+      // alert("invalid");
       console.error("Authentication failed:", error);
     }
   };
