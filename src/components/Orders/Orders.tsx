@@ -8,12 +8,9 @@ const Orders = () => {
   const storedData = window.localStorage.getItem("data");
   const data = storedData ? JSON.parse(storedData) : null;
 
-  console.log(data);
-
   if (!Array.isArray(data) || data.length === 0) {
     return <p>No orders available.</p>;
   }
-  console.log("data", data);
 
   // const [searchTerm, setSearchTerm] = useState("");
   // const filteredData = data.filter((item) => {

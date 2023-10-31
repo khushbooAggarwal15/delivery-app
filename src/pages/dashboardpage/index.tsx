@@ -9,7 +9,6 @@ import AdminDashboard from "@/components/AdminDashboard/AdminDashboard";
 const Dashboard = () => {
   const { user, logout } = useAuth();
   const [localEmail, setLocalEmail] = useState("");
-  console.log(user);
   const router = useRouter();
   // const logoutSubmit = (e: any) => {
   //   e.preventDefault();
@@ -24,8 +23,7 @@ const Dashboard = () => {
 
     // window.localStorage?.getItem("email");
   }, []);
-  console.log("localEmail27", localEmail);
-  console.log(localEmail === JSON.stringify("user@gmail.com"));
+  // console.log(localEmail === JSON.stringify("user@gmail.com"));
   return (
     <div>
       {/* <h1>Welcome to the Dashboard</h1> */}
