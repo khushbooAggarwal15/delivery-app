@@ -99,6 +99,7 @@ export function AuthProvider({ children }: Props) {
         email,
         password
       );
+      console.log("userCrendential", userCredential);
       const userInfo: any = userCredential.user;
       window.localStorage.setItem("access_token", userInfo.accessToken);
       console.log("userInfo.email", userInfo.email);
