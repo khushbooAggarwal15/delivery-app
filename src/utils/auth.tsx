@@ -73,13 +73,7 @@ interface Props {
 }
 
 export function AuthProvider({ children }: Props) {
-  // const initialDataString = window.localStorage.getItem("data");
-  // const initialData: IData[] = initialDataString
-  //   ? JSON.parse(initialDataString)
-  //   : [];
-
   const [data, setData] = useState<IData[]>([]);
-
   const [user, setUser] = useState<IUser>({ email: "", role: "" });
 
   const logout = () => {
@@ -129,16 +123,19 @@ export function AuthProvider({ children }: Props) {
   };
 
   const formData = (value: IData) => {
-    console.log("value", JSON.stringify(value));
+    // setData([...data, value]);
+    // window.localStorage.setItem("data", JSON.stringify([...data, value]));
+    const previousDataString = window.localStorage.getItem("data");
+    const previousData: IData[] = previousDataString
+      ? JSON.parse(previousDataString)
+      : [];
 
-    try {
-      const newData = [...data, value];
-      console.log("newData", newData);
-      setData(newData);
-      window.localStorage.setItem("data", JSON.stringify(newData));
-    } catch (error) {
-      console.error("Error parsing data from localStorage:", error);
-    }
+    // Combine previous data with the new value
+    const newData = [...previousData, value];
+
+    // Update state and local storage
+    setData(newData);
+    window.localStorage.setItem("data", JSON.stringify(newData));
   };
 
   // console.log(user);

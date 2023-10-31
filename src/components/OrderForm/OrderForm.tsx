@@ -80,8 +80,8 @@ function OrderForm() {
   });
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
+    console.log("data-83====>", data);
     formData(data);
-    console.log("data_orderForm", data);
 
     route.push("/dashboardpage");
   };

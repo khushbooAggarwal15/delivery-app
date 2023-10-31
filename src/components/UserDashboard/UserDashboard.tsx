@@ -16,7 +16,6 @@ function UserDashboard() {
   const handleOrder = () => setorderVisibile(!orderVisisble);
 
   const { user, logout } = useAuth();
-  console.log(user);
   const logoutSubmit = (e: any) => {
     e.preventDefault();
     logout();
