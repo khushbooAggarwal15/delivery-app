@@ -1,16 +1,37 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../utils/auth";
-import { Router } from "next/router";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
+import * as yup from "yup";
+import { useAuth } from "../../utils/auth";
+import styles from "./loginpage.module.css";
+
+interface FormData {
+  email: string;
+  password: string;
+}
+
+const schema = yup.object().shape({
+  email: yup.string().email("invalid email").required("Email is required"),
+  password: yup.string().required("Password is required"),
+});
 
 function LoginPage() {
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(schema),
+  });
   const { login, user } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: any) => {
+  const onSubmit = (e: any) => {
     e.preventDefault();
     login(email, password);
     console.log(window.localStorage.getItem("access_token"));
@@ -30,32 +51,40 @@ function LoginPage() {
   //   }
   // }, [user]);
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email:
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+    <div className={styles.main}>
+      <div style={{ width: "420px" }}>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <h1 className={styles.heading}> Login Form </h1>
+          <div className={styles.label}> Email </div>
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <input {...field} className={styles.input} />
+            )}
           />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+          <p className={styles.errormessage}>{errors?.email?.message}</p>
+
+          <div className={styles.label}> Password </div>
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <input {...field} className={styles.input} />
+            )}
           />
-        </label>
-        <br />
-        <button type="submit">Submit</button>
-        <p>Don't have account register here</p>
-        <button type="submit" onClick={handleClick}>
-          Register
-        </button>
-      </form>
+          <p className={styles.errormessage}>{errors?.password?.message}</p>
+
+          <br />
+          <button className={styles.button} type="submit">
+            Submit
+          </button>
+          <p className={styles.para}>Don't have account register here</p>
+          <button className={styles.button} type="submit" onClick={handleClick}>
+            Register
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

@@ -1,9 +1,11 @@
 import React from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
 import * as yup from "yup";
 
 import styles from "./OrderForm.module.css";
+import { useAuth } from "@/utils/auth";
 
 interface FormData {
   location: {
@@ -31,7 +33,9 @@ const schema = yup.object().shape({
   }),
 });
 
-const OrderForm: React.FC = () => {
+function OrderForm() {
+  const route = useRouter();
+  const { formData, data } = useAuth();
   const {
     control,
     handleSubmit,
@@ -42,7 +46,10 @@ const OrderForm: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
+    formData(data);
+    console.log("data_orderForm", data);
+
+    route.push("/dashboardpage");
   };
 
   return (
@@ -117,6 +124,6 @@ const OrderForm: React.FC = () => {
       </form>
     </div>
   );
-};
+}
 
 export default OrderForm;
