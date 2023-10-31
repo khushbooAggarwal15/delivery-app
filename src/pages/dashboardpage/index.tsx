@@ -14,7 +14,7 @@ const Dashboard = () => {
   const logoutSubmit = (e: any) => {
     e.preventDefault();
     logout();
-    router.push("/loginpage");
+    router.push("/");
   };
   useEffect(() => {
     if (typeof window !== "undefined") {
