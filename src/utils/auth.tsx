@@ -73,7 +73,13 @@ interface Props {
 }
 
 export function AuthProvider({ children }: Props) {
-  const [data, setData] = useState<IData[]>([]);
+  const initialDataString = window.localStorage.getItem("data");
+  const initialData: IData[] = initialDataString
+    ? JSON.parse(initialDataString)
+    : [];
+
+  const [data, setData] = useState<IData[]>(initialData);
+
   const [user, setUser] = useState<IUser>({ email: "", role: "" });
 
   const logout = () => {
@@ -127,15 +133,14 @@ export function AuthProvider({ children }: Props) {
   const formData = (value: any) => {
     // setData([...data, value]);
     // window.localStorage.setItem("data", JSON.stringify([...data, value]));
+
     const previousDataString = window.localStorage.getItem("data");
     const previousData: IData[] = previousDataString
       ? JSON.parse(previousDataString)
       : [];
 
-    // Combine previous data with the new value
     const newData = [...previousData, value];
 
-    // Update state and local storage
     setData(newData);
     window.localStorage.setItem("data", JSON.stringify(newData));
   };
