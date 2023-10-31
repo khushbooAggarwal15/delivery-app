@@ -5,36 +5,37 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import * as yup from "yup";
 import { useAuth } from "../../utils/auth";
-import styles from "./loginpage.module.css";
-
-interface FormData {
-  email: string;
-  password: string;
-}
-
-const schema = yup.object().shape({
-  email: yup.string().email("invalid email").required("Email is required"),
-  password: yup.string().required("Password is required"),
-});
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 
 function LoginPage() {
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: yupResolver(schema),
-  });
   const { login, user } = useAuth();
   const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const onSubmit = (data: any) => {
-    console.log(data.email);
-    // e.preventDefault();
-    login(data.email, data.password);
+  const handleEmail = (e: any) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePassword = (e: any) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    console.log(email, password);
+    login(email, password);
     console.log(window.localStorage.getItem("access_token"));
 
     if (window.localStorage.getItem("access_token")) {
@@ -44,7 +45,7 @@ function LoginPage() {
     }
   };
   const handleClick = () => {
-    router.push("/");
+    router.push("/registerpage");
   };
   // useEffect(() => {
   //   if (user.email !== "") {
@@ -52,41 +53,71 @@ function LoginPage() {
   //   }
   // }, [user]);
   return (
-    <div className={styles.main}>
-      <div style={{ width: "420px" }}>
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-          <h1 className={styles.heading}> Login Form </h1>
-          <div className={styles.label}> Email </div>
-          <Controller
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            onChange={handleEmail}
+            value={email}
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
             name="email"
-            control={control}
-            render={({ field }) => (
-              <input {...field} className={styles.input} />
-            )}
+            autoComplete="email"
+            autoFocus
           />
-          <p className={styles.errormessage}>{errors?.email?.message}</p>
-
-          <div className={styles.label}> Password </div>
-          <Controller
+          <TextField
+            onChange={handlePassword}
+            value={password}
+            margin="normal"
+            required
+            fullWidth
             name="password"
-            control={control}
-            render={({ field }) => (
-              <input {...field} className={styles.input} />
-            )}
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
           />
-          <p className={styles.errormessage}>{errors?.password?.message}</p>
-
-          <br />
-          <button className={styles.button} type="submit">
-            Submit
-          </button>
-          <p className={styles.para}>Don't have account register here</p>
-          <button className={styles.button} type="submit" onClick={handleClick}>
-            Register
-          </button>
-        </form>
-      </div>
-    </div>
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link href="#" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="#" variant="body2" onClick={handleClick}>
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
   );
 }
 
