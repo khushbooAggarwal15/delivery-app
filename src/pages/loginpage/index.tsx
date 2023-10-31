@@ -40,10 +40,9 @@ function LoginPage() {
 
     if (window.localStorage.getItem("access_token")) {
       router.push("/dashboardpage");
+    } else {
+      router.push("/loginpage");
     }
-    // } else {
-    //   router.push("/loginpage");
-    // }
   };
   const handleClick = () => {
     router.push("/registerpage");
