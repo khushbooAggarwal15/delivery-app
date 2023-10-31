@@ -34,15 +34,22 @@ function LoginPage() {
   const onSubmit = (e: any) => {
     e.preventDefault();
     login(email, password);
+    console.log(window.localStorage.getItem("access_token"));
+
+    if (window.localStorage.getItem("access_token")) {
+      router.push("/dashboardpage");
+    } else {
+      router.push("/loginpage");
+    }
   };
   const handleClick = () => {
     router.push("/");
   };
-  useEffect(() => {
-    if (user.email !== "") {
-      router.push("/dashboardpage");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user.email !== "") {
+  //     router.push("/dashboardpage");
+  //   }
+  // }, [user]);
   return (
     <div className={styles.main}>
       <div style={{ width: "420px" }}>

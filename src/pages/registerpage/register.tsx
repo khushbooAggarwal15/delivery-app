@@ -24,7 +24,12 @@ export default function App() {
 
   const onSubmit = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      if (
+        (email === "user@gmail.com" && password === "user1234") ||
+        (email === "admin@gmail.com" && password === "admin1234")
+      ) {
+        await createUserWithEmailAndPassword(auth, email, password);
+      }
       console.log();
       route.push("/loginpage");
     } catch (error) {
