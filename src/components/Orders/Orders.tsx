@@ -15,26 +15,26 @@ const Orders = () => {
   }
   console.log("data", data);
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const filteredData = data.filter((item) => {
-    const lowerSearchTerm = searchTerm.toLowerCase();
-    return Object.values(item).some((value) => {
-      if (typeof value === "string") {
-        return value.toLowerCase().includes(lowerSearchTerm);
-      }
-      return false; // Skip non-string values
-    });
-  });
+  // const [searchTerm, setSearchTerm] = useState("");
+  // const filteredData = data.filter((item) => {
+  //   const lowerSearchTerm = searchTerm.toLowerCase();
+  //   return Object.values(item).some((value) => {
+  //     if (typeof value === "string") {
+  //       return value.toLowerCase().includes(lowerSearchTerm);
+  //     }
+  //     return false;
+  //   });
+  // });
 
   return (
     <>
       <div>
-        <input
+        {/* <input
           type="text"
           placeholder="Search for items..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        /> */}
       </div>
       <table className={styles.table}>
         <thead className={styles.head}>
@@ -54,7 +54,7 @@ const Orders = () => {
           </tr>
         </thead>
         <tbody className={styles.body}>
-          {filteredData.map((item) => (
+          {data.map((item) => (
             <tr className={styles.row}>
               <td> {item?.location?.startingPoint}</td>
               <td> {item?.location?.endingPoint}</td>

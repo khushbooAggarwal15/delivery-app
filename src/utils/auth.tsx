@@ -79,9 +79,7 @@ export function AuthProvider({ children }: Props) {
   const logout = () => {
     window.localStorage.setItem("access_token", String(null));
     window.localStorage.removeItem("access_token");
-    window.localStorage.setItem("data", String(null));
-
-    setUser({ email: "", role: "" });
+    // window.localStorage.setItem("data", String(null));
   };
   // const login = async (email: any, password: any) => {
   //   const auth = getAuth(app);
