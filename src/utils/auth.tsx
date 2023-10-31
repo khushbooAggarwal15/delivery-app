@@ -89,9 +89,9 @@ export function AuthProvider({ children }: Props) {
   //     console.error("Authentication failed:", error);
   //   }
   // };
+
   const login = async (email: any, password: any) => {
     const auth = getAuth(app);
-    console.log("auth", auth);
 
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -99,13 +99,12 @@ export function AuthProvider({ children }: Props) {
         email,
         password
       );
-      console.log("userCrendential", userCredential);
       const userInfo: any = userCredential.user;
-      window.localStorage.setItem("access_token", userInfo.accessToken);
-      console.log("userInfo.email", userInfo.email);
+
       window.localStorage.setItem("email", userInfo.email);
+      const token = userInfo.accessToken;
+      window.localStorage.setItem("access_token", token);
     } catch (error) {
-      // alert("invalid");
       console.error("Authentication failed:", error);
     }
   };

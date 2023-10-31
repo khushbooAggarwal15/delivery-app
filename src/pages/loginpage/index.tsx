@@ -32,10 +32,10 @@ function LoginPage() {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log(email, password);
-    login(email, password);
+    await login(email, password);
     console.log(window.localStorage.getItem("access_token"));
 
     if (window.localStorage.getItem("access_token")) {
@@ -44,6 +44,7 @@ function LoginPage() {
       router.push("/loginpage");
     }
   };
+  //
   const handleClick = () => {
     router.push("/registerpage");
   };
