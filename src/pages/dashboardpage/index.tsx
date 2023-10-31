@@ -11,11 +11,11 @@ const Dashboard = () => {
   const [localEmail, setLocalEmail] = useState("");
   console.log(user);
   const router = useRouter();
-  const logoutSubmit = (e: any) => {
-    e.preventDefault();
-    logout();
-    router.push("/");
-  };
+  // const logoutSubmit = (e: any) => {
+  //   e.preventDefault();
+  //   logout();
+  //   router.push("/");
+  // };
   useEffect(() => {
     if (typeof window !== "undefined") {
       console.log("window.innerHeight", window.innerHeight);
@@ -37,7 +37,7 @@ const Dashboard = () => {
       ) : (
         ""
       )}
-      <button onClick={logoutSubmit}>logout</button>
+      {/* <button onClick={logoutSubmit}>logout</button> */}
     </div>
   );
 };

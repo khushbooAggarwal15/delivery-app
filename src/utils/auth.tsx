@@ -9,12 +9,20 @@ interface IUser {
 }
 interface IData {
   location: {
-    endingPoint: string;
     startingPoint: string;
+    endingPoint: string;
+    latitude: number;
+    longitude: number;
+    pincode: string;
   };
   payloadDetails: {
-    itemType: string;
     weight: number;
+    itemType: string;
+    length: number;
+    breadth: number;
+    height: number;
+    name: string;
+    contact: string;
   };
 }
 interface authContextType {
@@ -35,10 +43,18 @@ const authContextDefaultValues: authContextType = {
       location: {
         endingPoint: "",
         startingPoint: "",
+        latitude: 0,
+        longitude: 0,
+        pincode: "",
       },
       payloadDetails: {
         itemType: "",
         weight: 0,
+        length: 0,
+        breadth: 0,
+        height: 0,
+        name: "",
+        contact: "",
       },
     },
   ],
@@ -63,6 +79,7 @@ export function AuthProvider({ children }: Props) {
   const logout = () => {
     window.localStorage.setItem("access_token", String(null));
     window.localStorage.removeItem("access_token");
+    window.localStorage.setItem("data", String(null));
 
     setUser({ email: "", role: "" });
   };
@@ -109,8 +126,20 @@ export function AuthProvider({ children }: Props) {
     }
   };
 
-  const formData = (value: IData) => {
-    setData([...data, value]);
+  const formData = (value: any) => {
+    // setData([...data, value]);
+    // window.localStorage.setItem("data", JSON.stringify([...data, value]));
+    const previousDataString = window.localStorage.getItem("data");
+    const previousData: IData[] = previousDataString
+      ? JSON.parse(previousDataString)
+      : [];
+
+    // Combine previous data with the new value
+    const newData = [...previousData, value];
+
+    // Update state and local storage
+    setData(newData);
+    window.localStorage.setItem("data", JSON.stringify(newData));
   };
 
   // console.log(user);
