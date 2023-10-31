@@ -3,19 +3,50 @@ import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
 import { createContext, useContext, useState } from "react";
 import { app } from "@/utils/firebase";
 
-interface authContextType {
-  user: { email: any; role: any };
-  login: (email: any, password: any) => any;
-  logout: () => void;
+interface IUser {
+  email: string;
+  role: string;
 }
+interface IData {
+  location: {
+    endingPoint: string;
+    startingPoint: string;
+  };
+  payloadDetails: {
+    itemType: string;
+    weight: number;
+  };
+}
+interface authContextType {
+  user: IUser;
+  data: IData[];
+  login: (email: string, password: string) => void;
+  logout: () => void;
+  formData: (value: IData) => void;
+}
+
 const authContextDefaultValues: authContextType = {
   user: {
     email: "",
     role: "",
   },
+  data: [
+    {
+      location: {
+        endingPoint: "",
+        startingPoint: "",
+      },
+      payloadDetails: {
+        itemType: "",
+        weight: 0,
+      },
+    },
+  ],
   login: () => {},
   logout: () => {},
+  formData: () => {},
 };
+
 const AuthContext = createContext<authContextType>(authContextDefaultValues);
 
 export const useAuth = () => {
@@ -26,14 +57,10 @@ interface Props {
 }
 
 export function AuthProvider({ children }: Props) {
-  const [user, setUser] = useState({
-    email: "",
-    role: "",
-  });
-  const logout = () => {
-    setUser({ email: "", role: "" });
-  };
-  const login = async (email: any, password: any) => {
+  const [data, setData] = useState<IData[]>([]);
+  const [user, setUser] = useState<IUser>({ email: "", role: "" });
+
+  const login = async (email: string, password: string) => {
     const auth = getAuth(app);
 
     try {
@@ -56,10 +83,19 @@ export function AuthProvider({ children }: Props) {
       console.error("Authentication failed:", error);
     }
   };
-  console.log(user);
+
+  const logout = () => {
+    setUser({ email: "", role: "" });
+  };
+
+  const formData = (value: IData) => {
+    setData([...data, value]);
+  };
+
+  // console.log(user);
   return (
     <>
-      <AuthContext.Provider value={{ user, login, logout }}>
+      <AuthContext.Provider value={{ user, login, logout, formData, data }}>
         {children}
       </AuthContext.Provider>
     </>

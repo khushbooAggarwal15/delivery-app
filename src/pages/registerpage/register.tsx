@@ -36,7 +36,7 @@ export default function App() {
     <>
       <h1>Register Form</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>Gmail</div>
+        <div>Email</div>
         <br />
         <Controller
           control={control}

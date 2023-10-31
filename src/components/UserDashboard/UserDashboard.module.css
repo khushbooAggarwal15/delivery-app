@@ -14,7 +14,9 @@
   .sidebar a {
     text-decoration: none; 
     color: #fff; 
+    font-size: larger;
     margin-bottom: 10px; 
+    text-align: center;
   }
   .sidebar a:hover {
     background-color: #555;
@@ -31,5 +33,18 @@
     border-radius: 5px;
     transition: background-color 0.3s ease;
 
+  }
+
+  .logout{
+    margin-top: 380%;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50; 
+    color: #fff; 
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    
   }
   
