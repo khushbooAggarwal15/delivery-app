@@ -1,5 +1,4 @@
 .orderformcontainer {
-  max-width: 400px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ccc;
@@ -10,12 +9,17 @@
 
 .formgroup {
   margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.MuiFormControl-root.MuiTextField-root.form-control {
+  width: 100%;
 }
 
-/* label {
-  display: block;
-  font-weight: bold;
-} */
+.label {
+  font-size: 19px;
+  font-weight: 600;
+}
 
 .inputfield {
   width: 100%;
