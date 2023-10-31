@@ -3,27 +3,27 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import * as yup from "yup";
-
+import { Link } from "react-router-dom";
 import styles from "./OrderForm.module.css";
 import { useAuth } from "@/utils/auth";
-import { Box, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 
 interface FormData {
   location: {
     startingPoint: string;
     endingPoint: string;
-    latitude: number; // Add latitude
-    longitude: number; // Add longitude
-    pincode: string; // Add pincode
+    latitude: number;
+    longitude: number;
+    pincode: string;
   };
   payloadDetails: {
     weight: number;
     itemType: string;
-    length: number; // Add length
-    breadth: number; // Add breadth
-    height: number; // Add height
-    name: string; // Add name of the user
-    contact: string; // Add contact information
+    length: number;
+    breadth: number;
+    height: number;
+    name: string;
+    contact: string;
   };
 }
 
@@ -85,9 +85,16 @@ function OrderForm() {
 
     route.push("/dashboardpage");
   };
+  const handleNavigation = () => {
+    route.push("/dashboardpage");
+  };
 
   return (
     <div className={styles.orderformcontainer}>
+      <Button variant="text" onClick={() => handleNavigation()}>
+        &lt; Back
+      </Button>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <h2>Pickup/Drop-off Locations</h2>
@@ -184,6 +191,7 @@ function OrderForm() {
                     {...field}
                     className="form-control"
                     variant="outlined"
+                    type="number"
                   />
                 )}
               />

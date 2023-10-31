@@ -1,5 +1,5 @@
 import { useAuth } from "@/utils/auth";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Orders.module.css";
 
 const Orders = () => {
@@ -13,9 +13,29 @@ const Orders = () => {
   if (!Array.isArray(data) || data.length === 0) {
     return <p>No orders available.</p>;
   }
+  console.log("data", data);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const filteredData = data.filter((item) => {
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    return Object.values(item).some((value) => {
+      if (typeof value === "string") {
+        return value.toLowerCase().includes(lowerSearchTerm);
+      }
+      return false; // Skip non-string values
+    });
+  });
 
   return (
     <>
+      <div>
+        <input
+          type="text"
+          placeholder="Search for items..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
       <table className={styles.table}>
         <thead className={styles.head}>
           <tr className={styles.row}>
@@ -34,7 +54,7 @@ const Orders = () => {
           </tr>
         </thead>
         <tbody className={styles.body}>
-          {data.map((item) => (
+          {filteredData.map((item) => (
             <tr className={styles.row}>
               <td> {item?.location?.startingPoint}</td>
               <td> {item?.location?.endingPoint}</td>
