@@ -12,11 +12,11 @@ interface IData {
     startingPoint: string;
     endingPoint: string;
     latitude: number;
-    longitude: number;
     pincode: string;
   };
   payloadDetails: {
     weight: number;
+    longitude: number;
     itemType: string;
     length: number;
     breadth: number;
