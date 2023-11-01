@@ -2,6 +2,7 @@
 import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
 import { createContext, useContext, useState } from "react";
 import { app } from "@/utils/firebase";
+import router from "next/router";
 
 interface IUser {
   email: string;
@@ -119,6 +120,7 @@ export function AuthProvider({ children }: Props) {
       window.localStorage.setItem("email", userInfo.email);
       const token = userInfo.accessToken;
       window.localStorage.setItem("access_token", token);
+      // router.push("/dashboardpage");
     } catch (error) {
       console.error("Authentication failed:", error);
     }

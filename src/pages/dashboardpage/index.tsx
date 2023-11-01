@@ -2,14 +2,17 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../utils/auth";
 
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import UserDashboard from "@/components/UserDashboard/UserDashboard";
 import AdminDashboard from "@/components/AdminDashboard/AdminDashboard";
+import useProtectedRoute from "@/components/AuthRoute/protectRoute";
 
 const Dashboard = () => {
+  useProtectedRoute();
   const { user, logout } = useAuth();
   const [localEmail, setLocalEmail] = useState("");
   const router = useRouter();
+
   // const logoutSubmit = (e: any) => {
   //   e.preventDefault();
   //   logout();
@@ -41,3 +44,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+// export default Dashboard;
