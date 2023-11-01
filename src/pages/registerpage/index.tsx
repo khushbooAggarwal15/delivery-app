@@ -18,6 +18,7 @@ import Box from "@mui/material/Box";
 // import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import useProtectedRoute from "@/components/AuthRoute/protectRoute";
 
 interface FormData {
   email: string;
@@ -30,6 +31,7 @@ interface FormData {
 // });
 
 function LoginPage() {
+  useProtectedRoute();
   const { login, user } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");

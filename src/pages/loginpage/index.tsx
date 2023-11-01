@@ -16,8 +16,10 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import useProtectedRoute from "@/components/AuthRoute/protectRoute";
 
 function LoginPage() {
+  useProtectedRoute();
   const { login, user } = useAuth();
   const router = useRouter();
 

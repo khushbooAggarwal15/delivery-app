@@ -1,37 +1,98 @@
 import { useAuth } from "@/utils/auth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Orders.module.css";
 
 const Orders = () => {
   // const { data } = useAuth();
 
+  interface Order {
+    message: {
+      intent: {
+        category: {
+          id: string;
+        };
+        fulfillment: {
+          type: string;
+          start: {
+            location: {
+              gps: string;
+
+              address: {
+                area_code: string;
+              };
+            };
+          };
+          end: {
+            location: {
+              gps: string;
+              address: {
+                area_code: string;
+              };
+            };
+          };
+        };
+        payment: {
+          type: string;
+        };
+        payload_details: {
+          weight: {
+            unit: string;
+            value: number;
+          };
+          dimensions: {
+            length: {
+              unit: string;
+              value: number;
+            };
+            breadth: {
+              unit: string;
+              value: number;
+            };
+            height: {
+              unit: string;
+              value: number;
+            };
+          };
+          category: string;
+
+          dangerous_goods: string;
+        };
+      };
+    };
+  }
+
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const storedData = window.localStorage.getItem("data");
-  const data = storedData ? JSON.parse(storedData) : null;
+  const data: Order[] | null = storedData ? JSON.parse(storedData) : null;
+
+  if (data === null || data.length === 0) {
+    return <p>No orders available.</p>;
+  }
 
   if (!Array.isArray(data) || data.length === 0) {
     return <p>No orders available.</p>;
   }
 
-  // const [searchTerm, setSearchTerm] = useState("");
-  // const filteredData = data.filter((item) => {
-  //   const lowerSearchTerm = searchTerm.toLowerCase();
-  //   return Object.values(item).some((value) => {
-  //     if (typeof value === "string") {
-  //       return value.toLowerCase().includes(lowerSearchTerm);
-  //     }
-  //     return false;
-  //   });
-  // });
-
+  const lowerSearchTerm = searchTerm.toLowerCase();
+  console.log(lowerSearchTerm);
+  const filteredData = data.filter((item) => {
+    const itemValues = Object.values(item).map((value) =>
+      typeof value === "object" ? JSON.stringify(value) : value
+    );
+    console.log("itemValues", itemValues);
+    return itemValues.some((value) =>
+      value.toLowerCase().includes(lowerSearchTerm)
+    );
+  });
   return (
     <>
       <div>
-        {/* <input
+        <input
           type="text"
           placeholder="Search for items..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-        /> */}
+        />
       </div>
       <table className={styles.table}>
         <thead className={styles.head}>
@@ -51,7 +112,7 @@ const Orders = () => {
           </tr>
         </thead>
         <tbody className={styles.body}>
-          {data.map((item) => (
+          {filteredData.map((item) => (
             <tr className={styles.row}>
               <td> {item?.location?.startingPoint}</td>
               <td> {item?.location?.endingPoint}</td>

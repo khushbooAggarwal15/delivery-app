@@ -2,27 +2,65 @@
 import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
 import { createContext, useContext, useState } from "react";
 import { app } from "@/utils/firebase";
+import router from "next/router";
 
 interface IUser {
   email: string;
   role: string;
 }
 interface IData {
-  location: {
-    startingPoint: string;
-    endingPoint: string;
-    latitude: number;
-    longitude: number;
-    pincode: string;
-  };
-  payloadDetails: {
-    weight: number;
-    itemType: string;
-    length: number;
-    breadth: number;
-    height: number;
-    name: string;
-    contact: string;
+  message: {
+    intent: {
+      category: {
+        id: string;
+      };
+      fulfillment: {
+        type: string;
+        start: {
+          location: {
+            gps: string;
+
+            address: {
+              area_code: string;
+            };
+          };
+        };
+        end: {
+          location: {
+            gps: string;
+            address: {
+              area_code: string;
+            };
+          };
+        };
+      };
+      payment: {
+        type: string;
+      };
+      payload_details: {
+        weight: {
+          unit: string;
+          value: number;
+        };
+        dimensions: {
+          length: {
+            unit: string;
+            value: number;
+          };
+          breadth: {
+            unit: string;
+            value: number;
+          };
+          height: {
+            unit: string;
+            value: number;
+          };
+        };
+        category: string;
+
+        dangerous_goods: string;
+      };
+    };
   };
 }
 interface authContextType {
@@ -40,21 +78,58 @@ const authContextDefaultValues: authContextType = {
   },
   data: [
     {
-      location: {
-        endingPoint: "",
-        startingPoint: "",
-        latitude: 0,
-        longitude: 0,
-        pincode: "",
-      },
-      payloadDetails: {
-        itemType: "",
-        weight: 0,
-        length: 0,
-        breadth: 0,
-        height: 0,
-        name: "",
-        contact: "",
+      message: {
+        intent: {
+          category: {
+            id: "",
+          },
+          fulfillment: {
+            type: "",
+            start: {
+              location: {
+                gps: "",
+
+                address: {
+                  area_code: "",
+                },
+              },
+            },
+            end: {
+              location: {
+                gps: "",
+                address: {
+                  area_code: "",
+                },
+              },
+            },
+          },
+          payment: {
+            type: "",
+          },
+          payload_details: {
+            weight: {
+              unit: "",
+              value: 0,
+            },
+            dimensions: {
+              length: {
+                unit: "",
+                value: 0,
+              },
+              breadth: {
+                unit: "",
+                value: 0,
+              },
+              height: {
+                unit: "",
+                value: 0,
+              },
+            },
+            category: "",
+
+            dangerous_goods: "",
+          },
+        },
       },
     },
   ],
@@ -117,6 +192,7 @@ export function AuthProvider({ children }: Props) {
       window.localStorage.setItem("email", userInfo.email);
       const token = userInfo.accessToken;
       window.localStorage.setItem("access_token", token);
+      // router.push("/dashboardpage");
     } catch (error) {
       console.error("Authentication failed:", error);
     }
