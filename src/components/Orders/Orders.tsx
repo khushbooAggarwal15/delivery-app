@@ -75,15 +75,15 @@ const Orders = () => {
 
   const lowerSearchTerm = searchTerm.toLowerCase();
   console.log(lowerSearchTerm);
-  const filteredData = data.filter((item) => {
-    const itemValues = Object.values(item).map((value) =>
-      typeof value === "object" ? JSON.stringify(value) : value
-    );
-    console.log("itemValues", itemValues);
-    return itemValues.some((value) =>
-      value.toLowerCase().includes(lowerSearchTerm)
-    );
-  });
+  // const filteredData = data.filter((item) => {
+  //   const itemValues = Object.values(item).map((value) =>
+  //     typeof value === "object" ? JSON.stringify(value) : value
+  //   );
+  //   console.log("itemValues", itemValues);
+  //   return itemValues.some((value) =>
+  //     value.toLowerCase().includes(lowerSearchTerm)
+  //   );
+  // });
   return (
     <>
       <div>
@@ -112,7 +112,7 @@ const Orders = () => {
           </tr>
         </thead>
         <tbody className={styles.body}>
-          {filteredData.map((item) => (
+          {data.map((item) => (
             <tr className={styles.row}>
               <td> {item?.location?.startingPoint}</td>
               <td> {item?.location?.endingPoint}</td>

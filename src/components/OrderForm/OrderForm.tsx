@@ -1,363 +1,441 @@
 import React from "react";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
 import * as yup from "yup";
-
-import styles from "./OrderForm.module.css";
+import {
+  Button,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+} from "@mui/material";
+import { useRouter } from "next/router";
 import { useAuth } from "@/utils/auth";
-import { Box, Button, TextField } from "@mui/material";
 
-interface FormData {
-  location: {
-    startingPoint: string;
-    endingPoint: string;
-    latitude: number;
-    longitude: number;
-    pincode: string;
-  };
-  payloadDetails: {
-    weight: number;
-    itemType: string;
-    length: number;
-    breadth: number;
-    height: number;
-    name: string;
-    contact: string;
+interface FormSchema {
+  message: {
+    intent: {
+      category: {
+        id: string;
+      };
+      payment: {
+        payment_type: string;
+      };
+      fulfillment: {
+        fulfillment_type: string;
+        start: {
+          location: {
+            gps: string;
+            address: {
+              area_code: string;
+            };
+          };
+        };
+        end: {
+          location: {
+            gps: string;
+            address: {
+              area_code: string;
+            };
+          };
+        };
+      };
+
+      payload_details: {
+        weight: {
+          unit: string;
+          value: number;
+        };
+        dimensions: {
+          length: {
+            unit: string;
+            value: number;
+          };
+          breadth: {
+            unit: string;
+            value: number;
+          };
+          height: {
+            unit: string;
+            value: number;
+          };
+        };
+        category: string;
+        dangerous_goods: boolean;
+      };
+    };
   };
 }
 
 const schema = yup.object().shape({
-  location: yup.object().shape({
-    startingPoint: yup.string().required("Starting point is required"),
-    endingPoint: yup.string().required("Ending point is required"),
-    latitude: yup
-      .number()
-      .required("Latitude is required")
-      .min(-90, "Invalid latitude")
-      .max(90, "Invalid latitude"),
-    longitude: yup
-      .number()
-      .required("Longitude is required")
-      .min(-180, "Invalid longitude")
-      .max(180, "Invalid longitude"),
-    pincode: yup.string().required("Pincode is required"),
-  }),
-  payloadDetails: yup.object().shape({
-    weight: yup
-      .number()
-      .typeError("Weight must be a number")
-      .required("Weight is required")
-      .positive("Weight must be positive"),
-    itemType: yup.string().required("Item type is required"),
-    length: yup
-      .number()
-      .required("Length is required")
-      .positive("Length must be positive"),
-    breadth: yup
-      .number()
-      .required("Breadth is required")
-      .positive("Breadth must be positive"),
-    height: yup
-      .number()
-      .required("Height is required")
-      .positive("Height must be positive"),
-    name: yup.string().required("Name is required"),
-    contact: yup.string().required("Contact information is required"),
+  message: yup.object().shape({
+    intent: yup.object().shape({
+      category: yup.object().shape({
+        id: yup.string().required("Category ID is required"),
+      }),
+      payment: yup.object().shape({
+        payment_type: yup.string().required("Payment Type is required"),
+      }),
+      fulfillment: yup.object().shape({
+        fulfillment_type: yup.string().required("Fulfillment Type is required"),
+        start: yup.object().shape({
+          location: yup.object().shape({
+            gps: yup.string().required("Start GPS is required"),
+            address: yup.object().shape({
+              area_code: yup.string().required("Start Area Code is required"),
+            }),
+          }),
+        }),
+        end: yup.object().shape({
+          location: yup.object().shape({
+            gps: yup.string().required("End GPS is required"),
+            address: yup.object().shape({
+              area_code: yup.string().required("End Area Code is required"),
+            }),
+          }),
+        }),
+      }),
+
+      payload_details: yup.object().shape({
+        weight: yup.object().shape({
+          unit: yup.string().required("Weight Unit is required"),
+          value: yup.number().required("Weight Value is required"),
+        }),
+        dimensions: yup.object().shape({
+          length: yup.object().shape({
+            unit: yup.string().required("Length Unit is required"),
+            value: yup.number().required("Length Value is required"),
+          }),
+          breadth: yup.object().shape({
+            unit: yup.string().required("Breadth Unit is required"),
+            value: yup.number().required("Breadth Value is required"),
+          }),
+          height: yup.object().shape({
+            unit: yup.string().required("Height Unit is required"),
+            value: yup.number().required("Height Value is required"),
+          }),
+        }),
+        category: yup.string().required("Category is required"),
+        dangerous_goods: yup.boolean().required("Dangerous Goods is required"),
+      }),
+    }),
   }),
 });
 
-function OrderForm() {
-  const route = useRouter();
-  const { formData, data } = useAuth();
+const OrderForm: React.FC = () => {
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<FormSchema>({
     resolver: yupResolver(schema),
   });
-
-  const onSubmit: SubmitHandler<FormData> = (data) => {
+  const { formData, data } = useAuth();
+  const route = useRouter();
+  const onSubmit = (data: any) => {
+    console.log("true");
+    console.log(data);
     formData(data);
-
     route.push("/dashboardpage");
   };
+
   const handleNavigation = () => {
     route.push("/dashboardpage");
   };
 
   return (
-    <div className={styles.orderformcontainer}>
-      <Button variant="text" onClick={() => handleNavigation()}>
+    <div>
+      <Button variant="text" onClick={handleNavigation}>
         &lt; Back
       </Button>
-
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <h2>Pickup/Drop-off Locations</h2>
-          <div className={styles.formgroup}>
-            <label className={styles.label}>Starting Point:</label>
-            <Box>
-              <Controller
-                name="location.startingPoint"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    className="form-control"
-                    variant="outlined"
-                  />
-                )}
-              />
-            </Box>
-            <p className={styles.errormessage}>
-              {errors.location?.startingPoint?.message}
-            </p>
-          </div>
-          <div className={styles.formgroup}>
-            <label className={styles.label}>Ending Point:</label>
-            <Box>
-              {" "}
-              <Controller
-                name="location.endingPoint"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    className="form-control"
-                    variant="outlined"
-                  />
-                )}
-              />
-            </Box>
-            <p className={styles.errormessage}>
-              {errors.location?.endingPoint?.message}
-            </p>
-          </div>
-          <div className={styles.formgroup}>
-            <label className={styles.label}>Latitude:</label>
-            <Box>
-              {" "}
-              <Controller
-                name="location.latitude"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    className="form-control"
-                    variant="outlined"
-                    type="number"
-                  />
-                )}
-              />
-            </Box>
-            <p className={styles.errormessage}>
-              {errors.location?.latitude?.message}
-            </p>
-          </div>
-          <div className={styles.formgroup}>
-            <label className={styles.label}>Longitude:</label>
-            <Box>
-              {" "}
-              <Controller
-                name="location.longitude"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    className="form-control"
-                    variant="outlined"
-                    type="number"
-                  />
-                )}
-              />
-            </Box>{" "}
-            <p className={styles.errormessage}>
-              {errors.location?.longitude?.message}
-            </p>
-          </div>
-          <div className={styles.formgroup}>
-            <label className={styles.label}>Pincode:</label>
-            <Box>
-              {" "}
-              <Controller
-                name="location.pincode"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    className="form-control"
-                    variant="outlined"
-                    type="number"
-                  />
-                )}
-              />
-            </Box>{" "}
-            <p className={styles.errormessage}>
-              {errors.location?.pincode?.message}
-            </p>
-          </div>
+          <p>Category:</p>
+
+          <Controller
+            name="message.intent.category.id"
+            control={control}
+            render={({ field }) => <TextField {...field} />}
+          />
+          <p>{errors.message?.intent?.category?.id?.message}</p>
         </div>
         <div>
-          <h2>Payload Details</h2>
-          <div className={styles.formgroup}>
-            <label className={styles.label}>Item Weight:</label>
-            <Box>
-              {" "}
-              <Controller
-                name="payloadDetails.weight"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    className="form-control"
-                    variant="outlined"
-                    type="number"
-                  />
-                )}
-              />
-            </Box>{" "}
-            <p className={styles.errormessage}>
-              {errors.payloadDetails?.weight?.message}
-            </p>
-          </div>
-          <div className={styles.formgroup}>
-            <label className={styles.label}>Item Type:</label>
-            <Box>
-              {" "}
-              <Controller
-                name="payloadDetails.itemType"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    className="form-control"
-                    variant="outlined"
-                  />
-                )}
-              />
-            </Box>{" "}
-            <p className={styles.errormessage}>
-              {errors.payloadDetails?.itemType?.message}
-            </p>
-          </div>
-          <div className={styles.formgroup}>
-            <label className={styles.label}>Length:</label>
-            <Box>
-              {" "}
-              <Controller
-                name="payloadDetails.length"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    className="form-control"
-                    variant="outlined"
-                    type="number"
-                  />
-                )}
-              />
-            </Box>{" "}
-            <p className={styles.errormessage}>
-              {errors.payloadDetails?.length?.message}
-            </p>
-          </div>
-          <div className={styles.formgroup}>
-            <label className={styles.label}>Breadth:</label>
-            <Box>
-              {" "}
-              <Controller
-                name="payloadDetails.breadth"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    className="form-control"
-                    variant="outlined"
-                    type="number"
-                  />
-                )}
-              />
-            </Box>{" "}
-            <p className={styles.errormessage}>
-              {errors.payloadDetails?.breadth?.message}
-            </p>
-          </div>
-          <div className={styles.formgroup}>
-            <label className={styles.label}>Height:</label>
-            <Box>
-              {" "}
-              <Controller
-                name="payloadDetails.height"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    className="form-control"
-                    variant="outlined"
-                    type="number"
-                  />
-                )}
-              />
-            </Box>{" "}
-            <p className={styles.errormessage}>
-              {errors.payloadDetails?.height?.message}
-            </p>
-          </div>
-          <div className={styles.formgroup}>
-            <label className={styles.label}>Name of User:</label>
-            <Box>
-              {" "}
-              <Controller
-                name="payloadDetails.name"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    className="form-control"
-                    variant="outlined"
-                  />
-                )}
-              />
-            </Box>{" "}
-            <p className={styles.errormessage}>
-              {errors.payloadDetails?.name?.message}
-            </p>
-          </div>
-          <div className={styles.formgroup}>
-            <label className={styles.label}>Contact Information:</label>
-            <Box>
-              {" "}
-              <Controller
-                name="payloadDetails.contact"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    className="form-control"
-                    variant="outlined"
-                  />
-                )}
-              />
-            </Box>{" "}
-            <p className={styles.errormessage}>
-              {errors.payloadDetails?.contact?.message}
-            </p>
-          </div>
+          <p>Payment:</p>
+          <Controller
+            name="message.intent.payment.payment_type"
+            control={control}
+            render={({ field }) => <TextField {...field} />}
+          />
+          <p>{errors?.message?.intent?.payment?.payment_type?.message}</p>
         </div>
-        <div className={styles.formactions}>
-          <button
-            type="submit"
-            className={`${styles.btn} ${styles.btnprimary}`}
-          >
-            Submit
-          </button>
+        <div>
+          <p>FulFillment Type:</p>
+          <Controller
+            name="message.intent.fulfillment.fulfillment_type"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Fulfillment Type"
+                fullWidth
+                variant="outlined"
+                {...field}
+              />
+            )}
+          />
+          <p>
+            {errors?.message?.intent?.fulfillment?.fulfillment_type?.message}
+          </p>
+
+          <Controller
+            name="message.intent.fulfillment.start.location.gps"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Start GPS"
+                fullWidth
+                variant="outlined"
+                {...field}
+              />
+            )}
+          />
+          <p>
+            {errors.message?.intent?.fulfillment?.start?.location?.gps?.message}
+          </p>
+          <Controller
+            name="message.intent.fulfillment.start.location.address.area_code"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Start Area Code"
+                fullWidth
+                variant="outlined"
+                {...field}
+              />
+            )}
+          />
+          <p>
+            {
+              errors.message?.intent?.fulfillment?.start?.location?.address
+                ?.area_code?.message
+            }
+          </p>
+          <Controller
+            name="message.intent.fulfillment.end.location.gps"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="End GPS"
+                fullWidth
+                variant="outlined"
+                {...field}
+              />
+            )}
+          />
+          <p>
+            {errors?.message?.intent?.fulfillment?.end?.location?.gps?.message}
+          </p>
+          <Controller
+            name="message.intent.fulfillment.end.location.address.area_code"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="End Area Code"
+                fullWidth
+                variant="outlined"
+                {...field}
+              />
+            )}
+          />
+          <p>
+            {
+              errors?.message?.intent?.fulfillment?.end?.location?.address
+                ?.area_code?.message
+            }
+          </p>
+        </div>
+
+        <div>
+          <p>Payload</p>
+          <Controller
+            name="message.intent.payload_details.weight.unit"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Weight Unit"
+                fullWidth
+                variant="outlined"
+                {...field}
+              />
+            )}
+          />
+          <p>
+            {errors?.message?.intent?.payload_details?.weight?.unit?.message}
+          </p>
+          <Controller
+            name="message.intent.payload_details.weight.value"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Weight Value"
+                fullWidth
+                variant="outlined"
+                type="number"
+                {...field}
+              />
+            )}
+          />
+          <p>
+            {errors?.message?.intent?.payload_details?.weight?.value?.message}
+          </p>
+          <Controller
+            name="message.intent.payload_details.dimensions.length.unit"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Length Unit"
+                fullWidth
+                variant="outlined"
+                {...field}
+              />
+            )}
+          />
+          <p>
+            {
+              errors?.message?.intent?.payload_details?.dimensions?.length?.unit
+                ?.message
+            }
+          </p>
+          <Controller
+            name="message.intent.payload_details.dimensions.length.value"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Length Value"
+                fullWidth
+                variant="outlined"
+                type="number"
+                {...field}
+              />
+            )}
+          />
+          <p>
+            {
+              errors?.message?.intent?.payload_details?.dimensions?.length
+                ?.value?.message
+            }
+          </p>
+          <Controller
+            name="message.intent.payload_details.dimensions.breadth.unit"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Breadth Unit"
+                fullWidth
+                variant="outlined"
+                {...field}
+              />
+            )}
+          />
+          <p>
+            {
+              errors?.message?.intent?.payload_details?.dimensions?.breadth
+                ?.unit?.message
+            }
+          </p>
+          <Controller
+            name="message.intent.payload_details.dimensions.breadth.value"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Breadth Value"
+                fullWidth
+                variant="outlined"
+                type="number"
+                {...field}
+              />
+            )}
+          />
+          <p>
+            {
+              errors?.message?.intent?.payload_details?.dimensions?.breadth
+                ?.value?.message
+            }
+          </p>
+          <Controller
+            name="message.intent.payload_details.dimensions.height.unit"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Height Unit"
+                fullWidth
+                variant="outlined"
+                {...field}
+              />
+            )}
+          />
+          <p>
+            {
+              errors?.message?.intent?.payload_details?.dimensions?.height?.unit
+                ?.message
+            }
+          </p>
+          <Controller
+            name="message.intent.payload_details.dimensions.height.value"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Height Value"
+                fullWidth
+                variant="outlined"
+                type="number"
+                {...field}
+              />
+            )}
+          />
+          <p>
+            {
+              errors?.message?.intent?.payload_details?.dimensions?.height
+                ?.value?.message
+            }
+          </p>
+          <Controller
+            name="message.intent.payload_details.category"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Category"
+                fullWidth
+                variant="outlined"
+                {...field}
+              />
+            )}
+          />
+          <p>{errors?.message?.intent?.payload_details?.category?.message}</p>
+
+          <Controller
+            name="message.intent.payload_details.dangerous_goods"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Dangerous Goods"
+                fullWidth
+                variant="outlined"
+                type="number"
+                {...field}
+              />
+            )}
+          />
+          <p>
+            {errors?.message?.intent?.payload_details?.dangerous_goods?.message}
+          </p>
+        </div>
+
+        <div>
+          <Button type="submit">Submit</Button>
         </div>
       </form>
     </div>
   );
-}
+};
 
 export default OrderForm;
