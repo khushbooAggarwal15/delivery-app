@@ -1,10 +1,10 @@
-/* loginpage.module.css */
+/* loginpage.module.css
 
 .main {
-     /* text-align: center; */
+     /* text-align: center; 
      display: flex;
      min-height: 100vh;
-     /* max-width: 300px; */
+   max-width: 300px;
      align-items: center;
      justify-content: center;
      background-image: linear-gradient(79deg, #7439db, #C66FBC 48%, #F7944D);
@@ -61,4 +61,3 @@
     color:red;
     height: 20px;
 }
-  

@@ -3,9 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import * as yup from "yup";
 import { useAuth } from "../../utils/auth";
-import Avatar from "@mui/material/Avatar";
+import * as yup from "yup"
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -17,6 +16,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import useProtectedRoute from "@/components/AuthRoute/protectRoute";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Avatar from "@mui/material/Avatar";
 
 interface IUser {
   email: string;
