@@ -28,8 +28,6 @@ import CloseIcon from "@mui/icons-material/Close";
 const drawerWidth = 240;
 
 export default function UserDashboard() {
-
-
   const [profileVisisble, setProfileVisibile] = useState(false);
   const [orderVisisble, setorderVisibile] = useState(false);
   const router = useRouter();
@@ -53,7 +51,10 @@ export default function UserDashboard() {
   };
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => {setOpen(false); console.log('open', open);}
+  const handleClose = () => {
+    setOpen(false);
+    console.log("open", open);
+  };
 
   const style = {
     position: "absolute" as "absolute",
@@ -103,7 +104,7 @@ export default function UserDashboard() {
           aria-labelledby="nested-list-subheader"
         >
           <div>
-          <ListSubheader component="div" id="My Dashboard">
+            <ListSubheader component="div" id="My Dashboard">
               My Dashboard
             </ListSubheader>
             <ListItemButton onClick={handleProfile}>
@@ -124,24 +125,30 @@ export default function UserDashboard() {
               <ListItemIcon>
                 <AddCircleIcon />
               </ListItemIcon>
-              <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <CloseIcon onClick={handleClose} />
-          <OrderForm setOpen={setOpen} />
-        </Box>
-      </Modal> 
+
               <ListItemText primary="Create Order" />
-              
             </ListItemButton>
+            {open ? (
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={style}>
+                  <CloseIcon onClick={handleClose} />
+                  <OrderForm setOpen={setOpen} />
+                </Box>
+              </Modal>
+            ) : (
+              ""
+            )}
           </div>
 
           <div className="button-wrapper">
-            <Button variant="contained" onClick={logout}>Log Out</Button>
+            <Button variant="contained" onClick={logout}>
+              Log Out
+            </Button>
           </div>
         </List>
       </Drawer>
