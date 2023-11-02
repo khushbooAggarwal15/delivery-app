@@ -1,143 +1,140 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import * as yup from "yup";
 import { useAuth } from "../../utils/auth";
-import styles from "./loginpage.module.css";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-// import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import useProtectedRoute from "@/components/AuthRoute/protectRoute";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-interface FormData {
+interface IUser {
   email: string;
   password: string;
 }
 
-// const schema = yup.object().shape({
-//   email: yup.string().email("invalid email").required("Email is required"),
-//   password: yup.string().required("Password is required"),
-// });
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: yup.string().required("Please provide a valid password"),
+});
 
 function SignUp() {
-  const { login, user } = useAuth();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IUser>({
+    resolver: yupResolver(schema),
+  });
+  const { login } = useAuth();
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const handleSubmit = (data: any) => {
+  const defaultTheme = createTheme();
+
+  const onSubmit = (data: any) => {
     console.log(data.email);
 
     login(data.email, data.password);
     console.log(window.localStorage.getItem("access_token"));
-  };
-  const handleClick = () => {
-    router.push("/registerpage");
-  };
-
-  const handleSignin = () => {
     router.push("/loginpage");
   };
-  // useEffect(() => {
-  //   if (user.email !== "") {
-  //     router.push("/dashboardpage");
-  //   }
-  // }, [user]);
+  const handleClick = () => {
+    router.push("/loginpage");
+  };
+
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="given-name"
-                name="firstName"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid> */}
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
-              />
-            </Grid> */}
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-              />
-            </Grid>
-            {/* <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid> */}
-          </Grid>
-          <Button
-            type="submit"
-            onClick={handleClick}
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
             Sign Up
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="#" variant="body2" onClick={handleSignin}>
-                Already have an account? Sign in
-              </Link>
+          </Typography>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+              control={control}
+              name="email"
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                />
+              )}
+            />
+            <p>{errors?.email?.message}</p>
+
+            <br />
+            <Controller
+              control={control}
+              name="password"
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                />
+              )}
+            />
+            <p>{errors?.password?.message}</p>
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Submit
+            </Button>
+
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item xs>
+                <Link href="#" variant="body2" onClick={handleClick}>
+                  {"Already have account? Sign In"}
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
+          </form>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </ThemeProvider>
   );
 }
 

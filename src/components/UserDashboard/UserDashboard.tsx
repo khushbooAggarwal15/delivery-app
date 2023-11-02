@@ -59,7 +59,7 @@ function UserDashboard() {
       >
         <Box sx={style}>
           <CloseIcon onClick={handleClose} />
-          <OrderForm />
+          <OrderForm setOpen={setOpen} />
         </Box>
       </Modal>
       <div className={`${styles.sidebar}`}>

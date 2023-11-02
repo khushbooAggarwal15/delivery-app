@@ -127,7 +127,9 @@ const schema = yup.object().shape({
   }),
 });
 
-const OrderForm: React.FC = () => {
+const OrderForm: React.FC<{
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ setOpen }) => {
   const {
     control,
     handleSubmit,
@@ -182,18 +184,13 @@ const OrderForm: React.FC = () => {
   };
 
   const route = useRouter();
-  // const onSubmit = (data: any) => {
-  //   console.log("true");
-  //   console.log(data);
-  //   formData(data);
-  //   route.push("/dashboardpage");
-  // };
 
   const onSubmit = async (data: any) => {
     console.log("Submitting data:", data);
 
     formData(data);
-    route.push("/dashboardpage");
+    setOpen(false);
+    // route.push("/dashboardpage");
   };
 
   return (
