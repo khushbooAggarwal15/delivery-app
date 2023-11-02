@@ -15,6 +15,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { app } from "@/utils/firebase";
 
 interface IUser {
   email: string;
@@ -37,17 +39,32 @@ function SignUp() {
   } = useForm<IUser>({
     resolver: yupResolver(schema),
   });
+  const auth = getAuth(app);
   const { login } = useAuth();
   const router = useRouter();
 
   const defaultTheme = createTheme();
 
-  const onSubmit = (data: any) => {
-    console.log(data.email);
+  // const onSubmit = (data: any) => {
+  //   console.log(data.email);
 
-    login(data.email, data.password);
-    console.log(window.localStorage.getItem("access_token"));
-    router.push("/loginpage");
+  //   login(data.email, data.password);
+  //   console.log(window.localStorage.getItem("access_token"));
+  //   router.push("/loginpage");
+  // };
+  const onSubmit = async (data: any) => {
+    try {
+      if (
+        (data.email === "user@gmail.com" && data.password === "user1234") ||
+        (data.email === "admin@gmail.com" && data.password === "admin1234")
+      ) {
+        await createUserWithEmailAndPassword(auth, data.email, data.password);
+      }
+      console.log();
+      router.push("/loginpage");
+    } catch (error) {
+      console.error("Registration error:", error);
+    }
   };
   const handleClick = () => {
     router.push("/loginpage");
