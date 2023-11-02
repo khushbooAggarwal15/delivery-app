@@ -6,24 +6,58 @@ import router from "next/router";
 
 interface IUser {
   email: string;
-  role: string;
+  password: string;
 }
 interface IData {
-  location: {
-    startingPoint: string;
-    endingPoint: string;
-    latitude: number;
-    longitude: number;
-    pincode: string;
-  };
-  payloadDetails: {
-    weight: number;
-    itemType: string;
-    length: number;
-    breadth: number;
-    height: number;
-    name: string;
-    contact: string;
+  message: {
+    intent: {
+      category: {
+        id: string;
+      };
+      fulfillment: {
+        fulfillment_type: string;
+        start: {
+          location: {
+            gps: string;
+
+            address: {
+              area_code: string;
+            };
+          };
+        };
+        end: {
+          location: {
+            gps: string;
+            address: {
+              area_code: string;
+            };
+          };
+        };
+      };
+      payload_details: {
+        weight: {
+          unit: string;
+          value: number;
+        };
+        dimensions: {
+          length: {
+            unit: string;
+            value: number;
+          };
+          breadth: {
+            unit: string;
+            value: number;
+          };
+          height: {
+            unit: string;
+            value: number;
+          };
+        };
+        category: string;
+
+        dangerous_goods: string;
+      };
+    };
   };
 }
 interface authContextType {
@@ -37,25 +71,59 @@ interface authContextType {
 const authContextDefaultValues: authContextType = {
   user: {
     email: "",
-    role: "",
+    password: "",
   },
   data: [
     {
-      location: {
-        endingPoint: "",
-        startingPoint: "",
-        latitude: 0,
-        longitude: 0,
-        pincode: "",
-      },
-      payloadDetails: {
-        itemType: "",
-        weight: 0,
-        length: 0,
-        breadth: 0,
-        height: 0,
-        name: "",
-        contact: "",
+      message: {
+        intent: {
+          category: {
+            id: "",
+          },
+          fulfillment: {
+            fulfillment_type: "",
+            start: {
+              location: {
+                gps: "",
+
+                address: {
+                  area_code: "",
+                },
+              },
+            },
+            end: {
+              location: {
+                gps: "",
+                address: {
+                  area_code: "",
+                },
+              },
+            },
+          },
+          payload_details: {
+            weight: {
+              unit: "",
+              value: 0,
+            },
+            dimensions: {
+              length: {
+                unit: "",
+                value: 0,
+              },
+              breadth: {
+                unit: "",
+                value: 0,
+              },
+              height: {
+                unit: "",
+                value: 0,
+              },
+            },
+            category: "",
+
+            dangerous_goods: "",
+          },
+        },
       },
     },
   ],
@@ -75,12 +143,11 @@ interface Props {
 
 export function AuthProvider({ children }: Props) {
   const [data, setData] = useState<IData[]>([]);
-  const [user, setUser] = useState<IUser>({ email: "", role: "" });
+  const [user, setUser] = useState<IUser>({ email: "", password: "" });
 
   const logout = () => {
-    window.localStorage.setItem("access_token", String(null));
     window.localStorage.removeItem("access_token");
-    // window.localStorage.setItem("data", String(null));
+    window.localStorage.setItem("email", String(null));
   };
   // const login = async (email: any, password: any) => {
   //   const auth = getAuth(app);

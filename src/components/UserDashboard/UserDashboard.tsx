@@ -22,17 +22,21 @@ import DraftsIcon from "@mui/icons-material/Drafts";
 
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-
+import { Modal } from "@mui/material";
+import OrderForm from "../OrderForm/OrderForm";
+import CloseIcon from "@mui/icons-material/Close";
 const drawerWidth = 240;
 
 export default function UserDashboard() {
+
+
   const [profileVisisble, setProfileVisibile] = useState(false);
   const [orderVisisble, setorderVisibile] = useState(false);
   const router = useRouter();
 
-  const handleClick = () => {
-    router.push("/createorder");
-  };
+  // const handleClick = () => {
+  //   router.push("/createorder");
+  // };
   const handleProfile = () => {
     setProfileVisibile(true);
     setorderVisibile(false);
@@ -47,7 +51,24 @@ export default function UserDashboard() {
     logout();
     router.push("/loginpage");
   };
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {setOpen(false); console.log('open', open);}
 
+  const style = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "80vw",
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+    maxHeight: "80vh",
+    overflow: "auto",
+    borderRadius: "30px",
+  };
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -99,11 +120,23 @@ export default function UserDashboard() {
               <ListItemText primary="All Orders" />
             </ListItemButton>
 
-            <ListItemButton onClick={handleClick}>
+            <ListItemButton onClick={handleOpen}>
               <ListItemIcon>
                 <AddCircleIcon />
               </ListItemIcon>
+              <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <CloseIcon onClick={handleClose} />
+          <OrderForm setOpen={setOpen} />
+        </Box>
+      </Modal> 
               <ListItemText primary="Create Order" />
+              
             </ListItemButton>
           </div>
 
