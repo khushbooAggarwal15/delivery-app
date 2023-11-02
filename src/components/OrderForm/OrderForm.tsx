@@ -210,7 +210,7 @@ const OrderForm: React.FC<{
             name="message.intent.category.id"
             control={control}
             render={({ field }) => (
-              <Select {...field} fullWidth>
+              <Select {...field} fullWidth defaultValue="">
                 <MenuItem value="Immediate delivery">
                   Immediate delivery
                 </MenuItem>
@@ -385,7 +385,7 @@ const OrderForm: React.FC<{
               name="message.intent.payload_details.weight.unit"
               control={control}
               render={({ field }) => (
-                <Select {...field} fullWidth>
+                <Select {...field} fullWidth defaultValue="">
                   <MenuItem value="kilogram">kilogram</MenuItem>
                 </Select>
               )}
@@ -411,7 +411,7 @@ const OrderForm: React.FC<{
               name="message.intent.payload_details.dimensions.length.unit"
               control={control}
               render={({ field }) => (
-                <Select {...field} fullWidth>
+                <Select {...field} fullWidth defaultValue="">
                   <MenuItem value="centimeter">centimeter</MenuItem>
                   <MenuItem value="meter">meter</MenuItem>
                 </Select>
@@ -438,7 +438,7 @@ const OrderForm: React.FC<{
               name="message.intent.payload_details.dimensions.breadth.unit"
               control={control}
               render={({ field }) => (
-                <Select {...field} fullWidth>
+                <Select {...field} fullWidth defaultValue="">
                   <MenuItem value="centimeter">centimeter</MenuItem>
                   <MenuItem value="meter">meter</MenuItem>
                 </Select>
@@ -465,7 +465,7 @@ const OrderForm: React.FC<{
               name="message.intent.payload_details.dimensions.height.unit"
               control={control}
               render={({ field }) => (
-                <Select {...field} fullWidth>
+                <Select {...field} fullWidth defaultValue="">
                   <MenuItem value="centimeter">centimeter</MenuItem>
                   <MenuItem value="meter">meter</MenuItem>
                 </Select>
