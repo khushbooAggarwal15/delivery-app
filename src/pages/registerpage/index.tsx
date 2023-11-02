@@ -55,7 +55,7 @@ function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xl">
         <Box
           sx={{
             marginTop: 8,
@@ -78,7 +78,6 @@ function SignUp() {
                 <TextField
                   {...field}
                   margin="normal"
-                  required
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -88,7 +87,7 @@ function SignUp() {
                 />
               )}
             />
-            <p>{errors?.email?.message}</p>
+            <p style={{ color: "red" }}>{errors?.email?.message}</p>
 
             <br />
             <Controller
@@ -98,7 +97,6 @@ function SignUp() {
                 <TextField
                   {...field}
                   margin="normal"
-                  required
                   fullWidth
                   name="password"
                   label="Password"
@@ -108,7 +106,7 @@ function SignUp() {
                 />
               )}
             />
-            <p>{errors?.password?.message}</p>
+            <p style={{ color: "red" }}>{errors?.password?.message}</p>
 
             <Button
               type="submit"
@@ -120,12 +118,7 @@ function SignUp() {
             </Button>
 
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item xs>
+              <Grid item>
                 <Link href="#" variant="body2" onClick={handleClick}>
                   {"Already have account? Sign In"}
                 </Link>
