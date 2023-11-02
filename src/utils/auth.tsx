@@ -34,9 +34,6 @@ interface IData {
           };
         };
       };
-      payment: {
-        payment_type: string;
-      };
       payload_details: {
         weight: {
           unit: string;
@@ -102,9 +99,6 @@ const authContextDefaultValues: authContextType = {
                 },
               },
             },
-          },
-          payment: {
-            payment_type: "",
           },
           payload_details: {
             weight: {

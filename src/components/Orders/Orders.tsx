@@ -17,9 +17,6 @@ interface Order {
       category: {
         id: string;
       };
-      payment: {
-        payment_type: string;
-      };
       fulfillment: {
         fulfillment_type: string;
         start: {
@@ -112,7 +109,6 @@ const Orders = () => {
           <TableHead>
             <TableRow>
               <TableCell align="center">Id</TableCell>
-              <TableCell align="center">Payment_type</TableCell>
               <TableCell align="center">Fulfillment_type</TableCell>
               <TableCell align="center">Start gps</TableCell>
               <TableCell align="center">Start address areacode</TableCell>
@@ -135,9 +131,6 @@ const Orders = () => {
                 </TableCell> */}
                 <TableCell align="center">
                   {item?.message?.intent?.category?.id}
-                </TableCell>
-                <TableCell align="center">
-                  {item?.message?.intent?.payment?.payment_type}
                 </TableCell>
                 <TableCell align="center">
                   {item?.message?.intent?.fulfillment?.fulfillment_type}
