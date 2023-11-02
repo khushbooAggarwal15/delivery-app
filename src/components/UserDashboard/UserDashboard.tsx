@@ -19,9 +19,9 @@ function UserDashboard() {
     setorderVisibile(false)
   }
   ;
-  const handleOrder = () => 
- { setorderVisibile(true)
-  setProfileVisibile(false)
+  const handleOrder = () => {
+    setorderVisibile(true)
+    setProfileVisibile(false)
 } 
     ;
 

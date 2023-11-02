@@ -1,66 +1,75 @@
 import { useAuth } from "@/utils/auth";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import styles from "./Orders.module.css";
+import {
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "@mui/material";
+interface Order {
+  message: {
+    intent: {
+      category: {
+        id: string;
+      };
+      payment: {
+        payment_type: string;
+      };
+      fulfillment: {
+        fulfillment_type: string;
+        start: {
+          location: {
+            gps: string;
 
-const Orders = () => {
-  // const { data } = useAuth();
-
-  interface Order {
-    message: {
-      intent: {
-        category: {
-          id: string;
-        };
-        fulfillment: {
-          type: string;
-          start: {
-            location: {
-              gps: string;
-
-              address: {
-                area_code: string;
-              };
+            address: {
+              area_code: string;
             };
           };
-          end: {
-            location: {
-              gps: string;
-              address: {
-                area_code: string;
-              };
+        };
+        end: {
+          location: {
+            gps: string;
+            address: {
+              area_code: string;
             };
           };
         };
-        payment: {
-          type: string;
+      };
+
+      payload_details: {
+        weight: {
+          unit: string;
+          value: number;
         };
-        payload_details: {
-          weight: {
+        dimensions: {
+          length: {
             unit: string;
             value: number;
           };
-          dimensions: {
-            length: {
-              unit: string;
-              value: number;
-            };
-            breadth: {
-              unit: string;
-              value: number;
-            };
-            height: {
-              unit: string;
-              value: number;
-            };
+          breadth: {
+            unit: string;
+            value: number;
           };
-          category: string;
-
-          dangerous_goods: string;
+          height: {
+            unit: string;
+            value: number;
+          };
         };
+        category: string;
+
+        dangerous_goods: string;
       };
     };
-  }
+  };
+}
 
+const Orders = () => {
+  const route = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const storedData = window.localStorage.getItem("data");
   const data: Order[] | null = storedData ? JSON.parse(storedData) : null;
@@ -84,52 +93,111 @@ const Orders = () => {
   //     value.toLowerCase().includes(lowerSearchTerm)
   //   );
   // });
+
   return (
     <>
-      <div>
-        <input
-          type="text"
-          placeholder="Search for items..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-      <table className={styles.table}>
-        <thead className={styles.head}>
-          <tr className={styles.row}>
-            <th>Starting Point </th>
-            <th>Ending Point</th>
-            <th>Latitude</th>
-            <th>Longitude</th>
-            <th>Pincode</th>
-            <th>Item Weight</th>
-            <th>Item Type</th>
-            <th>Length</th>
-            <th>Breadth</th>
-            <th>Height</th>
-            <th>Name of User</th>
-            <th>Contact Information</th>
-          </tr>
-        </thead>
-        <tbody className={styles.body}>
-          {data.map((item) => (
-            <tr className={styles.row}>
-              <td> {item?.location?.startingPoint}</td>
-              <td> {item?.location?.endingPoint}</td>
-              <td> {item?.location?.latitude}</td>
-              <td> {item?.location?.longitude}</td>
-              <td> {item?.location?.pincode}</td>
-              <td> {item?.payloadDetails?.weight}</td>
-              <td> {item?.payloadDetails?.itemType}</td>
-              <td> {item?.payloadDetails?.length}</td>
-              <td> {item?.payloadDetails?.breadth}</td>
-              <td> {item?.payloadDetails?.height}</td>
-              <td> {item?.payloadDetails?.name}</td>
-              <td> {item?.payloadDetails?.contact}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">Id</TableCell>
+              <TableCell align="center">Payment_type</TableCell>
+              <TableCell align="center">Fulfillment_type</TableCell>
+              <TableCell align="center">Start gps</TableCell>
+              <TableCell align="center">Start address areacode</TableCell>
+              <TableCell align="center">End gps</TableCell>
+              <TableCell align="center">End address areacode</TableCell>
+              <TableCell align="center">Weight</TableCell>
+              <TableCell align="center">Length</TableCell>
+              <TableCell align="center">Beadth</TableCell>
+              <TableCell align="center">Height</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((item: any, index: any) => (
+              <TableRow
+                key={index}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                {/* <TableCell component="th" scope="row">
+                  {index}
+                </TableCell> */}
+                <TableCell align="center">
+                  {item?.message?.intent?.category?.id}
+                </TableCell>
+                <TableCell align="center">
+                  {item?.message?.intent?.payment?.payment_type}
+                </TableCell>
+                <TableCell align="center">
+                  {item?.message?.intent?.fulfillment?.fulfillment_type}
+                </TableCell>
+                <TableCell align="center">
+                  {" "}
+                  {item?.message?.intent?.fulfillment?.start?.location?.gps}
+                </TableCell>
+                <TableCell align="center">
+                  {" "}
+                  {
+                    item?.message?.intent?.fulfillment?.start?.location?.address
+                      ?.area_code
+                  }
+                </TableCell>
+                <TableCell align="center">
+                  {" "}
+                  {item?.message?.intent?.fulfillment?.end?.location?.gps}
+                </TableCell>
+                <TableCell align="center">
+                  {" "}
+                  {
+                    item?.message?.intent?.fulfillment?.end?.location?.address
+                      ?.area_code
+                  }
+                </TableCell>
+                <TableCell align="center">
+                  {" "}
+                  {item?.message?.intent?.payload_details?.weight?.value}{" "}
+                  {item?.message?.intent?.payload_details?.weight?.unit}
+                </TableCell>
+                <TableCell align="center">
+                  {" "}
+                  {
+                    item?.message?.intent?.payload_details?.dimensions?.length
+                      ?.value
+                  }{" "}
+                  {
+                    item?.message?.intent?.payload_details?.dimensions?.length
+                      ?.unit
+                  }
+                </TableCell>
+                <TableCell align="center">
+                  {" "}
+                  {
+                    item?.message?.intent?.payload_details?.dimensions?.breadth
+                      ?.value
+                  }{" "}
+                  {
+                    item?.message?.intent?.payload_details?.dimensions?.breadth
+                      ?.unit
+                  }
+                </TableCell>
+                <TableCell align="center">
+                  {
+                    item?.message?.intent?.payload_details?.dimensions?.height
+                      ?.value
+                  }{" "}
+                  {
+                    item?.message?.intent?.payload_details?.dimensions?.height
+                      ?.unit
+                  }
+                </TableCell>
+                <TableCell align="center">
+                  <a href={`/createorder/ ${index}`}> Edit </a>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };

@@ -6,7 +6,7 @@ import router from "next/router";
 
 interface IUser {
   email: string;
-  role: string;
+  password: string;
 }
 interface IData {
   message: {
@@ -15,7 +15,7 @@ interface IData {
         id: string;
       };
       fulfillment: {
-        type: string;
+        fulfillment_type: string;
         start: {
           location: {
             gps: string;
@@ -35,7 +35,7 @@ interface IData {
         };
       };
       payment: {
-        type: string;
+        payment_type: string;
       };
       payload_details: {
         weight: {
@@ -74,7 +74,7 @@ interface authContextType {
 const authContextDefaultValues: authContextType = {
   user: {
     email: "",
-    role: "",
+    password: "",
   },
   data: [
     {
@@ -84,7 +84,7 @@ const authContextDefaultValues: authContextType = {
             id: "",
           },
           fulfillment: {
-            type: "",
+            fulfillment_type: "",
             start: {
               location: {
                 gps: "",
@@ -104,7 +104,7 @@ const authContextDefaultValues: authContextType = {
             },
           },
           payment: {
-            type: "",
+            payment_type: "",
           },
           payload_details: {
             weight: {
@@ -149,7 +149,7 @@ interface Props {
 
 export function AuthProvider({ children }: Props) {
   const [data, setData] = useState<IData[]>([]);
-  const [user, setUser] = useState<IUser>({ email: "", role: "" });
+  const [user, setUser] = useState<IUser>({ email: "", password: "" });
 
   const logout = () => {
     window.localStorage.removeItem("access_token");

@@ -30,8 +30,8 @@ interface FormData {
 //   password: yup.string().required("Password is required"),
 // });
 
-function LoginPage() {
-  useProtectedRoute();
+function SignUp() {
+  // useProtectedRoute();
   const { login, user } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -39,15 +39,9 @@ function LoginPage() {
 
   const handleSubmit = (data: any) => {
     console.log(data.email);
-    // e.preventDefault();
+
     login(data.email, data.password);
     console.log(window.localStorage.getItem("access_token"));
-
-    if (window.localStorage.getItem("access_token")) {
-      router.push("/dashboardpage");
-    } else {
-      router.push("/loginpage");
-    }
   };
   const handleClick = () => {
     router.push("/registerpage");
@@ -148,4 +142,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default SignUp;
