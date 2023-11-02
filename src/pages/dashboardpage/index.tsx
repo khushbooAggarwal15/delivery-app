@@ -9,6 +9,7 @@ import useProtectedRoute from "@/components/AuthRoute/protectRoute";
 
 const Dashboard = () => {
   useProtectedRoute();
+
   const { user, logout } = useAuth();
   const [localEmail, setLocalEmail] = useState("");
   const router = useRouter();
