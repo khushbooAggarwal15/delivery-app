@@ -29,7 +29,7 @@ interface FormData {
 //   password: yup.string().required("Password is required"),
 // });
 
-function LoginPage() {
+function SignUp() {
   const { login, user } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -146,4 +146,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default SignUp;
