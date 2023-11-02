@@ -30,7 +30,7 @@ const Dashboard = () => {
   return (
     <div>
       {/* <h1>Welcome to the Dashboard</h1> */}
-
+      
       {localEmail == JSON.stringify("user@gmail.com") ? (
         <UserDashboard />
       ) : localEmail == JSON.stringify("admin@gmail.com") ? (
@@ -38,6 +38,7 @@ const Dashboard = () => {
       ) : (
         ""
       )}
+ 
       {/* <button onClick={logoutSubmit}>logout</button> */}
     </div>
   );
