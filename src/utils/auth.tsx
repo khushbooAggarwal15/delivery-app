@@ -153,6 +153,7 @@ export function AuthProvider({ children }: Props) {
 
   const logout = () => {
     window.localStorage.removeItem("access_token");
+    window.localStorage.setItem("email", String(null));
   };
   // const login = async (email: any, password: any) => {
   //   const auth = getAuth(app);

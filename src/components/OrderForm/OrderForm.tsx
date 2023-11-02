@@ -1,26 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
   Button,
+  Checkbox,
   FormControlLabel,
+  MenuItem,
   Radio,
   RadioGroup,
+  Select,
   TextField,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useAuth } from "@/utils/auth";
-
+import styles from "./OrderForm.module.css";
+import axios from "axios";
 interface FormSchema {
   message: {
     intent: {
       category: {
         id: string;
       };
-      payment: {
-        payment_type: string;
-      };
+
       fulfillment: {
         fulfillment_type: string;
         start: {
@@ -73,14 +75,13 @@ const schema = yup.object().shape({
       category: yup.object().shape({
         id: yup.string().required("Category ID is required"),
       }),
-      payment: yup.object().shape({
-        payment_type: yup.string().required("Payment Type is required"),
-      }),
+
       fulfillment: yup.object().shape({
         fulfillment_type: yup.string().required("Fulfillment Type is required"),
         start: yup.object().shape({
           location: yup.object().shape({
             gps: yup.string().required("Start GPS is required"),
+
             address: yup.object().shape({
               area_code: yup.string().required("Start Area Code is required"),
             }),
@@ -88,7 +89,11 @@ const schema = yup.object().shape({
         }),
         end: yup.object().shape({
           location: yup.object().shape({
-            gps: yup.string().required("End GPS is required"),
+            gps: yup
+              .string()
+
+              .required("End GPS is required"),
+
             address: yup.object().shape({
               area_code: yup.string().required("End Area Code is required"),
             }),
@@ -130,61 +135,143 @@ const OrderForm: React.FC = () => {
   } = useForm<FormSchema>({
     resolver: yupResolver(schema),
   });
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState("");
+
   const { formData, data } = useAuth();
-  const route = useRouter();
-  const onSubmit = (data: any) => {
-    console.log("true");
-    console.log(data);
-    formData(data);
-    route.push("/dashboardpage");
+  const handleGPS = (data: string) => {
+    if (data) {
+      setLoading(true);
+
+      const [lat, lng] = data.split(",").map((str) => str.trim());
+
+      setLatitude(lat);
+      setLongitude(lng);
+      console.log("lat", lat);
+      console.log("lng", lng);
+      fetchAreaCode(lat, lng);
+    }
   };
 
-  const handleNavigation = () => {
+  const fetchAreaCode = async (lat: string, lng: string) => {
+    try {
+      const response = await axios.post(
+        "https://india-pincode-with-latitude-and-longitude.p.rapidapi.com/api/v1/pincode/nearby",
+        {
+          lat: lat,
+          lng: lng,
+        },
+        {
+          headers: {
+            "X-RapidAPI-Key":
+              "0090c6b04cmsh7bbe450a283970cp1a566bjsn9c74cbc920bd",
+            "X-RapidAPI-Host":
+              "india-pincode-with-latitude-and-longitude.p.rapidapi.com",
+          },
+        }
+      );
+      console.log(response.data);
+
+      setValue(response.data.areas[0]["pincode"]);
+      console.log("value", value);
+    } catch (error) {
+      console.error("Error sending latitude and longitude to the API:", error);
+    }
+  };
+
+  const route = useRouter();
+  // const onSubmit = (data: any) => {
+  //   console.log("true");
+  //   console.log(data);
+  //   formData(data);
+  //   route.push("/dashboardpage");
+  // };
+
+  const onSubmit = async (data: any) => {
+    console.log("Submitting data:", data);
+
+    formData(data);
     route.push("/dashboardpage");
   };
 
   return (
     <div>
-      <Button variant="text" onClick={handleNavigation}>
-        &lt; Back
-      </Button>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <p>Category:</p>
+        <div
+          style={{
+            display: "flex",
+            gap: "20px",
+            alignItems: "center",
+            marginBottom: "30px",
+          }}
+        >
+          <h3>Category:</h3>
 
           <Controller
             name="message.intent.category.id"
             control={control}
-            render={({ field }) => <TextField {...field} />}
+            render={({ field }) => (
+              <Select {...field} fullWidth>
+                <MenuItem value="Immediate delivery">
+                  Immediate delivery
+                </MenuItem>
+                <MenuItem value="Standard delivery">Standard delivery</MenuItem>
+                <MenuItem value="Same Day delivery">Same Day delivery</MenuItem>
+                <MenuItem value="Express delivery">Express delivery</MenuItem>
+              </Select>
+            )}
           />
-          <p>{errors.message?.intent?.category?.id?.message}</p>
+          <p style={{ color: "red" }}>
+            {errors.message?.intent?.category?.id?.message}
+          </p>
         </div>
-        <div>
-          <p>Payment:</p>
-          <Controller
-            name="message.intent.payment.payment_type"
-            control={control}
-            render={({ field }) => <TextField {...field} />}
-          />
-          <p>{errors?.message?.intent?.payment?.payment_type?.message}</p>
-        </div>
-        <div>
-          <p>FulFillment Type:</p>
+
+        <div
+          style={{
+            display: "flex",
+            gap: "20px",
+            alignItems: "center",
+            marginBottom: "30px",
+          }}
+        >
+          <h3>FulFillment:</h3>
+
           <Controller
             name="message.intent.fulfillment.fulfillment_type"
             control={control}
             render={({ field }) => (
-              <TextField
-                label="Fulfillment Type"
-                fullWidth
-                variant="outlined"
+              <RadioGroup
                 {...field}
-              />
+                style={{ display: "flex", flexDirection: "row" }}
+              >
+                <FormControlLabel
+                  value="Return"
+                  control={<Radio />}
+                  label="Return"
+                />
+                <FormControlLabel
+                  value="Exchange"
+                  control={<Radio />}
+                  label="Exchange"
+                />
+              </RadioGroup>
             )}
           />
-          <p>
+          <p style={{ color: "red" }}>
             {errors?.message?.intent?.fulfillment?.fulfillment_type?.message}
           </p>
+          {/* </div>
+        <div
+          style={{
+            display: "flex",
+            gap: "20px",
+            alignItems: "center",
+            marginBottom: "30px",
+          }}
+        > */}
+          <h3>Starting Location:</h3>
 
           <Controller
             name="message.intent.fulfillment.start.location.gps"
@@ -195,12 +282,11 @@ const OrderForm: React.FC = () => {
                 fullWidth
                 variant="outlined"
                 {...field}
+                // onChange={(e) => handleGPS(e.target.value)}
               />
             )}
           />
-          <p>
-            {errors.message?.intent?.fulfillment?.start?.location?.gps?.message}
-          </p>
+
           <Controller
             name="message.intent.fulfillment.start.location.address.area_code"
             control={control}
@@ -210,15 +296,13 @@ const OrderForm: React.FC = () => {
                 fullWidth
                 variant="outlined"
                 {...field}
+                // value={value}
               />
             )}
           />
-          <p>
-            {
-              errors.message?.intent?.fulfillment?.start?.location?.address
-                ?.area_code?.message
-            }
-          </p>
+
+          <h3>Ending Location:</h3>
+
           <Controller
             name="message.intent.fulfillment.end.location.gps"
             control={control}
@@ -231,9 +315,7 @@ const OrderForm: React.FC = () => {
               />
             )}
           />
-          <p>
-            {errors?.message?.intent?.fulfillment?.end?.location?.gps?.message}
-          </p>
+
           <Controller
             name="message.intent.fulfillment.end.location.address.area_code"
             control={control}
@@ -246,6 +328,29 @@ const OrderForm: React.FC = () => {
               />
             )}
           />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            gap: "20px",
+            alignItems: "center",
+            marginBottom: "30px",
+            justifyContent: "space-between",
+            color: "red",
+          }}
+        >
+          <p>
+            {errors.message?.intent?.fulfillment?.start?.location?.gps?.message}
+          </p>
+          <p>
+            {
+              errors.message?.intent?.fulfillment?.start?.location?.address
+                ?.area_code?.message
+            }
+          </p>
+          <p>
+            {errors?.message?.intent?.fulfillment?.end?.location?.gps?.message}
+          </p>
           <p>
             {
               errors?.message?.intent?.fulfillment?.end?.location?.address
@@ -253,185 +358,232 @@ const OrderForm: React.FC = () => {
             }
           </p>
         </div>
-
         <div>
-          <p>Payload</p>
-          <Controller
-            name="message.intent.payload_details.weight.unit"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Weight Unit"
-                fullWidth
-                variant="outlined"
-                {...field}
-              />
-            )}
-          />
-          <p>
-            {errors?.message?.intent?.payload_details?.weight?.unit?.message}
-          </p>
-          <Controller
-            name="message.intent.payload_details.weight.value"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Weight Value"
-                fullWidth
-                variant="outlined"
-                type="number"
-                {...field}
-              />
-            )}
-          />
-          <p>
-            {errors?.message?.intent?.payload_details?.weight?.value?.message}
-          </p>
-          <Controller
-            name="message.intent.payload_details.dimensions.length.unit"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Length Unit"
-                fullWidth
-                variant="outlined"
-                {...field}
-              />
-            )}
-          />
-          <p>
-            {
-              errors?.message?.intent?.payload_details?.dimensions?.length?.unit
-                ?.message
-            }
-          </p>
-          <Controller
-            name="message.intent.payload_details.dimensions.length.value"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Length Value"
-                fullWidth
-                variant="outlined"
-                type="number"
-                {...field}
-              />
-            )}
-          />
-          <p>
-            {
-              errors?.message?.intent?.payload_details?.dimensions?.length
-                ?.value?.message
-            }
-          </p>
-          <Controller
-            name="message.intent.payload_details.dimensions.breadth.unit"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Breadth Unit"
-                fullWidth
-                variant="outlined"
-                {...field}
-              />
-            )}
-          />
-          <p>
-            {
-              errors?.message?.intent?.payload_details?.dimensions?.breadth
-                ?.unit?.message
-            }
-          </p>
-          <Controller
-            name="message.intent.payload_details.dimensions.breadth.value"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Breadth Value"
-                fullWidth
-                variant="outlined"
-                type="number"
-                {...field}
-              />
-            )}
-          />
-          <p>
-            {
-              errors?.message?.intent?.payload_details?.dimensions?.breadth
-                ?.value?.message
-            }
-          </p>
-          <Controller
-            name="message.intent.payload_details.dimensions.height.unit"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Height Unit"
-                fullWidth
-                variant="outlined"
-                {...field}
-              />
-            )}
-          />
-          <p>
-            {
-              errors?.message?.intent?.payload_details?.dimensions?.height?.unit
-                ?.message
-            }
-          </p>
-          <Controller
-            name="message.intent.payload_details.dimensions.height.value"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Height Value"
-                fullWidth
-                variant="outlined"
-                type="number"
-                {...field}
-              />
-            )}
-          />
-          <p>
-            {
-              errors?.message?.intent?.payload_details?.dimensions?.height
-                ?.value?.message
-            }
-          </p>
+          <h3>Payload:</h3>
+          <div
+            style={{
+              display: "flex",
+              gap: "20px",
+              alignItems: "center",
+              marginBottom: "30px",
+            }}
+          >
+            <label>Weight Value</label>
+            <Controller
+              name="message.intent.payload_details.weight.value"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  label="Weight Value"
+                  fullWidth
+                  variant="outlined"
+                  type="number"
+                  {...field}
+                />
+              )}
+            />
+
+            <label>Weight Unit</label>
+            <Controller
+              name="message.intent.payload_details.weight.unit"
+              control={control}
+              render={({ field }) => (
+                <Select {...field} fullWidth>
+                  <MenuItem value="kilogram">kilogram</MenuItem>
+                </Select>
+              )}
+            />
+
+            <label>Length Value</label>
+            <Controller
+              name="message.intent.payload_details.dimensions.length.value"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  label="Length Value"
+                  fullWidth
+                  variant="outlined"
+                  type="number"
+                  {...field}
+                />
+              )}
+            />
+
+            <label>Length Unit</label>
+            <Controller
+              name="message.intent.payload_details.dimensions.length.unit"
+              control={control}
+              render={({ field }) => (
+                <Select {...field} fullWidth>
+                  <MenuItem value="centimeter">centimeter</MenuItem>
+                  <MenuItem value="meter">meter</MenuItem>
+                </Select>
+              )}
+            />
+
+            <label>Breadth Value</label>
+            <Controller
+              name="message.intent.payload_details.dimensions.breadth.value"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  label="Breadth Value"
+                  fullWidth
+                  variant="outlined"
+                  type="number"
+                  {...field}
+                />
+              )}
+            />
+
+            <label>Breadth Unit</label>
+            <Controller
+              name="message.intent.payload_details.dimensions.breadth.unit"
+              control={control}
+              render={({ field }) => (
+                <Select {...field} fullWidth>
+                  <MenuItem value="centimeter">centimeter</MenuItem>
+                  <MenuItem value="meter">meter</MenuItem>
+                </Select>
+              )}
+            />
+
+            <label>Height Value</label>
+            <Controller
+              name="message.intent.payload_details.dimensions.height.value"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  label="Height Value"
+                  fullWidth
+                  variant="outlined"
+                  type="number"
+                  {...field}
+                />
+              )}
+            />
+
+            <label>Height Unit</label>
+            <Controller
+              name="message.intent.payload_details.dimensions.height.unit"
+              control={control}
+              render={({ field }) => (
+                <Select {...field} fullWidth>
+                  <MenuItem value="centimeter">centimeter</MenuItem>
+                  <MenuItem value="meter">meter</MenuItem>
+                </Select>
+              )}
+            />
+          </div>
+          <div
+            style={{
+              display: "flex",
+              gap: "20px",
+              alignItems: "center",
+              marginBottom: "30px",
+              justifyContent: "space-between",
+              color: "red",
+            }}
+          >
+            <p>
+              {errors?.message?.intent?.payload_details?.weight?.value?.message}
+            </p>
+            <p>
+              {errors?.message?.intent?.payload_details?.weight?.unit?.message}
+            </p>
+            <p>
+              {
+                errors?.message?.intent?.payload_details?.dimensions?.length
+                  ?.value?.message
+              }
+            </p>
+            <p>
+              {
+                errors?.message?.intent?.payload_details?.dimensions?.length
+                  ?.unit?.message
+              }
+            </p>
+            <p>
+              {
+                errors?.message?.intent?.payload_details?.dimensions?.breadth
+                  ?.value?.message
+              }
+            </p>
+            <p>
+              {
+                errors?.message?.intent?.payload_details?.dimensions?.breadth
+                  ?.unit?.message
+              }
+            </p>
+            <p>
+              {
+                errors?.message?.intent?.payload_details?.dimensions?.height
+                  ?.value?.message
+              }
+            </p>
+            <p>
+              {
+                errors?.message?.intent?.payload_details?.dimensions?.height
+                  ?.unit?.message
+              }
+            </p>
+          </div>
+          <h3>Category</h3>
           <Controller
             name="message.intent.payload_details.category"
             control={control}
             render={({ field }) => (
-              <TextField
-                label="Category"
-                fullWidth
-                variant="outlined"
+              <RadioGroup
                 {...field}
-              />
+                style={{ display: "flex", flexDirection: "row" }}
+              >
+                <FormControlLabel
+                  value="Grocery"
+                  control={<Radio />}
+                  label=" Grocery"
+                />
+                <FormControlLabel
+                  value="Cosmetics"
+                  control={<Radio />}
+                  label="Cosmetics"
+                />
+              </RadioGroup>
             )}
           />
-          <p>{errors?.message?.intent?.payload_details?.category?.message}</p>
-
+          <p style={{ color: "red" }}>
+            {errors?.message?.intent?.payload_details?.category?.message}
+          </p>
+          <h3>Dangerous Goods</h3>
           <Controller
             name="message.intent.payload_details.dangerous_goods"
             control={control}
             render={({ field }) => (
-              <TextField
-                label="Dangerous Goods"
-                fullWidth
-                variant="outlined"
-                type="number"
+              <RadioGroup
                 {...field}
-              />
+                style={{ display: "flex", flexDirection: "row" }}
+              >
+                <FormControlLabel
+                  value="true"
+                  control={<Radio />}
+                  label=" True"
+                />
+                <FormControlLabel
+                  value="false"
+                  control={<Radio />}
+                  label="False"
+                />
+              </RadioGroup>
             )}
           />
-          <p>
+          <p style={{ color: "red" }}>
             {errors?.message?.intent?.payload_details?.dangerous_goods?.message}
           </p>
         </div>
 
-        <div>
-          <Button type="submit">Submit</Button>
+        <div style={{ width: "100%" }}>
+          <Button type="submit" variant="contained" fullWidth>
+            Submit
+          </Button>
         </div>
       </form>
     </div>

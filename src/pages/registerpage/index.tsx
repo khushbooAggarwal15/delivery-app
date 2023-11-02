@@ -31,7 +31,6 @@ interface FormData {
 // });
 
 function SignUp() {
-  // useProtectedRoute();
   const { login, user } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");
