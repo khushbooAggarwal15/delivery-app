@@ -81,9 +81,8 @@ const Orders = () => {
   if (!Array.isArray(data) || data.length === 0) {
     return <p>No orders available.</p>;
   }
-
-  const lowerSearchTerm = searchTerm.toLowerCase();
-  console.log(lowerSearchTerm);
+  // const lowerSearchTerm = searchTerm.toLowerCase();
+  // console.log(lowerSearchTerm);
   // const filteredData = data.filter((item) => {
   //   const itemValues = Object.values(item).map((value) =>
   //     typeof value === "object" ? JSON.stringify(value) : value
@@ -93,7 +92,19 @@ const Orders = () => {
   //     value.toLowerCase().includes(lowerSearchTerm)
   //   );
   // });
+  // const lowerSearchTerm = searchTerm.toLowerCase();
 
+  // const filteredData = data.filter((item) => {
+  //   const allValues = Object.values(item.message.intent).flatMap((obj) => {
+  //     if (typeof obj === "object") {
+  //       return Object.values(obj);
+  //     }
+  //     return [obj];
+  //   });
+  //   return allValues.some((field) =>
+  //     String(field).toLowerCase().includes(lowerSearchTerm)
+  //   );
+  // });
   return (
     <>
       <TableContainer component={Paper}>
