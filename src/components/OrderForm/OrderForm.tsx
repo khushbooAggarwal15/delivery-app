@@ -129,7 +129,8 @@ const schema = yup.object().shape({
 
 const OrderForm: React.FC<{
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setOpen }) => {
+  setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ setOpen, setOpenDetails }) => {
   const {
     control,
     handleSubmit,
@@ -190,6 +191,8 @@ const OrderForm: React.FC<{
 
     formData(data);
     setOpen(false);
+    setOpenDetails(true);
+
     // route.push("/dashboardpage");
   };
 

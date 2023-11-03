@@ -78,32 +78,31 @@ const Orders = () => {
   if (!Array.isArray(data) || data.length === 0) {
     return <p>No orders available.</p>;
   }
-  // const lowerSearchTerm = searchTerm.toLowerCase();
-  // console.log(lowerSearchTerm);
-  // const filteredData = data.filter((item) => {
-  //   const itemValues = Object.values(item).map((value) =>
-  //     typeof value === "object" ? JSON.stringify(value) : value
-  //   );
-  //   console.log("itemValues", itemValues);
-  //   return itemValues.some((value) =>
-  //     value.toLowerCase().includes(lowerSearchTerm)
-  //   );
-  // });
-  // const lowerSearchTerm = searchTerm.toLowerCase();
 
-  // const filteredData = data.filter((item) => {
-  //   const allValues = Object.values(item.message.intent).flatMap((obj) => {
-  //     if (typeof obj === "object") {
-  //       return Object.values(obj);
-  //     }
-  //     return [obj];
-  //   });
-  //   return allValues.some((field) =>
-  //     String(field).toLowerCase().includes(lowerSearchTerm)
-  //   );
-  // });
+  const lowerSearchTerm = searchTerm.toLowerCase();
+
+  const filteredData = data.filter((item) => {
+    if (item?.message?.intent && typeof item.message.intent === "object") {
+      const allValues = Object.values(item.message.intent).flatMap((obj) => {
+        if (typeof obj === "object") {
+          return Object.values(obj);
+        }
+        return [obj];
+      });
+      return allValues.some((field) =>
+        String(field).toLowerCase().includes(lowerSearchTerm)
+      );
+    } else {
+      return false;
+    }
+  });
   return (
     <>
+      <input
+        type="search"
+        placeholder="Search"
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -121,7 +120,7 @@ const Orders = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item: any, index: any) => (
+            {filteredData.map((item: any, index: any) => (
               <TableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -130,67 +129,67 @@ const Orders = () => {
                   {index}
                 </TableCell> */}
                 <TableCell align="center">
-                  {item?.message?.intent?.category?.id}
+                  {item.message?.intent?.category?.id}
                 </TableCell>
                 <TableCell align="center">
-                  {item?.message?.intent?.fulfillment?.fulfillment_type}
+                  {item.message?.intent?.fulfillment?.fulfillment_type}
                 </TableCell>
                 <TableCell align="center">
                   {" "}
-                  {item?.message?.intent?.fulfillment?.start?.location?.gps}
+                  {item.message?.intent?.fulfillment?.start?.location?.gps}
                 </TableCell>
                 <TableCell align="center">
                   {" "}
                   {
-                    item?.message?.intent?.fulfillment?.start?.location?.address
+                    item.message?.intent?.fulfillment?.start?.location?.address
                       ?.area_code
                   }
                 </TableCell>
                 <TableCell align="center">
                   {" "}
-                  {item?.message?.intent?.fulfillment?.end?.location?.gps}
+                  {item.message?.intent?.fulfillment?.end?.location?.gps}
                 </TableCell>
                 <TableCell align="center">
                   {" "}
                   {
-                    item?.message?.intent?.fulfillment?.end?.location?.address
+                    item.message?.intent?.fulfillment?.end?.location?.address
                       ?.area_code
                   }
                 </TableCell>
                 <TableCell align="center">
                   {" "}
-                  {item?.message?.intent?.payload_details?.weight?.value}{" "}
-                  {item?.message?.intent?.payload_details?.weight?.unit}
+                  {item.message?.intent?.payload_details?.weight?.value}{" "}
+                  {item.message?.intent?.payload_details?.weight?.unit}
                 </TableCell>
                 <TableCell align="center">
                   {" "}
                   {
-                    item?.message?.intent?.payload_details?.dimensions?.length
+                    item.message?.intent?.payload_details?.dimensions?.length
                       ?.value
                   }{" "}
                   {
-                    item?.message?.intent?.payload_details?.dimensions?.length
+                    item.message?.intent?.payload_details?.dimensions?.length
                       ?.unit
                   }
                 </TableCell>
                 <TableCell align="center">
                   {" "}
                   {
-                    item?.message?.intent?.payload_details?.dimensions?.breadth
+                    item.message?.intent?.payload_details?.dimensions?.breadth
                       ?.value
                   }{" "}
                   {
-                    item?.message?.intent?.payload_details?.dimensions?.breadth
+                    item.message?.intent?.payload_details?.dimensions?.breadth
                       ?.unit
                   }
                 </TableCell>
                 <TableCell align="center">
                   {
-                    item?.message?.intent?.payload_details?.dimensions?.height
+                    item.message?.intent?.payload_details?.dimensions?.height
                       ?.value
                   }{" "}
                   {
-                    item?.message?.intent?.payload_details?.dimensions?.height
+                    item.message?.intent?.payload_details?.dimensions?.height
                       ?.unit
                   }
                 </TableCell>

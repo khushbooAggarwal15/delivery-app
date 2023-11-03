@@ -25,6 +25,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Modal } from "@mui/material";
 import OrderForm from "../OrderForm/OrderForm";
 import CloseIcon from "@mui/icons-material/Close";
+import DetailsForm from "../DetailsForm/DetailsForm";
 const drawerWidth = 240;
 
 export default function UserDashboard() {
@@ -50,12 +51,18 @@ export default function UserDashboard() {
     router.push("/loginpage");
   };
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const [opendetails, setOpenDetails] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
   const handleClose = () => {
     setOpen(false);
     console.log("open", open);
   };
-
+  const handleClose1 = () => {
+    setOpenDetails(false);
+    console.log("open", open);
+  };
   const style = {
     position: "absolute" as "absolute",
     top: "50%",
@@ -137,7 +144,23 @@ export default function UserDashboard() {
               >
                 <Box sx={style}>
                   <CloseIcon onClick={handleClose} />
-                  <OrderForm setOpen={setOpen} />
+
+                  <OrderForm
+                    setOpen={setOpen}
+                    setOpenDetails={setOpenDetails}
+                  />
+                </Box>
+              </Modal>
+            ) : opendetails ? (
+              <Modal
+                open={opendetails}
+                onClose={handleClose1}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={style}>
+                  <CloseIcon onClick={handleClose1} />
+                  <DetailsForm setOpenDetails={setOpenDetails} />
                 </Box>
               </Modal>
             ) : (
@@ -146,7 +169,7 @@ export default function UserDashboard() {
           </div>
 
           <div className="button-wrapper">
-            <Button variant="contained" onClick={logout}>
+            <Button variant="contained" onClick={logoutSubmit}>
               Log Out
             </Button>
           </div>
