@@ -10,6 +10,8 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  styled,
+  tableCellClasses,
 } from "@mui/material";
 interface Order {
   message: {
@@ -78,6 +80,27 @@ const Orders = () => {
   if (!Array.isArray(data) || data.length === 0) {
     return <p>No orders available.</p>;
   }
+
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    "&:last-child td, &:last-child th": {
+      border: 0,
+    },
+  }));
+
   // const lowerSearchTerm = searchTerm.toLowerCase();
   // console.log(lowerSearchTerm);
   // const filteredData = data.filter((item) => {
@@ -105,64 +128,68 @@ const Orders = () => {
   return (
     <>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
-              <TableCell align="center">Id</TableCell>
-              <TableCell align="center">Fulfillment_type</TableCell>
-              <TableCell align="center">Start gps</TableCell>
-              <TableCell align="center">Start address areacode</TableCell>
-              <TableCell align="center">End gps</TableCell>
-              <TableCell align="center">End address areacode</TableCell>
-              <TableCell align="center">Weight</TableCell>
-              <TableCell align="center">Length</TableCell>
-              <TableCell align="center">Beadth</TableCell>
-              <TableCell align="center">Height</TableCell>
+              <StyledTableCell align="center">Id</StyledTableCell>
+              <StyledTableCell align="center">Fulfillment_type</StyledTableCell>
+              <StyledTableCell align="center">Start gps</StyledTableCell>
+              <StyledTableCell align="center">
+                Start address areacode
+              </StyledTableCell>
+              <StyledTableCell align="center">End gps</StyledTableCell>
+              <StyledTableCell align="center">
+                End address areacode
+              </StyledTableCell>
+              <StyledTableCell align="center">Weight</StyledTableCell>
+              <StyledTableCell align="center">Length</StyledTableCell>
+              <StyledTableCell align="center">Beadth</StyledTableCell>
+              <StyledTableCell align="center">Height</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((item: any, index: any) => (
-              <TableRow
+              <StyledTableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 {/* <TableCell component="th" scope="row">
                   {index}
                 </TableCell> */}
-                <TableCell align="center">
+                <StyledTableCell align="center">
                   {item?.message?.intent?.category?.id}
-                </TableCell>
-                <TableCell align="center">
+                </StyledTableCell>
+                <StyledTableCell align="center">
                   {item?.message?.intent?.fulfillment?.fulfillment_type}
-                </TableCell>
-                <TableCell align="center">
+                </StyledTableCell>
+                <StyledTableCell align="center">
                   {" "}
                   {item?.message?.intent?.fulfillment?.start?.location?.gps}
-                </TableCell>
-                <TableCell align="center">
+                </StyledTableCell>
+                <StyledTableCell align="center">
                   {" "}
                   {
                     item?.message?.intent?.fulfillment?.start?.location?.address
                       ?.area_code
                   }
-                </TableCell>
-                <TableCell align="center">
+                </StyledTableCell>
+                <StyledTableCell align="center">
                   {" "}
                   {item?.message?.intent?.fulfillment?.end?.location?.gps}
-                </TableCell>
-                <TableCell align="center">
+                </StyledTableCell>
+                <StyledTableCell align="center">
                   {" "}
                   {
                     item?.message?.intent?.fulfillment?.end?.location?.address
                       ?.area_code
                   }
-                </TableCell>
-                <TableCell align="center">
+                </StyledTableCell>
+                <StyledTableCell align="center">
                   {" "}
                   {item?.message?.intent?.payload_details?.weight?.value}{" "}
                   {item?.message?.intent?.payload_details?.weight?.unit}
-                </TableCell>
-                <TableCell align="center">
+                </StyledTableCell>
+                <StyledTableCell align="center">
                   {" "}
                   {
                     item?.message?.intent?.payload_details?.dimensions?.length
@@ -172,8 +199,8 @@ const Orders = () => {
                     item?.message?.intent?.payload_details?.dimensions?.length
                       ?.unit
                   }
-                </TableCell>
-                <TableCell align="center">
+                </StyledTableCell>
+                <StyledTableCell align="center">
                   {" "}
                   {
                     item?.message?.intent?.payload_details?.dimensions?.breadth
@@ -183,8 +210,8 @@ const Orders = () => {
                     item?.message?.intent?.payload_details?.dimensions?.breadth
                       ?.unit
                   }
-                </TableCell>
-                <TableCell align="center">
+                </StyledTableCell>
+                <StyledTableCell align="center">
                   {
                     item?.message?.intent?.payload_details?.dimensions?.height
                       ?.value
@@ -193,11 +220,8 @@ const Orders = () => {
                     item?.message?.intent?.payload_details?.dimensions?.height
                       ?.unit
                   }
-                </TableCell>
-                <TableCell align="center">
-                  <a href={`/createorder/ ${index}`}> Edit </a>
-                </TableCell>
-              </TableRow>
+                </StyledTableCell>
+              </StyledTableRow>
             ))}
           </TableBody>
         </Table>

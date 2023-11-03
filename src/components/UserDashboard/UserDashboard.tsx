@@ -44,11 +44,13 @@ export default function UserDashboard() {
     setProfileVisibile(false);
   };
   const { user, logout } = useAuth();
-  const logoutSubmit = (e: any) => {
-    e.preventDefault();
-    logout();
-    router.push("/loginpage");
-  };
+
+  // const logoutsubmit = (e: any) => {
+  //   e.preventDefault();
+  //   logout();
+  //   router.push("/loginpage");
+  // };
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
