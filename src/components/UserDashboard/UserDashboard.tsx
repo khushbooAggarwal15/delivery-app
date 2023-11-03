@@ -81,7 +81,7 @@ interface FormSchema {
 }
 export default function UserDashboard() {
   const [profileVisisble, setProfileVisibile] = useState(false);
-  const [orderVisisble, setorderVisibile] = useState(false);
+  const [orderVisisble, setorderVisibile] = useState(true);
   const router = useRouter();
 
   // const handleClick = () => {
