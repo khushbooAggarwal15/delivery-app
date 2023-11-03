@@ -101,32 +101,30 @@ const Orders = () => {
     },
   }));
 
-  // const lowerSearchTerm = searchTerm.toLowerCase();
-  // console.log(lowerSearchTerm);
-  // const filteredData = data.filter((item) => {
-  //   const itemValues = Object.values(item).map((value) =>
-  //     typeof value === "object" ? JSON.stringify(value) : value
-  //   );
-  //   console.log("itemValues", itemValues);
-  //   return itemValues.some((value) =>
-  //     value.toLowerCase().includes(lowerSearchTerm)
-  //   );
-  // });
-  // const lowerSearchTerm = searchTerm.toLowerCase();
+  const lowerSearchTerm = searchTerm.toLowerCase();
 
-  // const filteredData = data.filter((item) => {
-  //   const allValues = Object.values(item.message.intent).flatMap((obj) => {
-  //     if (typeof obj === "object") {
-  //       return Object.values(obj);
-  //     }
-  //     return [obj];
-  //   });
-  //   return allValues.some((field) =>
-  //     String(field).toLowerCase().includes(lowerSearchTerm)
-  //   );
-  // });
+  const filteredData = data.filter((item) => {
+    if (item?.message?.intent && typeof item.message.intent === "object") {
+      const allValues = Object.values(item.message.intent).flatMap((obj) => {
+        if (typeof obj === "object") {
+          return Object.values(obj);
+        }
+        return [obj];
+      });
+      return allValues.some((field) =>
+        String(field).toLowerCase().includes(lowerSearchTerm)
+      );
+    } else {
+      return false;
+    }
+  });
   return (
     <>
+      <input
+        type="search"
+        placeholder="Search"
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
@@ -148,7 +146,7 @@ const Orders = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item: any, index: any) => (
+            {filteredData.map((item: any, index: any) => (
               <StyledTableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -169,7 +167,7 @@ const Orders = () => {
                 <StyledTableCell align="center">
                   {" "}
                   {
-                    item?.message?.intent?.fulfillment?.start?.location?.address
+                    item.message?.intent?.fulfillment?.start?.location?.address
                       ?.area_code
                   }
                 </StyledTableCell>
@@ -180,7 +178,7 @@ const Orders = () => {
                 <StyledTableCell align="center">
                   {" "}
                   {
-                    item?.message?.intent?.fulfillment?.end?.location?.address
+                    item.message?.intent?.fulfillment?.end?.location?.address
                       ?.area_code
                   }
                 </StyledTableCell>
@@ -192,32 +190,32 @@ const Orders = () => {
                 <StyledTableCell align="center">
                   {" "}
                   {
-                    item?.message?.intent?.payload_details?.dimensions?.length
+                    item.message?.intent?.payload_details?.dimensions?.length
                       ?.value
                   }{" "}
                   {
-                    item?.message?.intent?.payload_details?.dimensions?.length
+                    item.message?.intent?.payload_details?.dimensions?.length
                       ?.unit
                   }
                 </StyledTableCell>
                 <StyledTableCell align="center">
                   {" "}
                   {
-                    item?.message?.intent?.payload_details?.dimensions?.breadth
+                    item.message?.intent?.payload_details?.dimensions?.breadth
                       ?.value
                   }{" "}
                   {
-                    item?.message?.intent?.payload_details?.dimensions?.breadth
+                    item.message?.intent?.payload_details?.dimensions?.breadth
                       ?.unit
                   }
                 </StyledTableCell>
                 <StyledTableCell align="center">
                   {
-                    item?.message?.intent?.payload_details?.dimensions?.height
+                    item.message?.intent?.payload_details?.dimensions?.height
                       ?.value
                   }{" "}
                   {
-                    item?.message?.intent?.payload_details?.dimensions?.height
+                    item.message?.intent?.payload_details?.dimensions?.height
                       ?.unit
                   }
                 </StyledTableCell>

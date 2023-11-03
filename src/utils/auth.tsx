@@ -194,22 +194,17 @@ export function AuthProvider({ children }: Props) {
   };
 
   const formData = (value: IData) => {
-    // setData([...data, value]);
-    // window.localStorage.setItem("data", JSON.stringify([...data, value]));
     const previousDataString = window.localStorage.getItem("data");
     const previousData: IData[] = previousDataString
       ? JSON.parse(previousDataString)
       : [];
 
-    // Combine previous data with the new value
     const newData = [...previousData, value];
 
-    // Update state and local storage
     setData(newData);
     window.localStorage.setItem("data", JSON.stringify(newData));
   };
 
-  // console.log(user);
   return (
     <>
       <AuthContext.Provider value={{ user, login, logout, formData, data }}>
