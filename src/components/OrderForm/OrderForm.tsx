@@ -130,7 +130,8 @@ const schema = yup.object().shape({
 const OrderForm: React.FC<{
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setOpen, setOpenDetails }) => {
+  setFormDetails: any;
+}> = ({ setOpen, setOpenDetails, setFormDetails }) => {
   const {
     control,
     handleSubmit,
@@ -138,58 +139,59 @@ const OrderForm: React.FC<{
   } = useForm<FormSchema>({
     resolver: yupResolver(schema),
   });
+
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
 
   const { formData, data } = useAuth();
-  const handleGPS = (data: string) => {
-    if (data) {
-      setLoading(true);
+  // const handleGPS = (data: string) => {
+  //   if (data) {
+  //     setLoading(true);
 
-      const [lat, lng] = data.split(",").map((str) => str.trim());
+  //     const [lat, lng] = data.split(",").map((str) => str.trim());
 
-      setLatitude(lat);
-      setLongitude(lng);
-      console.log("lat", lat);
-      console.log("lng", lng);
-      fetchAreaCode(lat, lng);
-    }
-  };
+  //     setLatitude(lat);
+  //     setLongitude(lng);
+  //     console.log("lat", lat);
+  //     console.log("lng", lng);
+  //     fetchAreaCode(lat, lng);
+  //   }
+  // };
 
-  const fetchAreaCode = async (lat: string, lng: string) => {
-    try {
-      const response = await axios.post(
-        "https://india-pincode-with-latitude-and-longitude.p.rapidapi.com/api/v1/pincode/nearby",
-        {
-          lat: lat,
-          lng: lng,
-        },
-        {
-          headers: {
-            "X-RapidAPI-Key":
-              "0090c6b04cmsh7bbe450a283970cp1a566bjsn9c74cbc920bd",
-            "X-RapidAPI-Host":
-              "india-pincode-with-latitude-and-longitude.p.rapidapi.com",
-          },
-        }
-      );
-      console.log(response.data);
+  // const fetchAreaCode = async (lat: string, lng: string) => {
+  //   try {
+  //     const response = await axios.post(
+  //       "https://india-pincode-with-latitude-and-longitude.p.rapidapi.com/api/v1/pincode/nearby",
+  //       {
+  //         lat: lat,
+  //         lng: lng,
+  //       },
+  //       {
+  //         headers: {
+  //           "X-RapidAPI-Key":
+  //             "0090c6b04cmsh7bbe450a283970cp1a566bjsn9c74cbc920bd",
+  //           "X-RapidAPI-Host":
+  //             "india-pincode-with-latitude-and-longitude.p.rapidapi.com",
+  //         },
+  //       }
+  //     );
+  //     console.log(response.data);
 
-      setValue(response.data.areas[0]["pincode"]);
-      console.log("value", value);
-    } catch (error) {
-      console.error("Error sending latitude and longitude to the API:", error);
-    }
-  };
+  //     setValue(response.data.areas[0]["pincode"]);
+  //     console.log("value", value);
+  //   } catch (error) {
+  //     console.error("Error sending latitude and longitude to the API:", error);
+  //   }
+  // };
 
   const route = useRouter();
 
   const onSubmit = async (data: any) => {
     console.log("Submitting data:", data);
 
-    formData(data);
+    setFormDetails(data);
     setOpen(false);
     setOpenDetails(true);
 

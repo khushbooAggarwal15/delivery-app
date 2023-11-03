@@ -27,7 +27,58 @@ import OrderForm from "../OrderForm/OrderForm";
 import CloseIcon from "@mui/icons-material/Close";
 import DetailsForm from "../DetailsForm/DetailsForm";
 const drawerWidth = 240;
+interface FormSchema {
+  message: {
+    intent: {
+      category: {
+        id: string;
+      };
 
+      fulfillment: {
+        fulfillment_type: string;
+        start: {
+          location: {
+            gps: string;
+            address: {
+              area_code: string;
+            };
+          };
+        };
+        end: {
+          location: {
+            gps: string;
+            address: {
+              area_code: string;
+            };
+          };
+        };
+      };
+
+      payload_details: {
+        weight: {
+          unit: string;
+          value: number;
+        };
+        dimensions: {
+          length: {
+            unit: string;
+            value: number;
+          };
+          breadth: {
+            unit: string;
+            value: number;
+          };
+          height: {
+            unit: string;
+            value: number;
+          };
+        };
+        category: string;
+        dangerous_goods: boolean;
+      };
+    };
+  };
+}
 export default function UserDashboard() {
   const [profileVisisble, setProfileVisibile] = useState(false);
   const [orderVisisble, setorderVisibile] = useState(false);
@@ -51,20 +102,22 @@ export default function UserDashboard() {
     logout();
     router.push("/loginpage");
   };
-
+  const [formDetails, setFormDetails] = useState<FormSchema[]>([]);
   const [open, setOpen] = useState(false);
   const [opendetails, setOpenDetails] = useState(false);
   const handleOpen = () => {
     setOpen(true);
+    setOpenDetails(false);
   };
+
   const handleClose = () => {
     setOpen(false);
-    console.log("open", open);
   };
+
   const handleClose1 = () => {
     setOpenDetails(false);
-    console.log("open", open);
   };
+
   const style = {
     position: "absolute" as "absolute",
     top: "50%",
@@ -137,6 +190,7 @@ export default function UserDashboard() {
 
               <ListItemText primary="Create Order" />
             </ListItemButton>
+
             {open ? (
               <Modal
                 open={open}
@@ -150,6 +204,7 @@ export default function UserDashboard() {
                   <OrderForm
                     setOpen={setOpen}
                     setOpenDetails={setOpenDetails}
+                    setFormDetails={setFormDetails}
                   />
                 </Box>
               </Modal>
@@ -162,7 +217,10 @@ export default function UserDashboard() {
               >
                 <Box sx={style}>
                   <CloseIcon onClick={handleClose1} />
-                  <DetailsForm setOpenDetails={setOpenDetails} />
+                  <DetailsForm
+                    setOpenDetails={setOpenDetails}
+                    formDetails={formDetails}
+                  />
                 </Box>
               </Modal>
             ) : (

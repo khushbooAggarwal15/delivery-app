@@ -19,6 +19,8 @@ interface Order {
       category: {
         id: string;
       };
+      name: string;
+      cost: string;
       fulfillment: {
         fulfillment_type: string;
         start: {
@@ -105,8 +107,8 @@ const Orders = () => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
-              {/* <StyledTableCell align="center">Name</StyledTableCell>
-              <StyledTableCell align="center">Cost</StyledTableCell> */}
+              <StyledTableCell align="center">Name</StyledTableCell>
+              <StyledTableCell align="center">Cost</StyledTableCell>
               <StyledTableCell align="center">ID</StyledTableCell>
               <StyledTableCell align="center">Start gps</StyledTableCell>
               <StyledTableCell align="center">
@@ -127,7 +129,14 @@ const Orders = () => {
                 {/* <TableCell component="th" scope="row">
                   {index}
                 </TableCell> */}
-
+                <StyledTableCell align="center">
+                  {" "}
+                  {/* {item?.message?.intent?.name} */}Name
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {" "}
+                  {/* {item?.message?.intent?.cost} */}200
+                </StyledTableCell>
                 {/* <StyledTableCell align="center">
                   {item?.message?.intent?.fulfillment?.fulfillment_type}
                 </StyledTableCell> */}
