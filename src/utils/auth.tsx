@@ -14,6 +14,8 @@ interface IData {
       category: {
         id: string;
       };
+      name: string;
+      cost: string;
       fulfillment: {
         fulfillment_type: string;
         start: {
@@ -80,6 +82,8 @@ const authContextDefaultValues: authContextType = {
           category: {
             id: "",
           },
+          name: "",
+          cost: "",
           fulfillment: {
             fulfillment_type: "",
             start: {
@@ -198,7 +202,6 @@ export function AuthProvider({ children }: Props) {
     const previousData: IData[] = previousDataString
       ? JSON.parse(previousDataString)
       : [];
-
     const newData = [...previousData, value];
 
     setData(newData);

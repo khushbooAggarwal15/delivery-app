@@ -1,3 +1,4 @@
+import { useAuth } from "@/utils/auth";
 import {
   Button,
   Paper,
@@ -15,6 +16,8 @@ interface Order {
       category: {
         id: string;
       };
+      name: string;
+      cost: string;
       fulfillment: {
         fulfillment_type: string;
         start: {
@@ -67,7 +70,9 @@ const DetailsForm: React.FC<{
   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>;
   formDetails: any;
 }> = ({ setOpenDetails, formDetails }) => {
+  const { formData } = useAuth();
   const handleConfirm = () => {
+    formData(formDetails);
     setOpenDetails(false);
   };
   //   console.log(formDetails);
@@ -92,10 +97,10 @@ const DetailsForm: React.FC<{
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="center">
-                <p>Name</p>
+                <p> Name</p>
               </TableCell>
               <TableCell align="center">
-                <p>20</p>
+                <p>200</p>
               </TableCell>
               <TableCell align="center">
                 {formDetails.message?.intent?.category?.id}
