@@ -30,9 +30,7 @@ export default function AdminDashboard() {
   const [orderVisisble, setorderVisibile] = useState(false);
   const router = useRouter();
 
-  const handleClick = () => {
-    router.push("/createorder");
-  };
+ 
   const handleProfile = () => {
     setProfileVisibile(true);
     setorderVisibile(false);
@@ -83,13 +81,13 @@ export default function AdminDashboard() {
         >
           <div>
           <ListSubheader component="div" id="My Dashboard">
-              My Dashboard
+              Admin Dashboard
             </ListSubheader>
             <ListItemButton onClick={handleProfile}>
               <ListItemIcon>
                 <AccountCircleIcon />
               </ListItemIcon>
-              <ListItemText primary="My Profile" />
+              <ListItemText primary="All Profile" />
             </ListItemButton>
 
             <ListItemButton onClick={handleOrder}>
@@ -99,16 +97,10 @@ export default function AdminDashboard() {
               <ListItemText primary="All Orders" />
             </ListItemButton>
 
-            <ListItemButton onClick={handleClick}>
-              <ListItemIcon>
-                <AddCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Create Order" />
-            </ListItemButton>
           </div>
 
           <div className="button-wrapper">
-            <Button variant="contained" onClick={logout}>Log Out</Button>
+            <Button variant="contained" onClick={logoutSubmit}>Log Out</Button>
           </div>
         </List>
       </Drawer>

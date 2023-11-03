@@ -6,7 +6,7 @@ const Profile: React.FC = () => {
     const userEmail = window.localStorage.getItem("email");
     const userPass = window.localStorage.getItem("password");
    
-    console.log(window.localStorage.getItem("email"))
+    
 
     return (
         <div>

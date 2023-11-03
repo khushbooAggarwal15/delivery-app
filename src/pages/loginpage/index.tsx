@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../../utils/auth";
 import * as yup from "yup";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Link from "@mui/material/Link";
@@ -15,7 +14,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import useProtectedRoute from "@/components/AuthRoute/protectRoute";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {CircularProgress,Backdrop} from '@mui/material';
 import Avatar from "@mui/material/Avatar";
 
 interface IUser {
@@ -26,9 +25,9 @@ interface IUser {
 const schema = yup.object().shape({
   email: yup
     .string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  password: yup.string().required("Please provide a valid password"),
+    .email("*Invalid email address")
+    .required("*Email is required"),
+  password: yup.string().required("*Enter password"),
 });
 
 function LoginPage() {
@@ -40,15 +39,19 @@ function LoginPage() {
   } = useForm<IUser>({
     resolver: yupResolver(schema),
   });
+  const [loading, setLoading] = useState(false);
+
 
   const { login } = useAuth();
   const router = useRouter();
 
   const onSubmit = async (data: IUser) => {
+    setLoading(true);
     // e.preventDefault();
     console.log("data", data);
     await login(data.email, data.password);
     console.log(window.localStorage.getItem("access_token"));
+    setLoading(false);
 
     if (window.localStorage.getItem("access_token")) {
       router.push("/dashboardpage");
@@ -58,7 +61,9 @@ function LoginPage() {
   };
 
   const handleClick = () => {
+    setLoading(true);
     router.push("/registerpage");
+    setLoading(false);
   };
   return (
     <Box
@@ -93,7 +98,7 @@ function LoginPage() {
               />
             )}
           />
-          <p style={{ color: "red", height: "16px" }}>
+          <p style={{ color: "red", height:"7px",fontStyle: "italic" }}>
             {errors?.email?.message}
           </p>
 
@@ -113,7 +118,7 @@ function LoginPage() {
               />
             )}
           />
-          <p style={{ color: "red", height: "16px" }}>
+          <p style={{ color: "red", height:"7px", fontStyle: "italic"}}>
             {errors?.password?.message}
           </p>
 
@@ -125,6 +130,13 @@ function LoginPage() {
           >
             Sign In
           </Button>
+          <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}>
+        
+
+          <CircularProgress color="inherit" />
+        </Backdrop>
 
           {/* <Grid container> */}
           <Grid item>
@@ -135,6 +147,14 @@ function LoginPage() {
           <Grid container justifyContent="right">
             <Link href="#" variant="body2" onClick={handleClick}>
               {"Don't have an account? Sign Up"}
+
+              <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}>
+        
+
+          <CircularProgress color="inherit" />
+        </Backdrop>
             </Link>
             {/* </Grid> */}
           </Grid>
