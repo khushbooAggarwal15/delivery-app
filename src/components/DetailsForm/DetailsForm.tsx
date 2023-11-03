@@ -65,23 +65,12 @@ interface Order {
 
 const DetailsForm: React.FC<{
   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setOpenDetails }) => {
-  const [data, setData] = useState({} as Order);
-  const storedData = window.localStorage.getItem("data");
-
-  useEffect(() => {
-    if (storedData) {
-      const dataArray = JSON.parse(storedData);
-      if (Array.isArray(dataArray) && dataArray.length > 0) {
-        const lastItem = dataArray[dataArray.length - 1];
-        setData(lastItem);
-      }
-    }
-  }, []);
+  formDetails: any;
+}> = ({ setOpenDetails, formDetails }) => {
   const handleConfirm = () => {
     setOpenDetails(false);
   };
-  console.log(data);
+  //   console.log(formDetails);
   return (
     <>
       <TableContainer component={Paper}>
@@ -109,29 +98,29 @@ const DetailsForm: React.FC<{
                 <p>20</p>
               </TableCell>
               <TableCell align="center">
-                {data.message?.intent?.category?.id}
+                {formDetails.message?.intent?.category?.id}
               </TableCell>
 
               <TableCell align="center">
                 {" "}
-                {data.message?.intent?.fulfillment?.start?.location?.gps}
+                {formDetails.message?.intent?.fulfillment?.start?.location?.gps}
               </TableCell>
               <TableCell align="center">
                 {" "}
                 {
-                  data.message?.intent?.fulfillment?.start?.location?.address
-                    ?.area_code
+                  formDetails.message?.intent?.fulfillment?.start?.location
+                    ?.address?.area_code
                 }
               </TableCell>
               <TableCell align="center">
                 {" "}
-                {data.message?.intent?.fulfillment?.end?.location?.gps}
+                {formDetails.message?.intent?.fulfillment?.end?.location?.gps}
               </TableCell>
               <TableCell align="center">
                 {" "}
                 {
-                  data.message?.intent?.fulfillment?.end?.location?.address
-                    ?.area_code
+                  formDetails.message?.intent?.fulfillment?.end?.location
+                    ?.address?.area_code
                 }
               </TableCell>
             </TableRow>
