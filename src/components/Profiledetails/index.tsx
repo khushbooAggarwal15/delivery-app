@@ -2,9 +2,11 @@ import React from "react";
 import { useAuth } from "@/utils/auth";
 
 const Profile: React.FC = () => {
-  const { user } = useAuth();
-  const userEmail = window.localStorage.getItem("email");
-  const userPass = window.localStorage.getItem("password");
+    const { user } = useAuth();
+    const userEmail = window.localStorage.getItem("email");
+    const userPass = window.localStorage.getItem("password");
+   
+    
 
   console.log(window.localStorage.getItem("email"));
 
