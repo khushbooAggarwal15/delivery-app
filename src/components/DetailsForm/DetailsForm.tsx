@@ -78,8 +78,14 @@ const DetailsForm: React.FC<{
   const handleConfirm = () => {
     setLoading(true);
     formData(formDetails);
-    setOpenDetails(false);
-    setLoading(false);
+    setTimeout(() => {
+
+      setOpenDetails(false);
+    }, 2000);
+    
+    
+  
+
   };
   //   console.log(formDetails);
   return (
