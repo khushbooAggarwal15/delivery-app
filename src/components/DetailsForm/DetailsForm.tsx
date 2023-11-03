@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { useAuth } from "@/utils/auth";
 import {
   Button,
@@ -9,7 +10,8 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+
+import {CircularProgress,Backdrop} from '@mui/material';
 interface Order {
   message: {
     intent: {
@@ -66,14 +68,18 @@ interface Order {
   };
 }
 
+
 const DetailsForm: React.FC<{
   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>;
   formDetails: any;
 }> = ({ setOpenDetails, formDetails }) => {
   const { formData } = useAuth();
+  const [loading, setLoading] = useState(false);
   const handleConfirm = () => {
+    setLoading(true);
     formData(formDetails);
     setOpenDetails(false);
+    setLoading(false);
   };
   //   console.log(formDetails);
   return (
@@ -135,6 +141,13 @@ const DetailsForm: React.FC<{
       <Button variant="contained" onClick={handleConfirm}>
         Confirm Order
       </Button>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}>
+        
+
+          <CircularProgress color="inherit" />
+        </Backdrop>
     </>
   );
 };

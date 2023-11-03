@@ -63,7 +63,7 @@ function LoginPage() {
   const handleClick = () => {
     setLoading(true);
     router.push("/registerpage");
-    setLoading(false);
+    
   };
   return (
     <Box
