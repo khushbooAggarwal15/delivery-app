@@ -9,6 +9,8 @@ function useProtectedRoute() {
     // console.log("value" + token);
     if (!token || token == null) {
       router.push("/");
+    } else if (token) {
+      router.push("/dashboardpage");
     }
   }, [router]);
 }

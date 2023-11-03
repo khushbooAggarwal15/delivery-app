@@ -259,6 +259,9 @@ const OrderForm: React.FC<{
               </RadioGroup>
             )}
           />
+          <p style={{ color: "red" }}>
+            {errors?.message?.intent?.fulfillment?.fulfillment_type?.message}
+          </p>
           {/* </div>
         <div
           style={{
@@ -336,10 +339,6 @@ const OrderForm: React.FC<{
             color: "red",
           }}
         >
-          <p style={{ color: "red" }}>
-            {errors?.message?.intent?.fulfillment?.fulfillment_type?.message}
-          </p>
-
           <p>
             {errors.message?.intent?.fulfillment?.start?.location?.gps?.message}
           </p>

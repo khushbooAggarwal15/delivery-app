@@ -45,11 +45,13 @@ export default function UserDashboard() {
     setProfileVisibile(false);
   };
   const { user, logout } = useAuth();
-  const logoutSubmit = (e: any) => {
+
+  const logoutsubmit = (e: any) => {
     e.preventDefault();
     logout();
     router.push("/loginpage");
   };
+
   const [open, setOpen] = useState(false);
   const [opendetails, setOpenDetails] = useState(false);
   const handleOpen = () => {
@@ -169,7 +171,7 @@ export default function UserDashboard() {
           </div>
 
           <div className="button-wrapper">
-            <Button variant="contained" onClick={logoutSubmit}>
+            <Button variant="contained" onClick={logoutsubmit}>
               Log Out
             </Button>
           </div>

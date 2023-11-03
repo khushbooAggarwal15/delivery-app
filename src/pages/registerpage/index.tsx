@@ -43,8 +43,6 @@ function SignUp() {
   const { login } = useAuth();
   const router = useRouter();
 
-  const defaultTheme = createTheme();
-
   // const onSubmit = (data: any) => {
   //   console.log(data.email);
 
@@ -60,91 +58,94 @@ function SignUp() {
       ) {
         await createUserWithEmailAndPassword(auth, data.email, data.password);
       }
+      console.log("errors", errors);
       console.log();
       router.push("/loginpage");
     } catch (error) {
       console.error("Registration error:", error);
     }
   };
+
   const handleClick = () => {
     router.push("/loginpage");
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xl">
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
+    <Box
+      sx={{
+        marginTop: 8,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <LockOutlinedIcon />
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        Sign Up
+      </Typography>
+      <Container component="main" maxWidth="xs">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            control={control}
+            name="email"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                margin="normal"
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+            )}
+          />
+          <p style={{ color: "red", height: "16px" }}>
+            {errors?.email?.message}
+          </p>
+          <Controller
+            control={control}
+            name="password"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                margin="normal"
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+            )}
+          />
+
+          <p style={{ color: "red", height: "16px" }}>
+            {errors?.password?.message}
+          </p>
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
             Sign Up
-          </Typography>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Controller
-              control={control}
-              name="email"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  margin="normal"
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                />
-              )}
-            />
-            <p style={{ color: "red" }}>{errors?.email?.message}</p>
+          </Button>
 
-            <br />
-            <Controller
-              control={control}
-              name="password"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  margin="normal"
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
-              )}
-            />
-            <p style={{ color: "red" }}>{errors?.password?.message}</p>
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Submit
-            </Button>
-
-            <Grid container>
-              <Grid item>
-                <Link href="#" variant="body2" onClick={handleClick}>
-                  {"Already have account? Sign In"}
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
-        </Box>
+          {/* <Grid container> */}
+          <Grid container justifyContent="right">
+            <Link href="#" variant="body2" onClick={handleClick}>
+              {"Already have account? Sign In"}
+            </Link>
+            {/* </Grid> */}
+          </Grid>
+        </form>
       </Container>
-    </ThemeProvider>
+    </Box>
   );
 }
 
