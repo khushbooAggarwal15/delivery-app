@@ -39,30 +39,6 @@ interface Order {
           };
         };
       };
-
-      payload_details: {
-        weight: {
-          unit: string;
-          value: number;
-        };
-        dimensions: {
-          length: {
-            unit: string;
-            value: number;
-          };
-          breadth: {
-            unit: string;
-            value: number;
-          };
-          height: {
-            unit: string;
-            value: number;
-          };
-        };
-        category: string;
-
-        dangerous_goods: string;
-      };
     };
   };
 }
@@ -129,8 +105,9 @@ const Orders = () => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Id</StyledTableCell>
-              <StyledTableCell align="center">Fulfillment_type</StyledTableCell>
+              {/* <StyledTableCell align="center">Name</StyledTableCell>
+              <StyledTableCell align="center">Cost</StyledTableCell> */}
+              <StyledTableCell align="center">ID</StyledTableCell>
               <StyledTableCell align="center">Start gps</StyledTableCell>
               <StyledTableCell align="center">
                 Start address areacode
@@ -139,10 +116,6 @@ const Orders = () => {
               <StyledTableCell align="center">
                 End address areacode
               </StyledTableCell>
-              <StyledTableCell align="center">Weight</StyledTableCell>
-              <StyledTableCell align="center">Length</StyledTableCell>
-              <StyledTableCell align="center">Beadth</StyledTableCell>
-              <StyledTableCell align="center">Height</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -154,11 +127,12 @@ const Orders = () => {
                 {/* <TableCell component="th" scope="row">
                   {index}
                 </TableCell> */}
+
+                {/* <StyledTableCell align="center">
+                  {item?.message?.intent?.fulfillment?.fulfillment_type}
+                </StyledTableCell> */}
                 <StyledTableCell align="center">
                   {item?.message?.intent?.category?.id}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {item?.message?.intent?.fulfillment?.fulfillment_type}
                 </StyledTableCell>
                 <StyledTableCell align="center">
                   {" "}
@@ -182,7 +156,7 @@ const Orders = () => {
                       ?.area_code
                   }
                 </StyledTableCell>
-                <StyledTableCell align="center">
+                {/* <StyledTableCell align="center">
                   {" "}
                   {item?.message?.intent?.payload_details?.weight?.value}{" "}
                   {item?.message?.intent?.payload_details?.weight?.unit}
@@ -218,7 +192,7 @@ const Orders = () => {
                     item.message?.intent?.payload_details?.dimensions?.height
                       ?.unit
                   }
-                </StyledTableCell>
+                </StyledTableCell> */}
               </StyledTableRow>
             ))}
           </TableBody>
