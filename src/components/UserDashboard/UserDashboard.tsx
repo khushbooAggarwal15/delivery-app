@@ -46,11 +46,11 @@ export default function UserDashboard() {
   };
   const { user, logout } = useAuth();
 
-  // const logoutsubmit = (e: any) => {
-  //   e.preventDefault();
-  //   logout();
-  //   router.push("/loginpage");
-  // };
+  const logoutsubmit = (e: any) => {
+    e.preventDefault();
+    logout();
+    router.push("/loginpage");
+  };
 
   const [open, setOpen] = useState(false);
   const [opendetails, setOpenDetails] = useState(false);
