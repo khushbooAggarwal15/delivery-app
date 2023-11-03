@@ -171,7 +171,7 @@ export default function UserDashboard() {
           </div>
 
           <div className="button-wrapper">
-            <Button variant="contained" onClick={logoutSubmit}>
+            <Button variant="contained" onClick={logoutsubmit}>
               Log Out
             </Button>
           </div>
