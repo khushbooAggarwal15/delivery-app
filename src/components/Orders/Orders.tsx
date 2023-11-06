@@ -12,6 +12,7 @@ import {
   TableBody,
   styled,
   tableCellClasses,
+  TextField,
 } from "@mui/material";
 interface Order {
   message: {
@@ -93,7 +94,10 @@ const Orders = () => {
   });
   return (
     <>
-      <input
+      <TextField
+        fullWidth
+        label="Search"
+        id="Search"
         type="search"
         placeholder="Search"
         onChange={(e) => setSearchTerm(e.target.value)}

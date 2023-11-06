@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import { CircularProgress, Backdrop } from "@mui/material";
+import Router, { useRouter } from "next/router";
 interface Order {
   message: {
     intent: {
@@ -74,13 +75,19 @@ const DetailsForm: React.FC<{
   formDetails: any;
 }> = ({ setOpenDetails, formDetails }) => {
   const { formData } = useAuth();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+
   const handleConfirm = () => {
-    setLoading(true);
+    console.log(loading);
+    // setLoading(true);
     formData(formDetails);
-    setTimeout(() => {
-      setOpenDetails(false);
-    }, 2000);
+
+    // setTimeout(() => {
+    setOpenDetails(false);
+    // }, 2000);
+
+    router.push("/checkoutpage");
   };
 
   return (
@@ -139,10 +146,10 @@ const DetailsForm: React.FC<{
           </TableBody>
         </Table>
       </TableContainer>
-      <Box textAlign='center'>
-      <Button variant="contained" onClick={handleConfirm}>
-        Confirm Order
-      </Button>
+      <Box textAlign="center">
+        <Button variant="contained" onClick={handleConfirm}>
+          Add to Cart
+        </Button>
       </Box>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
