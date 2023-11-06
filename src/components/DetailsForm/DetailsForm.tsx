@@ -9,6 +9,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Box,
 } from "@mui/material";
 
 import {CircularProgress,Backdrop} from '@mui/material';
@@ -144,9 +145,11 @@ const DetailsForm: React.FC<{
           </TableBody>
         </Table>
       </TableContainer>
+      <Box textAlign='center'>
       <Button variant="contained" onClick={handleConfirm}>
         Confirm Order
       </Button>
+      </Box>
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}>
