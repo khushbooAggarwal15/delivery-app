@@ -4,7 +4,6 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import * as yup from "yup";
-import { useAuth } from "../../utils/auth";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -14,7 +13,6 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { app } from "@/utils/firebase";
 
@@ -40,7 +38,6 @@ function SignUp() {
     resolver: yupResolver(schema),
   });
   const auth = getAuth(app);
-  const { login } = useAuth();
   const router = useRouter();
 
   // const onSubmit = (data: any) => {
@@ -57,18 +54,19 @@ function SignUp() {
         (data.email === "admin@gmail.com" && data.password === "admin1234")
       ) {
         await createUserWithEmailAndPassword(auth, data.email, data.password);
+        router.push("/loginpage");
+      } else {
+        alert("Registration error");
       }
       console.log("errors", errors);
-      console.log();
-      router.push("/loginpage");
     } catch (error) {
       console.error("Registration error:", error);
     }
   };
 
-  const handleClick = () => {
-    router.push("/loginpage");
-  };
+  // const handleClick = () => {
+  //   router.push("/loginpage");
+  // };
 
   return (
     <Box
@@ -138,7 +136,11 @@ function SignUp() {
 
           {/* <Grid container> */}
           <Grid container justifyContent="right">
-            <Link href="#" variant="body2" onClick={handleClick}>
+            <Link
+              href="#"
+              variant="body2"
+              onClick={() => router.push("/loginpage")}
+            >
               {"Already have account? Sign In"}
             </Link>
             {/* </Grid> */}

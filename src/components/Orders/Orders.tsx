@@ -1,6 +1,7 @@
 import { useAuth } from "@/utils/auth";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import styles from "./Orders.module.css";
 import {
   TableContainer,
   Paper,
@@ -10,10 +11,9 @@ import {
   TableCell,
   TableBody,
   styled,
-  tableCellClasses,TextField, InputAdornment
+  tableCellClasses,
+  TextField,
 } from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from "@mui/icons-material/AccountCircle";
 interface Order {
   message: {
     intent: {
@@ -47,14 +47,9 @@ interface Order {
 }
 
 const Orders = () => {
-  const route = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const storedData = window.localStorage.getItem("data");
   const data: Order[] | null = storedData ? JSON.parse(storedData) : null;
-
-  if (data === null || data.length === 0) {
-    return <p>No orders available.</p>;
-  }
 
   if (!Array.isArray(data) || data.length === 0) {
     return <p>No orders available.</p>;
@@ -99,12 +94,14 @@ const Orders = () => {
   });
   return (
     <>
-    
- 
-    <TextField fullWidth label="Search" id="Search" type="search"
+      <TextField
+        fullWidth
+        label="Search"
+        id="Search"
+        type="search"
         placeholder="Search"
-        onChange={(e) => setSearchTerm(e.target.value)}/>
-    
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
@@ -129,20 +126,9 @@ const Orders = () => {
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                {/* <TableCell component="th" scope="row">
-                  {index}
-                </TableCell> */}
-                <StyledTableCell align="center">
-                  {" "}
-                  {/* {item?.message?.intent?.name} */}Name
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {" "}
-                  {/* {item?.message?.intent?.cost} */}200
-                </StyledTableCell>
-                {/* <StyledTableCell align="center">
-                  {item?.message?.intent?.fulfillment?.fulfillment_type}
-                </StyledTableCell> */}
+                <StyledTableCell align="center"> Name</StyledTableCell>
+                <StyledTableCell align="center"> 200</StyledTableCell>
+
                 <StyledTableCell align="center">
                   {item?.message?.intent?.category?.id}
                 </StyledTableCell>
@@ -155,60 +141,20 @@ const Orders = () => {
                   {item?.message?.intent?.fulfillment?.start?.location?.gps}
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {" "}
                   {
                     item.message?.intent?.fulfillment?.start?.location?.address
                       ?.area_code
                   }
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {" "}
                   {item?.message?.intent?.fulfillment?.end?.location?.gps}
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {" "}
                   {
                     item.message?.intent?.fulfillment?.end?.location?.address
                       ?.area_code
                   }
                 </StyledTableCell>
-                {/* <StyledTableCell align="center">
-                  {" "}
-                  {item?.message?.intent?.payload_details?.weight?.value}{" "}
-                  {item?.message?.intent?.payload_details?.weight?.unit}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {" "}
-                  {
-                    item.message?.intent?.payload_details?.dimensions?.length
-                      ?.value
-                  }{" "}
-                  {
-                    item.message?.intent?.payload_details?.dimensions?.length
-                      ?.unit
-                  }
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {" "}
-                  {
-                    item.message?.intent?.payload_details?.dimensions?.breadth
-                      ?.value
-                  }{" "}
-                  {
-                    item.message?.intent?.payload_details?.dimensions?.breadth
-                      ?.unit
-                  }
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {
-                    item.message?.intent?.payload_details?.dimensions?.height
-                      ?.value
-                  }{" "}
-                  {
-                    item.message?.intent?.payload_details?.dimensions?.height
-                      ?.unit
-                  }
-                </StyledTableCell> */}
               </StyledTableRow>
             ))}
           </TableBody>
