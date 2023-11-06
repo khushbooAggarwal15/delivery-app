@@ -112,6 +112,7 @@ const Orders = () => {
               <StyledTableCell align="center">Name</StyledTableCell>
               <StyledTableCell align="center">Cost</StyledTableCell>
               <StyledTableCell align="center">ID</StyledTableCell>
+              <StyledTableCell align="center">FulFillment</StyledTableCell>
               <StyledTableCell align="center">Start gps</StyledTableCell>
               <StyledTableCell align="center">
                 Start address areacode
@@ -144,6 +145,10 @@ const Orders = () => {
                 </StyledTableCell> */}
                 <StyledTableCell align="center">
                   {item?.message?.intent?.category?.id}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {" "}
+                  {item?.message?.intent?.fulfillment?.fulfillment_type}
                 </StyledTableCell>
                 <StyledTableCell align="center">
                   {" "}
