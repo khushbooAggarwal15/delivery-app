@@ -84,9 +84,6 @@ export default function UserDashboard() {
   const [orderVisisble, setorderVisibile] = useState(true);
   const router = useRouter();
 
-  // const handleClick = () => {
-  //   router.push("/createorder");
-  // };
   const handleProfile = () => {
     setProfileVisibile(true);
     setorderVisibile(false);

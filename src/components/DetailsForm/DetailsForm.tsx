@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@mui/material";
 
-import {CircularProgress,Backdrop} from '@mui/material';
+import { CircularProgress, Backdrop } from "@mui/material";
 interface Order {
   message: {
     intent: {
@@ -68,7 +68,6 @@ interface Order {
   };
 }
 
-
 const DetailsForm: React.FC<{
   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>;
   formDetails: any;
@@ -79,15 +78,10 @@ const DetailsForm: React.FC<{
     setLoading(true);
     formData(formDetails);
     setTimeout(() => {
-
       setOpenDetails(false);
     }, 2000);
-    
-    
-  
-
   };
-  //   console.log(formDetails);
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -148,12 +142,11 @@ const DetailsForm: React.FC<{
         Confirm Order
       </Button>
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}>
-        
-
-          <CircularProgress color="inherit" />
-        </Backdrop>
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 };

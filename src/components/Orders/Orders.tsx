@@ -126,82 +126,30 @@ const Orders = () => {
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                {/* <TableCell component="th" scope="row">
-                  {index}
-                </TableCell> */}
-                <StyledTableCell align="center">
-                  {" "}
-                  {/* {item?.message?.intent?.name} */}Name
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {" "}
-                  {/* {item?.message?.intent?.cost} */}200
-                </StyledTableCell>
-                {/* <StyledTableCell align="center">
-                  {item?.message?.intent?.fulfillment?.fulfillment_type}
-                </StyledTableCell> */}
+                <StyledTableCell align="center"> Name</StyledTableCell>
+                <StyledTableCell align="center"> 200</StyledTableCell>
+
                 <StyledTableCell align="center">
                   {item?.message?.intent?.category?.id}
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {" "}
                   {item?.message?.intent?.fulfillment?.start?.location?.gps}
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {" "}
                   {
                     item.message?.intent?.fulfillment?.start?.location?.address
                       ?.area_code
                   }
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {" "}
                   {item?.message?.intent?.fulfillment?.end?.location?.gps}
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {" "}
                   {
                     item.message?.intent?.fulfillment?.end?.location?.address
                       ?.area_code
                   }
                 </StyledTableCell>
-                {/* <StyledTableCell align="center">
-                  {" "}
-                  {item?.message?.intent?.payload_details?.weight?.value}{" "}
-                  {item?.message?.intent?.payload_details?.weight?.unit}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {" "}
-                  {
-                    item.message?.intent?.payload_details?.dimensions?.length
-                      ?.value
-                  }{" "}
-                  {
-                    item.message?.intent?.payload_details?.dimensions?.length
-                      ?.unit
-                  }
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {" "}
-                  {
-                    item.message?.intent?.payload_details?.dimensions?.breadth
-                      ?.value
-                  }{" "}
-                  {
-                    item.message?.intent?.payload_details?.dimensions?.breadth
-                      ?.unit
-                  }
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {
-                    item.message?.intent?.payload_details?.dimensions?.height
-                      ?.value
-                  }{" "}
-                  {
-                    item.message?.intent?.payload_details?.dimensions?.height
-                      ?.unit
-                  }
-                </StyledTableCell> */}
               </StyledTableRow>
             ))}
           </TableBody>
