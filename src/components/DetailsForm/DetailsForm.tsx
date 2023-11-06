@@ -9,9 +9,11 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Box,
 } from "@mui/material";
 
-import {CircularProgress,Backdrop} from '@mui/material';
+import { CircularProgress, Backdrop } from "@mui/material";
+import Router, { useRouter } from "next/router";
 interface Order {
   message: {
     intent: {
@@ -68,26 +70,26 @@ interface Order {
   };
 }
 
-
 const DetailsForm: React.FC<{
   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>;
   formDetails: any;
 }> = ({ setOpenDetails, formDetails }) => {
   const { formData } = useAuth();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+
   const handleConfirm = () => {
-    setLoading(true);
+    console.log(loading);
+    // setLoading(true);
     formData(formDetails);
-    setTimeout(() => {
 
-      setOpenDetails(false);
-    }, 2000);
-    
-    
-  
+    // setTimeout(() => {
+    setOpenDetails(false);
+    // }, 2000);
 
+    router.push("/checkoutpage");
   };
-  //   console.log(formDetails);
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -144,16 +146,17 @@ const DetailsForm: React.FC<{
           </TableBody>
         </Table>
       </TableContainer>
-      <Button variant="contained" onClick={handleConfirm}>
-        Confirm Order
-      </Button>
+      <Box textAlign="center">
+        <Button variant="contained" onClick={handleConfirm}>
+          Add to Cart
+        </Button>
+      </Box>
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}>
-        
-
-          <CircularProgress color="inherit" />
-        </Backdrop>
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 };

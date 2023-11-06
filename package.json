@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.14.16",
     "@mui/joy": "^5.0.0-beta.13",
     "@mui/material": "^5.14.15",
+    "@tanstack/react-query": "^5.7.2",
     "axios": "^1.6.0",
     "dropzone": "^6.0.0-beta.2",
     "firebase": "^10.5.2",
@@ -35,6 +36,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-query": "^1.2.9",
     "@types/styled-components": "^5.1.29",
     "typescript": "^5"
   }

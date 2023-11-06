@@ -76,12 +76,12 @@ const Profile: React.FC = () => {
                 <Input
                   size="sm"
                   placeholder="First name"
-                  defaultValue="Gagan"
+                  defaultValue="First name"
                 />
                 <Input
                   size="sm"
                   placeholder="Last name"
-                  defaultValue="Joshi"
+                  defaultValue="Last name"
                   sx={{ flexGrow: 1 }}
                 />
               </FormControl>
