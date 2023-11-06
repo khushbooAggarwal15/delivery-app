@@ -1,6 +1,7 @@
 import { useAuth } from "@/utils/auth";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import styles from "./Orders.module.css";
 import {
   TableContainer,
   Paper,
@@ -10,10 +11,8 @@ import {
   TableCell,
   TableBody,
   styled,
-  tableCellClasses,TextField, InputAdornment
+  tableCellClasses,
 } from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from "@mui/icons-material/AccountCircle";
 interface Order {
   message: {
     intent: {
@@ -47,14 +46,9 @@ interface Order {
 }
 
 const Orders = () => {
-  const route = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const storedData = window.localStorage.getItem("data");
   const data: Order[] | null = storedData ? JSON.parse(storedData) : null;
-
-  if (data === null || data.length === 0) {
-    return <p>No orders available.</p>;
-  }
 
   if (!Array.isArray(data) || data.length === 0) {
     return <p>No orders available.</p>;
@@ -99,12 +93,11 @@ const Orders = () => {
   });
   return (
     <>
-    
- 
-    <TextField fullWidth label="Search" id="Search" type="search"
+      <input
+        type="search"
         placeholder="Search"
-        onChange={(e) => setSearchTerm(e.target.value)}/>
-    
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
