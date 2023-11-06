@@ -2,8 +2,6 @@
 import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
 import { createContext, useContext, useState } from "react";
 import { app } from "@/utils/firebase";
-import router from "next/router";
-
 interface IUser {
   email: string;
   password: string;
@@ -136,7 +134,7 @@ const authContextDefaultValues: authContextType = {
   formData: () => {},
 };
 
-const AuthContext = createContext<authContextType>(authContextDefaultValues);
+const AuthContext = createContext(authContextDefaultValues);
 
 export const useAuth = () => {
   return useContext(AuthContext);
@@ -187,11 +185,9 @@ export function AuthProvider({ children }: Props) {
         password
       );
       const userInfo: any = userCredential.user;
-
       window.localStorage.setItem("email", userInfo.email);
       const token = userInfo.accessToken;
       window.localStorage.setItem("access_token", token);
-      // router.push("/dashboardpage");
     } catch (error) {
       console.error("Authentication failed:", error);
     }
@@ -209,10 +205,8 @@ export function AuthProvider({ children }: Props) {
   };
 
   return (
-    <>
-      <AuthContext.Provider value={{ user, login, logout, formData, data }}>
-        {children}
-      </AuthContext.Provider>
-    </>
+    <AuthContext.Provider value={{ user, login, logout, formData, data }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
