@@ -1,3 +1,4 @@
+import { useAuth } from "@/utils/auth";
 import { Button } from "@mui/material";
 import React from "react";
 declare global {
@@ -6,6 +7,7 @@ declare global {
   }
 }
 const BillingStep = ({ setactiveStep, activeStep }: any) => {
+  const { transactionData } = useAuth();
   const handleClick = () => {
     setactiveStep(activeStep + 1);
   };
@@ -35,7 +37,14 @@ const BillingStep = ({ setactiveStep, activeStep }: any) => {
       description: "Thankyou for your test donation",
       image: "https://manuarora.in/logo.png",
       handler: function (response: any) {
-        alert("Razorpay Response: " + response.razorpay_payment_id);
+        if (response.razorpay_payment_id) {
+          const transactionId = response.razorpay_payment_id;
+
+          transactionData(transactionId);
+          alert("Payment successful. Transaction ID: " + transactionId);
+        } else {
+          alert("Payment failed or canceled.");
+        }
       },
       prefill: {
         name: "khushboo aggarwal",
@@ -68,6 +77,7 @@ const BillingStep = ({ setactiveStep, activeStep }: any) => {
       <Button
         type="submit"
         variant="contained"
+        onClick={handleClick}
         sx={{ mt: 3, ml: 1, justifyContent: "flex-end" }}
       >
         Next
