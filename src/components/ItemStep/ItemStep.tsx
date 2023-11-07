@@ -76,21 +76,26 @@ interface IAddress {
   zip: string;
   country: string;
 }
+interface ITransaction {
+  transaction_id: string;
+}
 
 const ItemStep = () => {
   const { formData } = useAuth();
   const storedData = window.localStorage.getItem("newdata");
   const addressData = window.localStorage.getItem("address");
-
+  const transactionData = window.localStorage.getItem("transaction_id");
   const data: IData[] = storedData ? JSON.parse(storedData) : null;
   const data1: IAddress = addressData ? JSON.parse(addressData) : null;
   console.log(data1);
+
   console.log("data" + JSON.stringify(data));
 
   const handleClick = () => {
     const combinedData = {
       data: data,
       data1: data1,
+      data2: transactionData,
     };
 
     console.log(combinedData);
@@ -126,13 +131,13 @@ const ItemStep = () => {
         </Typography>
       </Grid>
 
-      {/* <Grid item xs={12} sm={6}>
+      <Grid item xs={12} sm={6}>
         <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-          Shipping
+          Transaction
         </Typography>
-        <Typography gutterBottom></Typography>
-        <Typography gutterBottom></Typography>
-      </Grid> */}
+
+        <Typography gutterBottom>{transactionData}</Typography>
+      </Grid>
 
       <Box
         sx={{

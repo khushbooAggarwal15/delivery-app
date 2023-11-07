@@ -60,7 +60,9 @@ interface IData {
     };
   };
 }
-
+interface ITransaction {
+  transaction_id: string;
+}
 interface IAddress {
   name: string;
   contactnumber: string;
@@ -80,6 +82,7 @@ interface authContextType {
   formData: (value: any) => void;
   newformData: (value: IData) => void;
   addressData: (value: IAddress) => void;
+  transactionData: (value: ITransaction) => void;
 }
 
 const authContextDefaultValues: authContextType = {
@@ -149,6 +152,7 @@ const authContextDefaultValues: authContextType = {
   formData: () => {},
   newformData: () => {},
   addressData: () => {},
+  transactionData: () => {},
 };
 
 const AuthContext = createContext(authContextDefaultValues);
@@ -165,6 +169,7 @@ export function AuthProvider({ children }: Props) {
   const [user, setUser] = useState<IUser>({ email: "", password: "" });
   const [newdata, setNewData] = useState<IData[]>([]);
   const [address, setAddress] = useState<IAddress>();
+  const [transaction, setTransaction] = useState<ITransaction>();
   const logout = () => {
     window.localStorage.removeItem("access_token");
     window.localStorage.setItem("email", String(null));
@@ -221,6 +226,11 @@ export function AuthProvider({ children }: Props) {
     setAddress(value);
     window.localStorage.setItem("address", JSON.stringify(value));
   };
+  const transactionData = (value: ITransaction) => {
+    console.log(value);
+    setTransaction(value);
+    window.localStorage.setItem("transaction_id", JSON.stringify(value));
+  };
 
   const formData = (value: any) => {
     const previousDataString = window.localStorage.getItem("data");
@@ -236,7 +246,16 @@ export function AuthProvider({ children }: Props) {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, formData, newformData, data, addressData }}
+      value={{
+        user,
+        login,
+        logout,
+        formData,
+        newformData,
+        data,
+        addressData,
+        transactionData,
+      }}
     >
       {children}
     </AuthContext.Provider>

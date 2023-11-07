@@ -4,32 +4,16 @@ import useGetData from "../../CustomHooks/useGet";
 import usePostData from "../../CustomHooks/usePost";
 
 function Api() {
-  const { data, isLoading, isError } = useGetData();
-  const postMutation = usePostData();
+  const { data, isLoading, isError } = useGetData("/users");
+  const postMutation = usePostData("/posts");
   const queryClient = useQueryClient();
   const handleCreatePost = async () => {
     const postData = {
-      id: 100,
-      name: "wits lab ",
-      username: "Antonette",
-      email: "Shanna@melissa.tv",
-      address: {
-        street: "Victor Plains",
-        suite: "Suite 879",
-        city: "Wisokyburgh",
-        zipcode: "90566-7771",
-        geo: {
-          lat: "-43.9509",
-          lng: "-34.4618",
-        },
-      },
-      phone: "010-692-6593 x09125",
-      website: "anastasia.net",
-      company: {
-        name: "Deckow-Crist",
-        catchPhrase: "Proactive didactic contingency",
-        bs: "synergize scalable supply-chains",
-      },
+      userId: 10,
+      name: "witslab",
+      id: 98,
+      title: "laboriosam dolor voluptates",
+      body: "doloremque ex facilis sit sint culpa\nsoluta assumenda eligendi non ut eius\nsequi ducimus vel quasi\nveritatis est dolores",
     };
 
     try {
