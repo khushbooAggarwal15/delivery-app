@@ -14,7 +14,7 @@ import {
   tableCellClasses,
   TextField,
 } from "@mui/material";
-interface Order {
+interface IData {
   message: {
     intent: {
       category: {
@@ -42,14 +42,50 @@ interface Order {
           };
         };
       };
+      payload_details: {
+        weight: {
+          unit: string;
+          value: number;
+        };
+        dimensions: {
+          length: {
+            unit: string;
+            value: number;
+          };
+          breadth: {
+            unit: string;
+            value: number;
+          };
+          height: {
+            unit: string;
+            value: number;
+          };
+        };
+        category: string;
+
+        dangerous_goods: string;
+      };
     };
   };
+}
+
+interface IAddress {
+  name: string;
+  contactnumber: string;
+  address1: string;
+  address2: string;
+  landmark: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
 }
 
 const Orders = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const storedData = window.localStorage.getItem("data");
-  const data: Order[] | null = storedData ? JSON.parse(storedData) : null;
+  const data: IData = storedData ? JSON.parse(storedData) : null;
+  const data1: IAddress = storedData ? JSON.parse(storedData) : null;
 
   if (!Array.isArray(data) || data.length === 0) {
     return <p>No orders available.</p>;
@@ -106,8 +142,8 @@ const Orders = () => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Name</StyledTableCell>
-              <StyledTableCell align="center">Cost</StyledTableCell>
+              <StyledTableCell align="center">Shipping Address</StyledTableCell>
+              {/* <StyledTableCell align="center">Cost</StyledTableCell>
               <StyledTableCell align="center">ID</StyledTableCell>
               <StyledTableCell align="center">FulFillment</StyledTableCell>
               <StyledTableCell align="center">Start gps</StyledTableCell>
@@ -117,7 +153,7 @@ const Orders = () => {
               <StyledTableCell align="center">End gps</StyledTableCell>
               <StyledTableCell align="center">
                 End address areacode
-              </StyledTableCell>
+              </StyledTableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -126,13 +162,11 @@ const Orders = () => {
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <StyledTableCell align="center"> Name</StyledTableCell>
-                <StyledTableCell align="center"> 200</StyledTableCell>
+                {/* <StyledTableCell align="center"> Name</StyledTableCell>
+                <StyledTableCell align="center"> 200</StyledTableCell> */}
 
-                <StyledTableCell align="center">
-                  {item?.message?.intent?.category?.id}
-                </StyledTableCell>
-                <StyledTableCell align="center">
+                <StyledTableCell align="center">{data1?.name}</StyledTableCell>
+                {/* <StyledTableCell align="center">
                   {" "}
                   {item?.message?.intent?.fulfillment?.fulfillment_type}
                 </StyledTableCell>
@@ -154,7 +188,7 @@ const Orders = () => {
                     item.message?.intent?.fulfillment?.end?.location?.address
                       ?.area_code
                   }
-                </StyledTableCell>
+                </StyledTableCell> */}
               </StyledTableRow>
             ))}
           </TableBody>

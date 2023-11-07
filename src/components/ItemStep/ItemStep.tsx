@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { useRouter } from "next/router";
 
 interface IData {
   message: {
@@ -86,6 +87,7 @@ const ItemStep = () => {
   const data1: IAddress = addressData ? JSON.parse(addressData) : null;
   console.log(data1);
   console.log("data" + JSON.stringify(data));
+  const route = useRouter();
 
   const handleClick = () => {
     const combinedData = {
@@ -95,11 +97,12 @@ const ItemStep = () => {
 
     console.log(combinedData);
     formData(combinedData);
+    route.push("/dashboardpage");
   };
 
   return (
     <>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         Order summary
       </Typography>
       <List disablePadding>
@@ -115,15 +118,35 @@ const ItemStep = () => {
         </ListItem>
       </List>
 
-      <Grid item xs={12} sm={6}>
-        <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-          Shipping
-        </Typography>
-        <Typography gutterBottom>{data1.name}</Typography>
-        <Typography gutterBottom>
-          {data1.address1}
-          {data1.address2}
-        </Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
+            Shipping
+          </Typography>
+          <Typography gutterBottom>{data1?.name}</Typography>
+          <Typography gutterBottom>{data1?.address1}</Typography>
+          <Typography gutterBottom>
+            {data1?.address2}, {data1?.landmark}
+          </Typography>
+          <Typography gutterBottom>
+            {data1?.city}, {data1?.state} , {data1?.zip}
+          </Typography>
+        </Grid>
+        <Grid item container direction="column" xs={12} sm={6}>
+          <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
+            Payment details
+          </Typography>
+          <Grid container>
+            <>
+              <Grid item xs={6}>
+                <Typography gutterBottom></Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography gutterBottom></Typography>
+              </Grid>
+            </>
+          </Grid>
+        </Grid>
       </Grid>
 
       {/* <Grid item xs={12} sm={6}>
