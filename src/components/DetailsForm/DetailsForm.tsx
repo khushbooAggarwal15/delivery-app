@@ -74,17 +74,18 @@ const DetailsForm: React.FC<{
   setOpenDetails: React.Dispatch<React.SetStateAction<boolean>>;
   formDetails: any;
 }> = ({ setOpenDetails, formDetails }) => {
-  const { formData } = useAuth();
+  const { newformData } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const handleConfirm = () => {
-    console.log(loading);
+    // console.log(loading);
     // setLoading(true);
-    formData(formDetails);
+
+    newformData(formDetails);
 
     // setTimeout(() => {
-    setOpenDetails(false);
+    // setOpenDetails(false);
     // }, 2000);
 
     router.push("/checkoutpage");

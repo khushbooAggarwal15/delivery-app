@@ -60,12 +60,26 @@ interface IData {
     };
   };
 }
+
+interface IAddress {
+  name: string;
+  contactnumber: string;
+  address1: string;
+  address2: string;
+  landmark: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+}
 interface authContextType {
   user: IUser;
   data: IData[];
   login: (email: string, password: string) => void;
   logout: () => void;
-  formData: (value: IData) => void;
+  formData: (value: any) => void;
+  newformData: (value: IData) => void;
+  addressData: (value: IAddress) => void;
 }
 
 const authContextDefaultValues: authContextType = {
@@ -129,9 +143,12 @@ const authContextDefaultValues: authContextType = {
       },
     },
   ],
+
   login: () => {},
   logout: () => {},
   formData: () => {},
+  newformData: () => {},
+  addressData: () => {},
 };
 
 const AuthContext = createContext(authContextDefaultValues);
@@ -146,7 +163,8 @@ interface Props {
 export function AuthProvider({ children }: Props) {
   const [data, setData] = useState<IData[]>([]);
   const [user, setUser] = useState<IUser>({ email: "", password: "" });
-
+  const [newdata, setNewData] = useState<IData[]>([]);
+  const [address, setAddress] = useState<IAddress>();
   const logout = () => {
     window.localStorage.removeItem("access_token");
     window.localStorage.setItem("email", String(null));
@@ -193,7 +211,18 @@ export function AuthProvider({ children }: Props) {
     }
   };
 
-  const formData = (value: IData) => {
+  const newformData = (value: IData) => {
+    setNewData((prevData) => [...prevData, value]);
+    window.localStorage.setItem("newdata", JSON.stringify(newdata));
+  };
+
+  const addressData = (value: IAddress) => {
+    console.log(value);
+    setAddress(value);
+    window.localStorage.setItem("address", JSON.stringify(value));
+  };
+
+  const formData = (value: any) => {
     const previousDataString = window.localStorage.getItem("data");
     const previousData: IData[] = previousDataString
       ? JSON.parse(previousDataString)
@@ -201,11 +230,14 @@ export function AuthProvider({ children }: Props) {
     const newData = [...previousData, value];
 
     setData(newData);
+
     window.localStorage.setItem("data", JSON.stringify(newData));
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, formData, data }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, formData, newformData, data, addressData }}
+    >
       {children}
     </AuthContext.Provider>
   );

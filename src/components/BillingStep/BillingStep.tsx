@@ -1,10 +1,14 @@
+import { Button } from "@mui/material";
 import React from "react";
 declare global {
   interface Window {
     Razorpay: any;
   }
 }
-const BillingStep = () => {
+const BillingStep = ({ setactiveStep, activeStep }: any) => {
+  const handleClick = () => {
+    setactiveStep(activeStep + 1);
+  };
   const makePayment = async () => {
     const res = await initializeRazorpay();
     if (!res) {
@@ -60,7 +64,14 @@ const BillingStep = () => {
   };
   return (
     <div>
-      <button onClick={() => makePayment()}>Pay 100 now</button>
+      <button onClick={() => makePayment()}>Pay Now</button>
+      <Button
+        type="submit"
+        variant="contained"
+        sx={{ mt: 3, ml: 1, justifyContent: "flex-end" }}
+      >
+        Next
+      </Button>
     </div>
   );
 };
