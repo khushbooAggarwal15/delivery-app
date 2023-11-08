@@ -128,6 +128,7 @@ const Orders = () => {
           <TableHead>
             <TableRow>
               <StyledTableCell align="center">Item</StyledTableCell>
+              <StyledTableCell align="center">Category</StyledTableCell>
               <StyledTableCell align="center">fulfillment Type</StyledTableCell>
               <StyledTableCell align="center">Shipping Address</StyledTableCell>
               <StyledTableCell align="center">Transaction Id</StyledTableCell>
@@ -141,6 +142,10 @@ const Orders = () => {
               >
                 <StyledTableCell align="center">
                   {item?.data?.message?.intent?.payload_details?.category}
+                </StyledTableCell>
+
+                <StyledTableCell align="center">
+                  {item?.data?.message?.intent?.category?.id}
                 </StyledTableCell>
 
                 <StyledTableCell align="center">

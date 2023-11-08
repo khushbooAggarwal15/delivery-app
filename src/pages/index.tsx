@@ -5,8 +5,8 @@ import Sse from "@/components/Sse/sse";
 const index = () => {
   return (
     <div>
-        {/* <LoginPage /> */}
-  <Sse/>  
+      <LoginPage />
+      {/* <Sse/>   */}
     </div>
   );
 };
