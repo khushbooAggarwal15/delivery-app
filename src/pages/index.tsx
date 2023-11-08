@@ -5,6 +5,7 @@ const index = () => {
   return (
     <div>
       <LoginPage />
+      {/* <Sse /> */}
     </div>
   );
 };
