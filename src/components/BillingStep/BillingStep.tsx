@@ -1,79 +1,89 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import {
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  Radio,
-  Box,
-  Button,
-} from "@mui/material";
-
-export default function PaymentForm({ setactiveStep, activeStep }: any) {
+import { useAuth } from "@/utils/auth";
+import { Button } from "@mui/material";
+import React from "react";
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+const BillingStep = ({ setactiveStep, activeStep }: any) => {
+  const { transactionData } = useAuth();
   const handleClick = () => {
     setactiveStep(activeStep + 1);
   };
-  return (
-    <>
-      <Typography variant="h6" gutterBottom>
-        Select Payment method
-      </Typography>
+  const makePayment = async () => {
+    const res = await initializeRazorpay();
+    if (!res) {
+      alert("Razorpay SDK Failed to load");
+      return;
+    }
 
-      <FormControl>
-        <RadioGroup>
-          <Grid container spacing={12}>
-            <Grid item xs={12} md={6}>
-              <FormControlLabel
-                value="Credit or debit card"
-                control={<Radio />}
-                label="Credit or debit card"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <FormControlLabel
-                value="Net Banking"
-                control={<Radio />}
-                label="Net Banking"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <FormControlLabel
-                value="Other UPI Apps"
-                control={<Radio />}
-                label="Other UPI Apps"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <FormControlLabel
-                value="Cash on Delivery/Pay on Delivery"
-                control={<Radio />}
-                label="Cash on Delivery/Pay on Delivery"
-              />
-            </Grid>
-          </Grid>
-        </RadioGroup>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginTop: 3,
-            marginLeft: 6,
-          }}
-        >
-          <Button
-            type="submit"
-            onClick={handleClick}
-            variant="contained"
-            sx={{ mt: 3, ml: 1, justifyContent: "flex-end" }}
-          >
-            Next
-          </Button>
-        </Box>
-      </FormControl>
-    </>
+    const data = await fetch("/api/razorpay", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        taxAmt: 100,
+      }),
+    }).then((t) => t.json());
+
+    var options = {
+      key: process.env.RAZORPAY_KEY,
+      name: "Delivery App",
+      currency: data.currency,
+      amount: data.amount,
+      order_id: data.id,
+      description: "Thankyou for your test donation",
+      image: "https://manuarora.in/logo.png",
+      handler: function (response: any) {
+        if (response.razorpay_payment_id) {
+          const transactionId = response.razorpay_payment_id;
+
+          transactionData(transactionId);
+          alert("Payment successful. Transaction ID: " + transactionId);
+        } else {
+          alert("Payment failed or canceled.");
+        }
+      },
+      prefill: {
+        name: "khushboo aggarwal",
+        email: "aggarwal.khushi1501@gmail.com",
+        contact: "9588721893",
+      },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  };
+  const initializeRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+
+      document.body.appendChild(script);
+    });
+  };
+  return (
+    <div>
+      <button onClick={() => makePayment()}>Pay Now</button>
+      <Button
+        type="submit"
+        variant="contained"
+        onClick={handleClick}
+        sx={{ mt: 3, ml: 1, justifyContent: "flex-end" }}
+      >
+        Next
+      </Button>
+    </div>
   );
-}
+};
+
+export default BillingStep;

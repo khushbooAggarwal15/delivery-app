@@ -77,22 +77,28 @@ interface IAddress {
   zip: string;
   country: string;
 }
+interface ITransaction {
+  transaction_id: string;
+}
 
 const ItemStep = () => {
   const { formData } = useAuth();
   const storedData = window.localStorage.getItem("newdata");
   const addressData = window.localStorage.getItem("address");
-
-  const data: IData[] = storedData ? JSON.parse(storedData) : null;
+  const transactionData = window.localStorage.getItem("transaction_id");
+  const data: IData = storedData ? JSON.parse(storedData) : null;
+  console.log("data", data);
   const data1: IAddress = addressData ? JSON.parse(addressData) : null;
-  console.log(data1);
-  console.log("data" + JSON.stringify(data));
+  // console.log(data1);
+
+  // console.log("data" + JSON.stringify(data));
   const route = useRouter();
 
   const handleClick = () => {
     const combinedData = {
       data: data,
       data1: data1,
+      data2: transactionData,
     };
 
     console.log(combinedData);
@@ -108,13 +114,9 @@ const ItemStep = () => {
       <List disablePadding>
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText
-            primary={data[0]?.message?.intent?.payload_details?.category}
-            secondary={data[0]?.message?.intent?.category?.id}
+            primary={data?.message?.intent?.payload_details?.category}
+            secondary={data?.message?.intent?.category?.id}
           />
-        </ListItem>
-        <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}></Typography>
         </ListItem>
       </List>
 
@@ -133,29 +135,22 @@ const ItemStep = () => {
           </Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
-          <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
-            Payment details
+          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+            Transaction
           </Typography>
           <Grid container>
-            <>
-              <Grid item xs={6}>
-                <Typography gutterBottom></Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography gutterBottom></Typography>
-              </Grid>
-            </>
+            <Typography gutterBottom>{transactionData}</Typography>
           </Grid>
         </Grid>
       </Grid>
 
       {/* <Grid item xs={12} sm={6}>
-        <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-          Shipping
-        </Typography>
-        <Typography gutterBottom></Typography>
-        <Typography gutterBottom></Typography>
-      </Grid> */}
+        <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
+         
+        </Typography> */}
+
+      <Typography gutterBottom>{transactionData}</Typography>
+      {/* </Grid> */}
 
       <Box
         sx={{
