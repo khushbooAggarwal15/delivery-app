@@ -93,7 +93,7 @@ const ItemStep = () => {
   console.log("data", data);
   const data1: IAddress = addressData ? JSON.parse(addressData) : null;
   // console.log(data1);
-
+  const email = window.localStorage.getItem("email");
   // console.log("data" + JSON.stringify(data));
   const route = useRouter();
 
@@ -103,6 +103,7 @@ const ItemStep = () => {
       data: data,
       data1: data1,
       data2: transactionData,
+      email: email,
     };
 
     console.log(combinedData);

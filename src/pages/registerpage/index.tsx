@@ -50,8 +50,9 @@ function SignUp() {
   const onSubmit = async (data: any) => {
     try {
       if (
-        (data.email === "user@gmail.com" && data.password === "user1234") ||
-        (data.email === "admin@gmail.com" && data.password === "admin1234")
+        (data.email === "user1@gmail.com" && data.password === "user11234") ||
+        (data.email === "admin@gmail.com" && data.password === "admin1234") ||
+        (data.email === "user@gmail.com" && data.password === "user1234")
       ) {
         await createUserWithEmailAndPassword(auth, data.email, data.password);
         router.push("/loginpage");
