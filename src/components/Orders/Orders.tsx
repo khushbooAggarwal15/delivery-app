@@ -111,37 +111,16 @@ const Orders = () => {
     },
   }));
 
-  // const lowerSearchTerm = searchTerm.toLowerCase();
-
-  // const filteredData = data.filter((item) => {
-  //   if (item?.message?.intent && typeof item.message.intent === "object") {
-  //     const allValues = Object.values(item.message.intent).flatMap((obj) => {
-  //       if (typeof obj === "object") {
-  //         return Object.values(obj);
-  //       }
-  //       return [obj];
-  //     });
-  //     return allValues.some((field) =>
-  //       String(field).toLowerCase().includes(lowerSearchTerm)
-  //     );
-  //   } else {
-  //     return false;
-  //   }
-  // });
-
-  // useEffect(() => console.log("storedData", JSON.parse(storedData)), [newdata]);
-  // const A = parseData.map((e: IData) => console.log("e", e));
-  // console.log("A", A);
   return (
     <>
-      <TextField
+      {/* <TextField
         fullWidth
         label="Search"
         id="Search"
         type="search"
         placeholder="Search"
         onChange={(e) => setSearchTerm(e.target.value)}
-      />
+      /> */}
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
