@@ -218,7 +218,7 @@ export function AuthProvider({ children }: Props) {
 
   const newformData = (value: IData) => {
     setNewData((prevData) => [...prevData, value]);
-    window.localStorage.setItem("newdata", JSON.stringify(newdata));
+    window.localStorage.setItem("newdata", JSON.stringify(value));
   };
 
   const addressData = (value: IAddress) => {
@@ -226,6 +226,7 @@ export function AuthProvider({ children }: Props) {
     setAddress(value);
     window.localStorage.setItem("address", JSON.stringify(value));
   };
+
   const transactionData = (value: ITransaction) => {
     console.log(value);
     setTransaction(value);

@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { useRouter } from "next/router";
 
 interface IData {
   message: {
@@ -85,11 +86,13 @@ const ItemStep = () => {
   const storedData = window.localStorage.getItem("newdata");
   const addressData = window.localStorage.getItem("address");
   const transactionData = window.localStorage.getItem("transaction_id");
-  const data: IData[] = storedData ? JSON.parse(storedData) : null;
+  const data: IData = storedData ? JSON.parse(storedData) : null;
+  console.log("data", data);
   const data1: IAddress = addressData ? JSON.parse(addressData) : null;
-  console.log(data1);
+  // console.log(data1);
 
-  console.log("data" + JSON.stringify(data));
+  // console.log("data" + JSON.stringify(data));
+  const route = useRouter();
 
   const handleClick = () => {
     const combinedData = {
@@ -100,44 +103,54 @@ const ItemStep = () => {
 
     console.log(combinedData);
     formData(combinedData);
+    route.push("/dashboardpage");
   };
 
   return (
     <>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         Order summary
       </Typography>
       <List disablePadding>
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText
-            primary={data[0]?.message?.intent?.payload_details?.category}
-            secondary={data[0]?.message?.intent?.category?.id}
+            primary={data?.message?.intent?.payload_details?.category}
+            secondary={data?.message?.intent?.category?.id}
           />
-        </ListItem>
-        <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}></Typography>
         </ListItem>
       </List>
 
-      <Grid item xs={12} sm={6}>
-        <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-          Shipping
-        </Typography>
-        <Typography gutterBottom>{data1.name}</Typography>
-        <Typography gutterBottom>
-          {data1.address1}
-          {data1.address2}
-        </Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
+            Shipping
+          </Typography>
+          <Typography gutterBottom>{data1?.name}</Typography>
+          <Typography gutterBottom>{data1?.address1}</Typography>
+          <Typography gutterBottom>
+            {data1?.address2}, {data1?.landmark}
+          </Typography>
+          <Typography gutterBottom>
+            {data1?.city}, {data1?.state} , {data1?.zip}
+          </Typography>
+        </Grid>
+        <Grid item container direction="column" xs={12} sm={6}>
+          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+            Transaction
+          </Typography>
+          <Grid container>
+            <Typography gutterBottom>{transactionData}</Typography>
+          </Grid>
+        </Grid>
       </Grid>
 
-      <Grid item xs={12} sm={6}>
-        <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-          Transaction
-        </Typography>
+      {/* <Grid item xs={12} sm={6}>
+        <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
+         
+        </Typography> */}
 
-        <Typography gutterBottom>{transactionData}</Typography>
-      </Grid>
+      <Typography gutterBottom>{transactionData}</Typography>
+      {/* </Grid> */}
 
       <Box
         sx={{

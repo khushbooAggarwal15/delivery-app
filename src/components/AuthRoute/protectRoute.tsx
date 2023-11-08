@@ -5,6 +5,7 @@ function useProtectedRoute() {
   const router = useRouter();
 
   useEffect(() => {
+    console.log("router", router);
     const token = window.localStorage.getItem("access_token");
     // console.log("value" + token);
     if (!token || token == null) {
@@ -12,7 +13,7 @@ function useProtectedRoute() {
     } else if (token) {
       router.push("/dashboardpage");
     }
-  }, [router]);
+  }, []);
 }
-
+console.log("18");
 export default useProtectedRoute;
