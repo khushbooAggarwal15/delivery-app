@@ -105,33 +105,14 @@ const Orders = () => {
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
-    // hide last border
+
     "&:last-child td, &:last-child th": {
       border: 0,
     },
   }));
-
-  // const lowerSearchTerm = searchTerm.toLowerCase();
-
-  // const filteredData = data.filter((item) => {
-  //   if (item?.message?.intent && typeof item.message.intent === "object") {
-  //     const allValues = Object.values(item.message.intent).flatMap((obj) => {
-  //       if (typeof obj === "object") {
-  //         return Object.values(obj);
-  //       }
-  //       return [obj];
-  //     });
-  //     return allValues.some((field) =>
-  //       String(field).toLowerCase().includes(lowerSearchTerm)
-  //     );
-  //   } else {
-  //     return false;
-  //   }
-  // });
-
-  // useEffect(() => console.log("storedData", JSON.parse(storedData)), [newdata]);
-  // const A = parseData.map((e: IData) => console.log("e", e));
-  // console.log("A", A);
+  const filteredData = data.filter((item) =>
+    JSON.stringify(item).toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
     <>
       <TextField
@@ -153,7 +134,7 @@ const Orders = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item: IData, index: any) => (
+            {filteredData.map((item: IData, index: any) => (
               <StyledTableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

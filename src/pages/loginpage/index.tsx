@@ -44,25 +44,14 @@ function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
 
-  const onSubmit = (data: IUser) => {
+  const onSubmit = async (data: IUser, e: any) => {
+    e.preventDefault();
     setLoading(true);
-    // e.preventDefault();
-    console.log("data", data);
-    login(data.email, data.password);
-    // console.log(window.localStorage.getItem("access_token"));
+    await login(data.email, data.password);
     setLoading(false);
     router.push("/dashboardpage");
-    // if (window.localStorage.getItem("access_token")) {
-    //   router.push("/dashboardpage");
-    // } else {
-    //   router.push("/loginpage");
-    // }
   };
 
-  // const handleClick = () => {
-  //   // setLoading(true);
-  //   router.push("/registerpage");
-  // };
   return (
     <Box
       sx={{
