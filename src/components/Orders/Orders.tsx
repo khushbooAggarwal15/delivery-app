@@ -14,44 +14,80 @@ import {
   tableCellClasses,
   TextField,
 } from "@mui/material";
-interface Order {
-  message: {
-    intent: {
-      category: {
-        id: string;
-      };
-      name: string;
-      cost: string;
-      fulfillment: {
-        fulfillment_type: string;
-        start: {
-          location: {
-            gps: string;
 
-            address: {
-              area_code: string;
+interface IData {
+  data: {
+    message: {
+      intent: {
+        category: {
+          id: string;
+        };
+        fulfillment: {
+          fulfillment_type: string;
+          start: {
+            location: {
+              gps: string;
+
+              address: {
+                area_code: string;
+              };
+            };
+          };
+          end: {
+            location: {
+              gps: string;
+              address: {
+                area_code: string;
+              };
             };
           };
         };
-        end: {
-          location: {
-            gps: string;
-            address: {
-              area_code: string;
+        payload_details: {
+          weight: {
+            unit: string;
+            value: number;
+          };
+          dimensions: {
+            length: {
+              unit: string;
+              value: number;
+            };
+            breadth: {
+              unit: string;
+              value: number;
+            };
+            height: {
+              unit: string;
+              value: number;
             };
           };
+          category: string;
+
+          dangerous_goods: string;
         };
       };
     };
   };
+  data1: {
+    name: string;
+    contactnumber: string;
+    address1: string;
+    address2: string;
+    landmark: string;
+    city: string;
+    state: string;
+    zip: string;
+    country: string;
+  };
+  data2: string;
 }
 
 const Orders = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const storedData = window.localStorage.getItem("data");
-  const data: Order[] | null = storedData ? JSON.parse(storedData) : null;
+  const data: IData[] = storedData ? JSON.parse(storedData) : null;
 
-  if (!Array.isArray(data) || data.length === 0) {
+  if (data === null || data.length === 0) {
     return <p>No orders available.</p>;
   }
 
@@ -75,23 +111,27 @@ const Orders = () => {
     },
   }));
 
-  const lowerSearchTerm = searchTerm.toLowerCase();
+  // const lowerSearchTerm = searchTerm.toLowerCase();
 
-  const filteredData = data.filter((item) => {
-    if (item?.message?.intent && typeof item.message.intent === "object") {
-      const allValues = Object.values(item.message.intent).flatMap((obj) => {
-        if (typeof obj === "object") {
-          return Object.values(obj);
-        }
-        return [obj];
-      });
-      return allValues.some((field) =>
-        String(field).toLowerCase().includes(lowerSearchTerm)
-      );
-    } else {
-      return false;
-    }
-  });
+  // const filteredData = data.filter((item) => {
+  //   if (item?.message?.intent && typeof item.message.intent === "object") {
+  //     const allValues = Object.values(item.message.intent).flatMap((obj) => {
+  //       if (typeof obj === "object") {
+  //         return Object.values(obj);
+  //       }
+  //       return [obj];
+  //     });
+  //     return allValues.some((field) =>
+  //       String(field).toLowerCase().includes(lowerSearchTerm)
+  //     );
+  //   } else {
+  //     return false;
+  //   }
+  // });
+
+  // useEffect(() => console.log("storedData", JSON.parse(storedData)), [newdata]);
+  // const A = parseData.map((e: IData) => console.log("e", e));
+  // console.log("A", A);
   return (
     <>
       <TextField
@@ -106,55 +146,37 @@ const Orders = () => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Name</StyledTableCell>
-              <StyledTableCell align="center">Cost</StyledTableCell>
-              <StyledTableCell align="center">ID</StyledTableCell>
-              <StyledTableCell align="center">FulFillment</StyledTableCell>
-              <StyledTableCell align="center">Start gps</StyledTableCell>
-              <StyledTableCell align="center">
-                Start address areacode
-              </StyledTableCell>
-              <StyledTableCell align="center">End gps</StyledTableCell>
-              <StyledTableCell align="center">
-                End address areacode
-              </StyledTableCell>
+              <StyledTableCell align="center">Item</StyledTableCell>
+              <StyledTableCell align="center">fulfillment Type</StyledTableCell>
+              <StyledTableCell align="center">Shipping Address</StyledTableCell>
+              <StyledTableCell align="center">Transaction Id</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredData.map((item: any, index: any) => (
+            {data.map((item: IData, index: any) => (
               <StyledTableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <StyledTableCell align="center"> Name</StyledTableCell>
-                <StyledTableCell align="center"> 200</StyledTableCell>
+                <StyledTableCell align="center">
+                  {item?.data?.message?.intent?.payload_details?.category}
+                </StyledTableCell>
 
                 <StyledTableCell align="center">
-                  {item?.message?.intent?.category?.id}
+                  {item?.data?.message?.intent?.fulfillment?.fulfillment_type}
                 </StyledTableCell>
+
                 <StyledTableCell align="center">
-                  {" "}
-                  {item?.message?.intent?.fulfillment?.fulfillment_type}
+                  {item?.data1?.address1}
+                  <br />
+                  {item?.data1?.address2},{item?.data1?.landmark}
+                  <br />
+                  {item?.data1?.city},{item?.data1?.state},{item?.data1?.zip}
+                  <br />
+                  {item?.data1?.country}
                 </StyledTableCell>
-                <StyledTableCell align="center">
-                  {" "}
-                  {item?.message?.intent?.fulfillment?.start?.location?.gps}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {
-                    item.message?.intent?.fulfillment?.start?.location?.address
-                      ?.area_code
-                  }
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {item?.message?.intent?.fulfillment?.end?.location?.gps}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {
-                    item.message?.intent?.fulfillment?.end?.location?.address
-                      ?.area_code
-                  }
-                </StyledTableCell>
+
+                <StyledTableCell align="center">{item?.data2}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

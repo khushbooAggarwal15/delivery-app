@@ -83,6 +83,7 @@ const DetailsForm: React.FC<{
     // setLoading(true);
 
     newformData(formDetails);
+    console.log("formDetails", formDetails);
 
     // setTimeout(() => {
     // setOpenDetails(false);
