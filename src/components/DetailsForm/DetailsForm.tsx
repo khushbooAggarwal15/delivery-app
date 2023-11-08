@@ -78,17 +78,9 @@ const DetailsForm: React.FC<{
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const handleConfirm = () => {
-    // console.log(loading);
-    // setLoading(true);
-
-    newformData(formDetails);
+  const handleConfirm = async () => {
+    await newformData(formDetails);
     console.log("formDetails", formDetails);
-
-    // setTimeout(() => {
-    // setOpenDetails(false);
-    // }, 2000);
-
     router.push("/checkoutpage");
   };
 

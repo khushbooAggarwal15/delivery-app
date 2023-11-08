@@ -105,22 +105,24 @@ const Orders = () => {
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
-    // hide last border
+
     "&:last-child td, &:last-child th": {
       border: 0,
     },
   }));
-
+  const filteredData = data.filter((item) =>
+    JSON.stringify(item).toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
     <>
-      {/* <TextField
+      <TextField
         fullWidth
         label="Search"
         id="Search"
         type="search"
         placeholder="Search"
         onChange={(e) => setSearchTerm(e.target.value)}
-      /> */}
+      />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
@@ -132,7 +134,7 @@ const Orders = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item: IData, index: any) => (
+            {filteredData.map((item: IData, index: any) => (
               <StyledTableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
