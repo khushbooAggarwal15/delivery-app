@@ -16,7 +16,8 @@ const Dashboard = () => {
 
   return (
     <div>
-      {localEmail == JSON.stringify("user@gmail.com") ? (
+      {localEmail == JSON.stringify("user@gmail.com") ||
+      localEmail == JSON.stringify("user1@gmail.com") ? (
         <UserDashboard />
       ) : localEmail == JSON.stringify("admin@gmail.com") ? (
         <AdminDashboard />

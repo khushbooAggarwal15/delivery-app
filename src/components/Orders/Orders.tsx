@@ -79,12 +79,14 @@ interface IData {
     zip: string;
     country: string;
   };
+  email: string;
   data2: string;
 }
 
 const Orders = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const storedData = window.localStorage.getItem("data");
+  const usermail = window.localStorage.getItem("email");
   const data: IData[] = storedData ? JSON.parse(storedData) : null;
 
   if (data === null || data.length === 0) {
@@ -128,43 +130,42 @@ const Orders = () => {
           <TableHead>
             <TableRow>
               <StyledTableCell align="center">Item</StyledTableCell>
-              <StyledTableCell align="center">Category</StyledTableCell>
               <StyledTableCell align="center">fulfillment Type</StyledTableCell>
               <StyledTableCell align="center">Shipping Address</StyledTableCell>
               <StyledTableCell align="center">Transaction Id</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredData.map((item: IData, index: any) => (
-              <StyledTableRow
-                key={index}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <StyledTableCell align="center">
-                  {item?.data?.message?.intent?.payload_details?.category}
-                </StyledTableCell>
+            {filteredData.map((item: IData, index: any) =>
+              item?.email == usermail ? (
+                <StyledTableRow
+                  key={index}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <StyledTableCell align="center">
+                    {item?.data?.message?.intent?.payload_details?.category}
+                  </StyledTableCell>
 
-                <StyledTableCell align="center">
-                  {item?.data?.message?.intent?.category?.id}
-                </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {item?.data?.message?.intent?.fulfillment?.fulfillment_type}
+                  </StyledTableCell>
 
-                <StyledTableCell align="center">
-                  {item?.data?.message?.intent?.fulfillment?.fulfillment_type}
-                </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {item?.data1?.address1}
+                    <br />
+                    {item?.data1?.address2},{item?.data1?.landmark}
+                    <br />
+                    {item?.data1?.city},{item?.data1?.state},{item?.data1?.zip}
+                    <br />
+                    {item?.data1?.country}
+                  </StyledTableCell>
 
-                <StyledTableCell align="center">
-                  {item?.data1?.address1}
-                  <br />
-                  {item?.data1?.address2},{item?.data1?.landmark}
-                  <br />
-                  {item?.data1?.city},{item?.data1?.state},{item?.data1?.zip}
-                  <br />
-                  {item?.data1?.country}
-                </StyledTableCell>
-
-                <StyledTableCell align="center">{item?.data2}</StyledTableCell>
-              </StyledTableRow>
-            ))}
+                  <StyledTableCell align="center">
+                    {item?.data2}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ) : null
+            )}
           </TableBody>
         </Table>
       </TableContainer>

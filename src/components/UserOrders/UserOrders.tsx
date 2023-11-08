@@ -131,7 +131,6 @@ const Orders = () => {
             <TableRow>
               <StyledTableCell align="center">Email</StyledTableCell>
               <StyledTableCell align="center">Item</StyledTableCell>
-              <StyledTableCell align="center">Category</StyledTableCell>
               <StyledTableCell align="center">fulfillment Type</StyledTableCell>
               <StyledTableCell align="center">Shipping Address</StyledTableCell>
               <StyledTableCell align="center">Transaction Id</StyledTableCell>
