@@ -38,7 +38,7 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 const Profile: React.FC = () => {
   const { user } = useAuth();
-  const userEmail = window.localStorage.getItem("email");
+  const userEmail: any = window.localStorage.getItem("email");
   const userPass = window.localStorage.getItem("password");
 
   console.log(window.localStorage.getItem("email"));
@@ -94,7 +94,7 @@ const Profile: React.FC = () => {
                   type="email"
                   startDecorator={<EmailRoundedIcon />}
                   placeholder="email"
-                  defaultValue="user@gmail.com"
+                  defaultValue={userEmail}
                   sx={{ flexGrow: 1 }}
                 />
               </FormControl>

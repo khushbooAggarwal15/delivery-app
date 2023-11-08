@@ -22,6 +22,7 @@ import DraftsIcon from "@mui/icons-material/Drafts";
 
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import UserOrders from "../UserOrders/UserOrders";
 
 const drawerWidth = 240;
 
@@ -30,7 +31,6 @@ export default function AdminDashboard() {
   const [orderVisisble, setorderVisibile] = useState(false);
   const router = useRouter();
 
- 
   const handleProfile = () => {
     setProfileVisibile(true);
     setorderVisibile(false);
@@ -80,27 +80,28 @@ export default function AdminDashboard() {
           aria-labelledby="nested-list-subheader"
         >
           <div>
-          <ListSubheader component="div" id="My Dashboard">
+            <ListSubheader component="div" id="My Dashboard">
               Admin Dashboard
             </ListSubheader>
             <ListItemButton onClick={handleProfile}>
               <ListItemIcon>
                 <AccountCircleIcon />
               </ListItemIcon>
-              <ListItemText primary="All Profile" />
+              <ListItemText primary="My Profile" />
             </ListItemButton>
 
             <ListItemButton onClick={handleOrder}>
               <ListItemIcon>
                 <DraftsIcon />
               </ListItemIcon>
-              <ListItemText primary="All Orders" />
+              <ListItemText primary="All Users" />
             </ListItemButton>
-
           </div>
 
           <div className="button-wrapper">
-            <Button variant="contained" onClick={logoutSubmit}>Log Out</Button>
+            <Button variant="contained" onClick={logoutSubmit}>
+              Log Out
+            </Button>
           </div>
         </List>
       </Drawer>
@@ -112,9 +113,8 @@ export default function AdminDashboard() {
         <Toolbar />
         <div>{profileVisisble && <Profiledetails />}</div>
 
-        <div>{orderVisisble && <Orders />}</div>
+        <div>{orderVisisble && <UserOrders />}</div>
       </Box>
     </Box>
   );
 }
-
