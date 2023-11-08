@@ -1,14 +1,16 @@
 import { useAuth } from "@/utils/auth";
 import {
+  Backdrop,
   Box,
   Button,
+  CircularProgress,
   Grid,
   List,
   ListItem,
   ListItemText,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 
 interface IData {
@@ -82,6 +84,7 @@ interface ITransaction {
 }
 
 const ItemStep = () => {
+  const [loading, setLoading] = useState(false);
   const { formData } = useAuth();
   const storedData = window.localStorage.getItem("newdata");
   const addressData = window.localStorage.getItem("address");
@@ -95,6 +98,7 @@ const ItemStep = () => {
   const route = useRouter();
 
   const handleClick = () => {
+    setLoading(true);
     const combinedData = {
       data: data,
       data1: data1,
@@ -169,6 +173,12 @@ const ItemStep = () => {
           Confirm Order
         </Button>
       </Box>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 };
