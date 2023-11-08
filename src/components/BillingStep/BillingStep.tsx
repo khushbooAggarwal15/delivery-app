@@ -8,9 +8,12 @@ declare global {
 }
 const BillingStep = ({ setactiveStep, activeStep }: any) => {
   const { transactionData } = useAuth();
-  const handleClick = () => {
-    setactiveStep(activeStep + 1);
-  };
+  // const [transaction, setTransaction] = useState(false);
+  // const handleClick = () => {
+  //   if (transaction) {
+  //     setactiveStep(activeStep + 1);
+  //   }
+  // };
   const makePayment = async () => {
     const res = await initializeRazorpay();
     if (!res) {
@@ -39,9 +42,9 @@ const BillingStep = ({ setactiveStep, activeStep }: any) => {
       handler: function (response: any) {
         if (response.razorpay_payment_id) {
           const transactionId = response.razorpay_payment_id;
-
           transactionData(transactionId);
           alert("Payment successful. Transaction ID: " + transactionId);
+          setactiveStep(activeStep + 1);
         } else {
           alert("Payment failed or canceled.");
         }
@@ -73,15 +76,22 @@ const BillingStep = ({ setactiveStep, activeStep }: any) => {
   };
   return (
     <div>
-      <button onClick={() => makePayment()}>Pay Now</button>
       <Button
+        variant="contained"
+        onClick={() => makePayment()}
+        sx={{ mt: 3, ml: 1 }}
+        fullWidth
+      >
+        Pay Now
+      </Button>
+      {/* <Button
         type="submit"
         variant="contained"
         onClick={handleClick}
-        sx={{ mt: 3, ml: 1, justifyContent: "flex-end" }}
+        sx={{ mt: 3, ml: 1, textAlign: "end" }}
       >
         Next
-      </Button>
+      </Button> */}
     </div>
   );
 };
