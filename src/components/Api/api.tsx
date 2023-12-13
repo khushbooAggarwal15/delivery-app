@@ -1,5 +1,5 @@
 import React from "react";
-import { useMutation, useQueryClient } from "react-query";
+import {  useQueryClient } from "react-query";
 import useGetData from "../../CustomHooks/useGet";
 import usePostData from "../../CustomHooks/usePost";
 
@@ -12,7 +12,6 @@ function Api() {
       userId: 10,
       name: "witslab",
       id: 98,
-      title: "laboriosam dolor voluptates",
       body: "doloremque ex facilis sit sint culpa\nsoluta assumenda eligendi non ut eius\nsequi ducimus vel quasi\nveritatis est dolores",
     };
 

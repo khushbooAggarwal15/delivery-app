@@ -7,7 +7,7 @@ const SocketClient: React.FC = () => {
   const [socket, setSocket] = useState<any>(null);
 
   useEffect(() => {
-    const newSocket = io("http://192.168.93.159:8080");
+    const newSocket = io("http://192.168.11.126:8080");
     setSocket(newSocket);
 
     newSocket.on("connect", () => {
